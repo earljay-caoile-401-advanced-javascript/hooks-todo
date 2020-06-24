@@ -1,0 +1,56 @@
+$spacing: 1em;
+$pxPad: 20px;
+$contentHeight: 77vh;
+$darkGreen: #006666;
+$darkBlue: #004680;
+$hoverGray: #3f6181;
+$teal: #007a99;
+$lightPurple: rgb(127, 127, 233);
+
+@mixin setSpacing($marginProp, $paddingProp) {
+  margin: $marginProp;
+  padding: $paddingProp;
+}
+
+@mixin setCompatibleProp($prop, $val) {
+  #{$prop}: $val;
+  -webkit-#{$prop}: $val;
+  -moz-#{$prop}: $val;
+  -ms-#{$prop}: $val;
+  -o-#{$prop}: $val;
+}
+
+#root {
+  font-family: Arial;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.error {
+  color: red;
+}
+
+.header,
+.footer {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  min-height: 10vh;
+  background-color: $teal;
+}
+
+.content {
+  min-height: 80vh;
+  background-color: #f3f3f3e7;
+  color: white;
+}
+
+.footer {
+  min-height: 10vh;
+  background-color: $darkBlue;
+}
