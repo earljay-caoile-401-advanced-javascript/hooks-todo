@@ -1,5 +1,6 @@
 import React from 'react';
 // import Nav from './Nav';
+import '../styles/header.scss';
 
 /**
  * Simple header content that shows up on every page. Contains title and nav bar
@@ -11,15 +12,9 @@ import React from 'react';
  * )
  */
 function Header() {
-  // const links = [
-  //   { displayName: 'Home', url: '/' },
-  //   { displayName: 'History', url: '/history' },
-  // ];
-
   return (
-    <header>
-      <h1>RESTy</h1>
-      {/* <Nav links={links} className="top-navbar" /> */}
+    <header id="main-header">
+      <h1>ToDo List</h1>
     </header>
   );
 }

@@ -1,0 +1,14 @@
+@import 'base';
+
+#main-footer {
+  background-color: $darkBlue;
+  flex-direction: column;
+
+  svg {
+    margin: auto $spacing;
+  }
+
+  a:visited {
+    color: white;
+  }
+}

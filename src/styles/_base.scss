@@ -31,26 +31,28 @@ $lightPurple: rgb(127, 127, 233);
   color: red;
 }
 
-.header,
-.footer {
-  color: white;
-  display: flex;
+#main-header,
+#main-content,
+#main-footer {
   justify-content: center;
   align-items: center;
 }
 
-.header {
+#main-header,
+#main-footer {
   min-height: 10vh;
-  background-color: $teal;
+  padding: $spacing;
+  display: flex;
+  box-sizing: border-box;
+
+  * {
+    color: white;
+  }
 }
 
-.content {
+#main-content {
   min-height: 80vh;
   background-color: #f3f3f3e7;
-  color: white;
-}
-
-.footer {
-  min-height: 10vh;
-  background-color: $darkBlue;
+  padding: $spacing * 2;
+  box-sizing: border-box;
 }
