@@ -3,12 +3,13 @@
 #main-footer {
   background-color: $darkBlue;
   flex-direction: column;
+  font-family: Arial;
 
   svg {
     margin: auto $spacing;
   }
 
-  a:visited {
+  * {
     color: white;
   }
 }
