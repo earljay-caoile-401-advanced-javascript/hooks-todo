@@ -19,6 +19,7 @@ Lab 26 for CF JS 401 Nights
 
 - [HTML Color Picker](https://www.w3schools.com/colors/colors_picker.asp)
 - [CSS Layout - Horizontal & Vertical Align](https://www.w3schools.com/csS/css_align.asp)
+- [React Bootstrap Navbars](https://react-bootstrap.github.io/components/navbar/)
 
 ### Documentation
 
@@ -39,4 +40,4 @@ Stuff
 
 ### UML
 
-![UML Image](lab-26-uml.png "uml diagram")
+![UML Image](lab-26-uml.png)
