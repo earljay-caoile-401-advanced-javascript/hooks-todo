@@ -4,7 +4,7 @@ import ToDoList from './ToDoList';
 import { Route } from 'react-router-dom';
 
 function ToDo() {
-  const [tasks, setTasks] = useState([]);
+  const tasks = useState([]);
 
   function onSubmit(task) {
     console.log('Here is the submitted task:', task);

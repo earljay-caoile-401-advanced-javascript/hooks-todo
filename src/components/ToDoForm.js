@@ -19,7 +19,6 @@ function ToDoForm(props) {
     });
 
     setSubmitted(true);
-    console.log('What is submitted?', submitted);
   }
 
   return submitted ? (
