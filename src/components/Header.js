@@ -30,7 +30,7 @@ function Header() {
 
   return (
     <>
-      <Navbar id="main-header" variant="dark" expand="lg">
+      <Navbar id="main-header" variant="dark" expand="md">
         <Navbar.Brand>
           <h1>ToDo List</h1>
         </Navbar.Brand>

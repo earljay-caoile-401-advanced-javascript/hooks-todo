@@ -45,7 +45,11 @@ code {
   box-sizing: border-box;
   margin: auto $spacing * 2;
 
-  @media (max-width: 991.98px) {
+  @media (max-width: 768px) {
     margin: 0;
+  }
+
+  @media (min-width: 1200px) {
+    margin: auto $spacing * 5;
   }
 }
