@@ -4,6 +4,31 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import If from './If';
 
+/**
+ * component holding a list of ToDo items and some supplementary text elements
+ * used as a child component of the ToDo component
+ *
+ * @component
+ * @example
+ * return (
+ *   <TodoList
+ *     tasks=[
+ *        {
+ *          description: 'cook green eggs and ham'
+ *          assignedTo: 'Sam I Am',
+ *          difficulty: 3,
+ *          wasCompleted: false
+ *        },
+ *        {
+ *          description: 'take a shower'
+ *          assignedTo: 'Bob Saget',
+ *          difficulty: 1,
+ *          wasCompleted: true
+ *        }
+ *      ]
+    />
+ * )
+ */
 function ToDoList(props) {
   const [incompleteTasks, setIncompleteTasks] = useState(0);
   const [tasksToRender, setTasksToRender] = useState([]);
@@ -65,7 +90,9 @@ function ToDoList(props) {
               the todo list.
             </p>
             <Link to="/" className="mt-4 mb-4">
-              <Button variant="info">Return to Form Page</Button>
+              <Button variant="info" className="btn-lg">
+                Return to Form Page
+              </Button>
             </Link>
           </div>
         )}

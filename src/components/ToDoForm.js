@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 
+/**
+ * component containing a form for a user to submit
+ * redirects to the tasks page on submission
+ * child component of the ToDo component
+ *
+ * @component
+ * @example
+ * return (
+ *   <ToDoForm onSubmit={onSubmit} />
+ * )
+ */
 function ToDoForm(props) {
   const [description, setDescription] = useState('');
   const [assignedTo, setAssignment] = useState('');
@@ -63,7 +74,7 @@ function ToDoForm(props) {
             <option>5</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
+        <Form.Group controlId="formBasicCheckbox" className="mt-4 mb-4">
           <Form.Check
             type="checkbox"
             id="task-completed-checkbox"
@@ -72,7 +83,11 @@ function ToDoForm(props) {
             onChange={() => setCompleted(!wasCompleted)}
           />
         </Form.Group>
-        <Button variant="info" onClick={handleSubmitBtn}>
+        <Button
+          variant="info"
+          className="btn-lg btn-block"
+          onClick={handleSubmitBtn}
+        >
           Submit
         </Button>
       </Form>

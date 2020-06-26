@@ -39,17 +39,29 @@ code {
   box-sizing: border-box;
 }
 
+#main-header {
+  position: fixed;
+  width: 100%;
+  z-index: 25;
+}
+
 #main-content {
   min-height: 80vh;
   padding: $spacing * 2;
   box-sizing: border-box;
-  margin: auto $spacing * 2;
+  margin: $spacing * 8 $spacing * 2 auto;
+
+  @media (min-width: 1200px) {
+    margin: $spacing * 8 $spacing * 5 auto;
+  }
 
   @media (max-width: 768px) {
     margin: 0;
+    margin-top: $spacing * 8;
   }
 
-  @media (min-width: 1200px) {
-    margin: auto $spacing * 5;
+  @media (max-width: 298px) {
+    margin: 0;
+    margin-top: $spacing * 10;
   }
 }

@@ -3,6 +3,26 @@ import { Card } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import If from './If';
 
+/**
+ * component representing a single ToDo item
+ * used as a child component of the ToDoList component
+ *
+ * @component
+ * @example
+ * return (
+ *   <TodoItem
+ *     key="0"
+ *     task={
+ *        description: 'cook green eggs and ham'
+ *        assignedTo: 'Sam I Am',
+ *        difficulty: 3,
+ *        wasCompleted: false
+ *      }
+ *     index="0"
+ *     onChange={updateOneCheckbox}
+    />
+ * )
+ */
 function TodoItem(props) {
   const [wasCompleted, setCompleted] = useState(props.task.wasCompleted);
 
