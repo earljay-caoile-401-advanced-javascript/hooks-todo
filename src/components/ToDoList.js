@@ -7,23 +7,36 @@ function ToDoList(props) {
   const [incompleteTasks, setIncompleteTasks] = useState(0);
   const [tasksToRender, setTasksToRender] = useState([]);
 
+  const localTaskArr = [];
   let numIncomplete = 0;
 
   function updateOneCheckbox(checkStatus, index) {
     console.log('Did we make it here?', checkStatus, index);
-    console.log('Does tasks arr even having anything?', tasksToRender);
-    console.log('What is tasksCopy at index?', tasksToRender[index]);
+    // console.log('Does tasks arr even having anything?', tasksToRender);
+    // console.log('how about dat tmp arr?', localTaskArr);
+
+    // console.log('What is dat tmp arr at index?', localTaskArr[index]);
+    const renderToUpdate = localTaskArr[index];
+    renderToUpdate.props.task.wasCompleted = checkStatus;
+    if (checkStatus) {
+      numIncomplete--;
+    } else {
+      numIncomplete++;
+    }
+
+    console.log('What is numIncomplete now?', numIncomplete);
+    setIncompleteTasks(numIncomplete);
+    setTasksToRender(localTaskArr);
   }
 
   useEffect(() => {
-    const tmpTasksArr = [];
     if (props.tasks) {
       console.log('What is props.tasks at beginning of if?', props.tasks);
       for (let i = 0; i < props.tasks.length; i++) {
         const currTask = props.tasks[i];
         console.log('sanity check index:', i);
         console.log('Do we have a currTask?', currTask);
-        tmpTasksArr.push(
+        localTaskArr.push(
           <TodoItem
             key={i}
             task={currTask}
@@ -38,28 +51,36 @@ function ToDoList(props) {
       }
 
       setIncompleteTasks(numIncomplete);
-      setTasksToRender(tmpTasksArr);
+      setTasksToRender(localTaskArr);
     }
-    console.log('What is in tasksToRender?', tasksToRender);
-    document.title = `ToDo: ${incompleteTasks} tasks incomplete`;
-    console.log('What are props at end of useEffect?', props);
   }, []);
 
-  return tasksToRender.length ? (
+  useEffect(() => {
+    document.title = `ToDo: ${incompleteTasks} tasks incomplete`;
+  }, [incompleteTasks]);
+
+  useEffect(() => {
+    console.log('What is tasksToRender?', tasksToRender);
+  }, [tasksToRender]);
+
+  return (
     <>
       <h2>ToDo List Page</h2>
-      <div>{tasksToRender}</div>
-    </>
-  ) : (
-    <>
-      <h2>ToDo List Page</h2>
-      <p>
-        No tasks to show! Please return to the home page to add a task to the
-        todo list.
-      </p>
-      <Link to="/">
-        <Button variant="info">Return to Form Page</Button>
-      </Link>
+      <>
+        {tasksToRender.length ? (
+          <div>{tasksToRender}</div>
+        ) : (
+          <>
+            <p>
+              No tasks to show! Please return to the home page to add a task to
+              the todo list.
+            </p>
+            <Link to="/">
+              <Button variant="info">Return to Form Page</Button>
+            </Link>
+          </>
+        )}
+      </>
     </>
   );
 }
