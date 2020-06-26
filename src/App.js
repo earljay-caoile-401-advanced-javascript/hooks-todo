@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import ToDo from './components/ToDo';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
+import './styles/base.scss';
 
 function App() {
   return (

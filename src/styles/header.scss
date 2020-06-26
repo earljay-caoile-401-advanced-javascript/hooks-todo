@@ -1,16 +1,10 @@
-@import 'base';
+@import 'variables';
 
 #main-header {
   background-color: $teal;
 
   font-family: 'Times New Roman', Times, serif;
-  // a.navbar-brand,
-  // a#basic-nav-dropdown,
-  // a:visited,
-  // button,
-  // span {
-  //   color: white;
-  // }
+  padding: 2em;
 
   a.nav-link {
     font-size: 1.25rem;

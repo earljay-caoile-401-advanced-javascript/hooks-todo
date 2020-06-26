@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
  *   <Header />
  * )
  */
-function Header(props) {
+function Header() {
   const links = [
     { displayName: 'Form', url: '/' },
     { displayName: 'Tasks', url: '/tasks' },

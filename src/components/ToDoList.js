@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TodoItem from './ToDoItem';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import If from './If';
 
 function ToDoList(props) {
   const [incompleteTasks, setIncompleteTasks] = useState(0);
@@ -45,14 +46,14 @@ function ToDoList(props) {
       setIncompleteTasks(numIncomplete);
       setTasksToRender(localTaskArr);
     }
-  }, []);
+  }, [props.tasks]);
 
   useEffect(() => {
     document.title = `ToDo: ${incompleteTasks} tasks incomplete`;
   }, [incompleteTasks]);
 
   return (
-    <>
+    <If condition={props.tasks}>
       <h2 className="mb-4">ToDo List Page</h2>
       <div className="mt-4 mb-4">
         {tasksToRender.length ? (
@@ -69,7 +70,7 @@ function ToDoList(props) {
           </div>
         )}
       </div>
-    </>
+    </If>
   );
 }
 

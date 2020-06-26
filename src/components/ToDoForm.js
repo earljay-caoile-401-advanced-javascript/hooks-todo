@@ -10,7 +10,6 @@ function ToDoForm(props) {
   const [submitted, setSubmitted] = useState(false);
 
   function handleSubmitBtn() {
-    console.log('trigger onSubmit');
     props.onSubmit({
       description,
       assignedTo,
@@ -19,6 +18,12 @@ function ToDoForm(props) {
     });
 
     setSubmitted(true);
+  }
+
+  function handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      handleSubmitBtn();
+    }
   }
 
   return submitted ? (
@@ -42,6 +47,7 @@ function ToDoForm(props) {
             type="text"
             placeholder="Bob Saget"
             onChange={(e) => setAssignment(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
         </Form.Group>
         <Form.Group controlId="exampleForm.ControlSelect1">
