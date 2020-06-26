@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ToDoForm from './ToDoForm';
 import ToDoList from './ToDoList';
 import { Route } from 'react-router-dom';
+import '../styles/todo.scss';
 
 function ToDo() {
   const tasks = [];
 
   function onSubmit(task) {
-    console.log('Here is the submitted task:', task);
     tasks.push(task);
-    console.log('What are tasks now?', tasks);
   }
 
   return (

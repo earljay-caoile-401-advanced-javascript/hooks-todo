@@ -20,6 +20,7 @@ Lab 26 for CF JS 401 Nights
 - [HTML Color Picker](https://www.w3schools.com/colors/colors_picker.asp)
 - [CSS Layout - Horizontal & Vertical Align](https://www.w3schools.com/csS/css_align.asp)
 - [React Bootstrap Navbars](https://react-bootstrap.github.io/components/navbar/)
+- [Can I change the checkbox size using CSS?](https://stackoverflow.com/questions/306924/can-i-change-the-checkbox-size-using-css)
 
 ### Documentation
 

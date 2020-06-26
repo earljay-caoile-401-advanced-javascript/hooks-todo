@@ -3,17 +3,15 @@ import { Card } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 
 function TodoItem(props) {
-  console.log('props at beginning of TodoItem', props);
   const [wasCompleted, setCompleted] = useState(props.task.wasCompleted);
 
   function handleCheckbox(e) {
-    console.log('do we have a checked prop?', e.target.checked);
     setCompleted(e.target.checked);
     props.onChange(e.target.checked, parseInt(props.index));
   }
 
   return (
-    <div className="mt-2 mb-2">
+    <div className="mt-4 mb-4">
       <Card>
         <Card.Header>Task {props.index + 1}</Card.Header>
         <Card.Body>

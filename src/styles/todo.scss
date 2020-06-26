@@ -1,0 +1,17 @@
+@import 'base';
+
+// .form-check-label::before,
+// .form-check-label::after {
+//   top: 0.8rem;
+//   width: 5rem;
+//   height: 5rem;
+// }
+
+.form-check-input {
+  transform: scale(1.25);
+  top: 0.1rem;
+}
+
+.form-check-label {
+  margin: auto 0.2rem;
+}

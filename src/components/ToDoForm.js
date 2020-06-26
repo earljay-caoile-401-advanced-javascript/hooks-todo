@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 
@@ -25,7 +25,7 @@ function ToDoForm(props) {
     <Redirect push to="/tasks" />
   ) : (
     <>
-      <h2 className="text-center">ToDo Form Page</h2>
+      <h2 className="text-center mb-4">ToDo Form Page</h2>
       <Form>
         <Form.Group controlId="exampleForm.ControlTextarea1">
           <Form.Label>Task</Form.Label>
@@ -62,6 +62,7 @@ function ToDoForm(props) {
             type="checkbox"
             id="task-completed-checkbox"
             label="Completed"
+            className="large-checkbox"
             onChange={() => setCompleted(!wasCompleted)}
           />
         </Form.Group>
