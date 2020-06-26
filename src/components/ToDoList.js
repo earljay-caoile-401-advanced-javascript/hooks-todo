@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import TodoItem from './ToDoItem';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function ToDoList(props) {
   const [incompleteTasks, setIncompleteTasks] = useState(0);
   const [tasksToRender, setTasksToRender] = useState([]);
 
-  // function updateTitle() {
-  //   document.title = `ToDo: ${incompleteTasks} tasks incomplete`;
-  // }
-  // const tasksToRender = [];
+  let numIncomplete = 0;
 
-  // const tasksToRender = [];
+  function updateOneCheckbox(checkStatus, index) {
+    console.log('Did we make it here?', checkStatus, index);
+    console.log('Does tasks arr even having anything?', tasksToRender);
+    console.log('What is tasksCopy at index?', tasksToRender[index]);
+  }
+
   useEffect(() => {
-    let numIncomplete = 0;
+    const tmpTasksArr = [];
     if (props.tasks) {
       console.log('What is props.tasks at beginning of if?', props.tasks);
       for (let i = 0; i < props.tasks.length; i++) {
         const currTask = props.tasks[i];
         console.log('sanity check index:', i);
         console.log('Do we have a currTask?', currTask);
-        tasksToRender.push(<TodoItem key={i} task={currTask} />);
+        tmpTasksArr.push(
+          <TodoItem
+            key={i}
+            task={currTask}
+            index={i}
+            onChange={updateOneCheckbox}
+          />
+        );
 
         if (!currTask.wasCompleted) {
           numIncomplete++;
@@ -27,12 +38,12 @@ function ToDoList(props) {
       }
 
       setIncompleteTasks(numIncomplete);
-      // setTasksToRender(tasks);
+      setTasksToRender(tmpTasksArr);
     }
     console.log('What is in tasksToRender?', tasksToRender);
     document.title = `ToDo: ${incompleteTasks} tasks incomplete`;
     console.log('What are props at end of useEffect?', props);
-  }, [incompleteTasks, tasksToRender]);
+  }, []);
 
   return tasksToRender.length ? (
     <>
@@ -46,15 +57,11 @@ function ToDoList(props) {
         No tasks to show! Please return to the home page to add a task to the
         todo list.
       </p>
+      <Link to="/">
+        <Button variant="info">Return to Form Page</Button>
+      </Link>
     </>
   );
-
-  // return (
-  //   <>
-  //     <h2>ToDo List Page</h2>
-  //     <div>{tasksToRender}</div>
-  //   </>
-  // );
 }
 
 export default ToDoList;

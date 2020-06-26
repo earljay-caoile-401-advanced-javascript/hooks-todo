@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
  */
 function Header(props) {
   const links = [
-    { displayName: 'Home', url: '/' },
+    { displayName: 'Form', url: '/' },
     { displayName: 'Tasks', url: '/tasks' },
   ];
 
