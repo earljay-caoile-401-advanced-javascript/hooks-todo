@@ -79,7 +79,7 @@ function ToDoList(props) {
 
   return (
     <If condition={props.tasks}>
-      <h2 className="mb-4">ToDo List Page</h2>
+      <h2 className="mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
         {tasksToRender.length ? (
           <div className="mt-4 mb-4">{tasksToRender}</div>

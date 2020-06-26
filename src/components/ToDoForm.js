@@ -41,7 +41,7 @@ function ToDoForm(props) {
     <Redirect push to="/tasks" />
   ) : (
     <>
-      <h2 className="text-center mb-4">ToDo Form Page</h2>
+      <h2 className="text-center mb-4">ToDo Form</h2>
       <Form>
         <Form.Group controlId="exampleForm.ControlTextarea1">
           <Form.Label>Task</Form.Label>
