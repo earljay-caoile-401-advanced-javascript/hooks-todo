@@ -83,9 +83,21 @@ describe('the whole app', () => {
     expect(card.childAt(3).text()).toBe('completed');
   };
 
-  it('can go through the whole submission and list checking process', () => {
-    const app = mount(<App />, { attachTo: document.title });
+  const trueClickEvent = {
+    target: {
+      checked: true,
+    },
+  };
 
+  const falseClickEvent = {
+    target: {
+      checked: false,
+    },
+  };
+
+  const app = mount(<App />, { attachTo: document.title });
+
+  it('can go through the whole submission and list checking process', () => {
     fillOutForm(app, dummyTask);
 
     submitAndChangePage(app);
@@ -97,30 +109,18 @@ describe('the whole app', () => {
     verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
-    const checkboxSection = firstCard.childAt(3);
-    const checkboxInput = checkboxSection.find('input');
-
-    const trueClickEvent = {
-      target: {
-        checked: true,
-      },
-    };
-
-    const falseClickEvent = {
-      target: {
-        checked: false,
-      },
-    };
-
-    checkboxInput.simulate('change', trueClickEvent);
+    const firstCheckbox = firstCard.find('input');
+    firstCheckbox.simulate('change', trueClickEvent);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-    checkboxInput.simulate('change', falseClickEvent);
+    firstCheckbox.simulate('change', falseClickEvent);
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
     const navLinks = app.find('.nav-link');
     navLinks.at(0).simulate('click', { button: 0 });
+  });
 
+  it('can go through through a second form submission and see the first and second tasks on the tasks page', () => {
     fillOutForm(app, secondDummy);
     submitAndChangePage(app);
 
@@ -135,5 +135,11 @@ describe('the whole app', () => {
     const secondCheckbox = secondCard.find('input');
     secondCheckbox.simulate('change', falseClickEvent);
     expect(document.title).toBe('ToDo: 2 tasks incomplete');
+
+    secondCheckbox.simulate('change', trueClickEvent);
+    const firstCard = app.find('.card-body').at(0);
+    const firstCheckbox = firstCard.find('input');
+    firstCheckbox.simulate('change', trueClickEvent);
+    expect(document.title).toBe('ToDo: 0 tasks incomplete');
   });
 });
