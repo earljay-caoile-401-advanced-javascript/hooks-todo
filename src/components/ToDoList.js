@@ -33,23 +33,23 @@ function ToDoList(props) {
   const [incompleteTasks, setIncompleteTasks] = useState(0);
   const [tasksToRender, setTasksToRender] = useState([]);
 
-  const localTaskArr = [];
-  let numIncomplete = 0;
-
-  function updateOneCheckbox(checkStatus, index) {
-    const renderToUpdate = localTaskArr[index];
-    renderToUpdate.props.task.wasCompleted = checkStatus;
-    if (checkStatus) {
-      numIncomplete--;
-    } else {
-      numIncomplete++;
-    }
-
-    setIncompleteTasks(numIncomplete);
-    setTasksToRender(localTaskArr);
-  }
-
   useEffect(() => {
+    const localTaskArr = [];
+    let numIncomplete = 0;
+
+    function updateOneCheckbox(checkStatus, index) {
+      const renderToUpdate = localTaskArr[index];
+      renderToUpdate.props.task.wasCompleted = checkStatus;
+      if (checkStatus) {
+        numIncomplete--;
+      } else {
+        numIncomplete++;
+      }
+  
+      setIncompleteTasks(numIncomplete);
+      setTasksToRender(localTaskArr);
+    }
+    
     if (props.tasks) {
       for (let i = 0; i < props.tasks.length; i++) {
         const currTask = props.tasks[i];
