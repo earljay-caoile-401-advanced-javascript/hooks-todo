@@ -77,7 +77,7 @@ function ToDoForm(props) {
         <Form.Group controlId="task-completed" className="mt-4 mb-4">
           <Form.Check
             type="checkbox"
-            id="task-completed-checkbox"
+            id="task-completed-checkbox-form"
             label="Completed"
             className="large-checkbox"
             onChange={() => setCompleted(!wasCompleted)}

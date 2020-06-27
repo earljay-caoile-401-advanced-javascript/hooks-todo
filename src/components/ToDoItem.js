@@ -46,7 +46,7 @@ function TodoItem(props) {
               type="checkbox"
               label="completed"
               checked={wasCompleted}
-              id="task-completed"
+              id={"task-completed-" + props.index}
               onChange={handleCheckbox}
             />
           </Card.Body>

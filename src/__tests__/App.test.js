@@ -70,7 +70,6 @@ describe('the whole app', () => {
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
     const checkboxInput = checkboxSection.find('input');
-    console.log('what is checkboxInput?', checkboxInput.html());
 
     const trueClickEvent = {
       target: {
