@@ -49,10 +49,14 @@ code {
   min-height: 80vh;
   padding: $spacing * 2;
   box-sizing: border-box;
-  margin: 10vh $spacing * 2 auto;
+  margin: 10vh 5% auto;
 
   @media (min-width: 1200px) {
-    margin: 10vh $spacing * 5 auto;
+    margin: 10vh 7.5% auto;
+  }
+
+  @media (min-width: 1920px) {
+    margin: 10vh 10% auto;
   }
 
   @media (max-width: 768px) {
