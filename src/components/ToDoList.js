@@ -17,13 +17,13 @@ import If from './If';
  *          description: 'cook green eggs and ham'
  *          assignedTo: 'Sam I Am',
  *          difficulty: 3,
- *          wasCompleted: false
+ *          wasCompleted: false,
  *        },
  *        {
- *          description: 'take a shower'
+ *          description: 'take a shower',
  *          assignedTo: 'Bob Saget',
  *          difficulty: 1,
- *          wasCompleted: true
+ *          wasCompleted: true,
  *        }
  *      ]
     />
@@ -74,7 +74,9 @@ function ToDoList(props) {
   }, [props.tasks]);
 
   useEffect(() => {
-    document.title = `ToDo: ${incompleteTasks} tasks incomplete`;
+    document.title = `ToDo: ${incompleteTasks} ${
+      incompleteTasks === 1 ? 'task' : 'tasks'
+    } incomplete`;
   }, [incompleteTasks]);
 
   return (

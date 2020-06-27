@@ -43,7 +43,7 @@ function ToDoForm(props) {
     <>
       <h2 className="text-center mb-4">ToDo Form</h2>
       <Form>
-        <Form.Group controlId="exampleForm.ControlTextarea1">
+        <Form.Group controlId="task-description">
           <Form.Label>Task</Form.Label>
           <Form.Control
             as="textarea"
@@ -52,7 +52,7 @@ function ToDoForm(props) {
             onChange={(e) => setDescription(e.target.value)}
           />
         </Form.Group>
-        <Form.Group controlId="exampleForm.ControlInput1">
+        <Form.Group controlId="task-person">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
@@ -61,7 +61,7 @@ function ToDoForm(props) {
             onKeyPress={handleKeyPress}
           />
         </Form.Group>
-        <Form.Group controlId="exampleForm.ControlSelect1">
+        <Form.Group controlId="task-difficulty">
           <Form.Label>Difficulty</Form.Label>
           <Form.Control
             as="select"
@@ -74,7 +74,7 @@ function ToDoForm(props) {
             <option>5</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group controlId="formBasicCheckbox" className="mt-4 mb-4">
+        <Form.Group controlId="task-completed" className="mt-4 mb-4">
           <Form.Check
             type="checkbox"
             id="task-completed-checkbox"

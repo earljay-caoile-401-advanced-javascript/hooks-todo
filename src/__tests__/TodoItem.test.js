@@ -24,8 +24,9 @@ describe('ToDoItem component', () => {
     expect(
       descText.includes('description: cook green eggs and ham')
     ).toBeTruthy();
+
     expect(descText.includes('assigned to: Sam I Am')).toBeTruthy();
     expect(descText.includes('difficulty: 3')).toBeTruthy();
-    expect(descText.includes('completed')).toBeTruthy();
+    expect(descText.includes('completed')).toBeFalsy();
   });
 });
