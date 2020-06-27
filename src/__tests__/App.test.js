@@ -10,11 +10,17 @@ describe('the whole app', () => {
     wasCompleted: false,
   };
 
-  it('can go through the whole submission and list checking process', () => {
-    const app = mount(<App />, { attachTo: document.title });
-    expect(app).toBeDefined();
+  const secondDummy = {
+    description: 'take shower',
+    assignedTo: 'Bob Saget',
+    difficulty: 1,
+    wasCompleted: true,
+  };
 
-    const todoForm = app.find('#main-content');
+  const fillOutForm = (component, taskObj) => {
+    expect(component).toBeDefined();
+
+    const todoForm = component.find('#main-content');
 
     expect(todoForm).toBeDefined();
     expect(todoForm.find('h2').text()).toBe('ToDo Form');
@@ -23,7 +29,7 @@ describe('the whole app', () => {
     expect(taskTextarea).toBeDefined();
     const descriptionEvent = {
       target: {
-        value: dummyTask.description,
+        value: taskObj.description,
       },
     };
     taskTextarea.simulate('change', descriptionEvent);
@@ -32,7 +38,7 @@ describe('the whole app', () => {
     expect(taskOwner).toBeDefined();
     const ownerEvent = {
       target: {
-        value: dummyTask.assignedTo,
+        value: taskObj.assignedTo,
       },
     };
     taskOwner.simulate('change', ownerEvent);
@@ -41,12 +47,31 @@ describe('the whole app', () => {
     expect(taskDifficulty).toBeDefined();
     const difficultyEvent = {
       target: {
-        value: dummyTask.difficulty,
+        value: taskObj.difficulty,
       },
     };
+
     taskDifficulty.simulate('change', difficultyEvent);
 
-    const submitBtn = todoForm.find('button.btn-info');
+    if (taskObj.wasCompleted) {
+      const trueClickEvent = {
+        target: {
+          checked: true,
+        },
+      };
+
+      const checkboxSection = component.find('#task-completed-checkbox-form');
+      const checkboxInput = checkboxSection.find('input');
+      checkboxInput.simulate('change', trueClickEvent);
+    }
+  };
+
+  it('can go through the whole submission and list checking process', () => {
+    const app = mount(<App />, { attachTo: document.title });
+    
+    fillOutForm(app, dummyTask);
+
+    const submitBtn = app.find('button.btn-info');
     expect(submitBtn).toBeDefined();
     submitBtn.simulate('click');
 
