@@ -10,6 +10,13 @@ describe('the whole app', () => {
     wasCompleted: false,
   };
 
+  const secondDummy = {
+    description: 'take shower',
+    assignedTo: 'Bob Saget',
+    difficulty: 1,
+    wasCompleted: true,
+  };
+
   const fillOutForm = (component, taskObj) => {
     expect(component).toBeDefined();
 
@@ -59,34 +66,38 @@ describe('the whole app', () => {
     }
   };
 
-  it('can go through the whole submission and list checking process', () => {
-    const app = mount(<App />, { attachTo: document.title });
-    
-    fillOutForm(app, dummyTask);
-
-    const submitBtn = app.find('button.btn-info');
+  const submitAndChangePage = (component) => {
+    const submitBtn = component.find('button.btn-info');
     expect(submitBtn).toBeDefined();
     submitBtn.simulate('click');
 
-    const todoList = app.find('#main-content');
+    const todoList = component.find('#main-content');
     expect(todoList.find('h2').text()).toBe('Tasks ToDo');
-    expect(todoList.find('.card-header').text()).toBe('Task 1');
+  };
 
-    const cardBody = todoList.find('.card-body');
-    expect(cardBody.childAt(0).text()).toBe(
-      'description: ' + dummyTask.description
-    );
-    expect(cardBody.childAt(1).text()).toBe(
-      'assigned to: ' + dummyTask.assignedTo
-    );
-    expect(cardBody.childAt(2).text()).toBe(
-      'difficulty: ' + dummyTask.difficulty
-    );
+  const verifyCardContents = (card, task) => {
+    expect(card.childAt(0).text()).toBe('description: ' + task.description);
+    expect(card.childAt(1).text()).toBe('assigned to: ' + task.assignedTo);
+    expect(card.childAt(2).text()).toBe('difficulty: ' + task.difficulty);
 
-    const checkboxSection = cardBody.childAt(3);
-    expect(checkboxSection.text()).toBe('completed');
+    expect(card.childAt(3).text()).toBe('completed');
+  };
+
+  it('can go through the whole submission and list checking process', () => {
+    const app = mount(<App />, { attachTo: document.title });
+
+    fillOutForm(app, dummyTask);
+
+    submitAndChangePage(app);
+
+    expect(app.find('.card-header').text()).toBe('Task 1');
+
+    const firstCard = app.find('.card-body');
+
+    verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
+    const checkboxSection = firstCard.childAt(3);
     const checkboxInput = checkboxSection.find('input');
 
     const trueClickEvent = {
@@ -106,5 +117,23 @@ describe('the whole app', () => {
 
     checkboxInput.simulate('change', falseClickEvent);
     expect(document.title).toBe('ToDo: 1 task incomplete');
+
+    const navLinks = app.find('.nav-link');
+    navLinks.at(0).simulate('click', { button: 0 });
+
+    fillOutForm(app, secondDummy);
+    submitAndChangePage(app);
+
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    expect(app.find('.card-header').at(1).text()).toBe('Task 2');
+
+    const secondCard = app.find('.card-body').at(1);
+
+    verifyCardContents(secondCard, secondDummy);
+    expect(document.title).toBe('ToDo: 1 task incomplete');
+
+    const secondCheckbox = secondCard.find('input');
+    secondCheckbox.simulate('change', falseClickEvent);
+    expect(document.title).toBe('ToDo: 2 tasks incomplete');
   });
 });
