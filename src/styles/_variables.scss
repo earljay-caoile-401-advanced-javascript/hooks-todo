@@ -1,0 +1,22 @@
+$spacing: 1em;
+$pxPad: 20px;
+$contentHeight: 77vh;
+$darkGreen: #006666;
+$darkBlue: #004680;
+$hoverGray: #3f6181;
+$teal: #007a99;
+$lightPurple: rgb(127, 127, 233);
+$lightGray: #f3f3f3e7;
+
+@mixin setSpacing($marginProp, $paddingProp) {
+  margin: $marginProp;
+  padding: $paddingProp;
+}
+
+@mixin setCompatibleProp($prop, $val) {
+  #{$prop}: $val;
+  -webkit-#{$prop}: $val;
+  -moz-#{$prop}: $val;
+  -ms-#{$prop}: $val;
+  -o-#{$prop}: $val;
+}

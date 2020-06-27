@@ -1,0 +1,19 @@
+@import 'variables';
+
+.form-check-input {
+  transform: scale(1.25);
+  top: 0.1rem;
+}
+
+.form-check-label {
+  margin: auto 0.2rem;
+}
+
+.reverse-checkbox {
+  display: inline-block;
+
+  label {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}

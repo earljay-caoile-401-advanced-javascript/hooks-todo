@@ -1,0 +1,75 @@
+@import 'variables';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $lightGray;
+}
+
+.error {
+  color: red;
+}
+
+#main-header,
+#main-content,
+#main-footer {
+  justify-content: center;
+  align-items: center;
+}
+
+#main-header,
+#main-footer {
+  min-height: 10vh;
+  display: flex;
+  box-sizing: border-box;
+}
+
+#main-header {
+  position: fixed;
+  width: 100%;
+  z-index: 25;
+}
+
+#main-content {
+  min-height: 80vh;
+  padding: $spacing * 2.5;
+  box-sizing: border-box;
+  margin: 10vh 5% auto;
+
+  @media (min-width: 1200px) {
+    margin: 10vh 7.5% auto;
+  }
+
+  @media (min-width: 1920px) {
+    margin: 10vh 10% auto;
+  }
+
+  @media (max-width: 768px) {
+    margin: 0;
+    margin-top: 10vh;
+  }
+
+  @media (max-width: 314px) {
+    margin: 0;
+    margin-top: 12vh;
+  }
+
+  @media (max-height: 1080px) {
+    margin-top: $spacing * 8;
+  }
+}
