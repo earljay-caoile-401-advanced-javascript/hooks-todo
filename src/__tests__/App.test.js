@@ -10,13 +10,6 @@ describe('the whole app', () => {
     wasCompleted: false,
   };
 
-  const secondDummy = {
-    description: 'take shower',
-    assignedTo: 'Bob Saget',
-    difficulty: 1,
-    wasCompleted: true,
-  };
-
   const fillOutForm = (component, taskObj) => {
     expect(component).toBeDefined();
 
