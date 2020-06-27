@@ -10,10 +10,9 @@ Lab 26 for CF JS 401 Nights
 
 #### Submission Reqs
 
-- [submission PR](...)
-- [GitHub actions](...)
-- [code sandbox](...)
-- [Netlify deployment](...)
+- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/1)
+- [GitHub actions](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/actions)
+- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-26)
 
 #### Resources
 
@@ -38,7 +37,11 @@ Lab 26 for CF JS 401 Nights
 
 ### Using the App
 
-Stuff
+- fill out form on the hokme page
+- click the submit button
+- click the checkbox on tasks page showing your new ToDo task repeatedly to toggle the title
+- repeat the above 3 steps to generate a second task
+- smile
 
 ### UML
 
