@@ -6,17 +6,17 @@ import { BrowserRouter } from 'react-router-dom';
 describe('ToDoList component', () => {
   it('displays the proper html and text on render', () => {
     const dummyTask = {
-      description: 'cook green eggs and ham',
+      text: 'cook green eggs and ham',
       assignedTo: 'Sam I Am',
       difficulty: 3,
-      wasCompleted: false,
+      complete: false,
     };
 
     const otherTask = {
-      description: 'take a shower',
+      text: 'take a shower',
       assignedTo: 'Bob Saget',
       difficulty: 1,
-      wasCompleted: true,
+      complete: true,
     };
 
     const component = render(

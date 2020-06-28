@@ -39,17 +39,17 @@ function ToDoList(props) {
 
     function updateOneCheckbox(checkStatus, index) {
       const renderToUpdate = localTaskArr[index];
-      renderToUpdate.props.task.wasCompleted = checkStatus;
+      renderToUpdate.props.task.complete = checkStatus;
       if (checkStatus) {
         numIncomplete--;
       } else {
         numIncomplete++;
       }
-  
+
       setIncompleteTasks(numIncomplete);
       setTasksToRender(localTaskArr);
     }
-    
+
     if (props.tasks) {
       for (let i = 0; i < props.tasks.length; i++) {
         const currTask = props.tasks[i];
@@ -63,7 +63,7 @@ function ToDoList(props) {
           />
         );
 
-        if (!currTask.wasCompleted) {
+        if (!currTask.complete) {
           numIncomplete++;
         }
       }

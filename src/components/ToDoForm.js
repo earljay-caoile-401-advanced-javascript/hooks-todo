@@ -14,10 +14,10 @@ import { Redirect } from 'react-router-dom';
  * )
  */
 function ToDoForm(props) {
-  const [description, setDescription] = useState('');
-  const [assignedTo, setAssignment] = useState('');
+  const [text, setDescription] = useState('');
+  const [assignee, setAssignment] = useState('');
   const [difficulty, setDifficulty] = useState(1);
-  const [wasCompleted, setCompleted] = useState(false);
+  const [complete, setCompleted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [validated, setValidated] = useState(false);
 
@@ -28,10 +28,10 @@ function ToDoForm(props) {
       event.stopPropagation();
     } else {
       props.onSubmit({
-        description,
-        assignedTo,
+        text,
+        assignee,
         difficulty,
-        wasCompleted,
+        complete,
       });
 
       setSubmitted(true);
@@ -111,7 +111,7 @@ function ToDoForm(props) {
               id="task-completed-checkbox-form"
               label="Completed"
               className="large-checkbox mt-2"
-              onChange={() => setCompleted(!wasCompleted)}
+              onChange={() => setCompleted(!complete)}
             />
           </Form.Group>
         </Form.Row>

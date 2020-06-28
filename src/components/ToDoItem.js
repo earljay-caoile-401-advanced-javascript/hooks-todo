@@ -24,8 +24,8 @@ import If from './If';
  * )
  */
 function TodoItem(props) {
-  const [wasCompleted, setCompleted] = useState(
-    props && props.task ? props.task.wasCompleted : null
+  const [complete, setCompleted] = useState(
+    props && props.task ? props.task.complete : null
   );
 
   function handleCheckbox(e) {
@@ -39,14 +39,14 @@ function TodoItem(props) {
         <Card>
           <Card.Header>Task {props.index + 1}</Card.Header>
           <Card.Body>
-            <Card.Text>description: {props.task.description}</Card.Text>
-            <Card.Text>assigned to: {props.task.assignedTo}</Card.Text>
+            <Card.Text>description: {props.task.text}</Card.Text>
+            <Card.Text>assigned to: {props.task.assignee}</Card.Text>
             <Card.Text>difficulty: {props.task.difficulty}</Card.Text>
             <Form.Check
               type="checkbox"
               label="completed"
-              checked={wasCompleted}
-              id={"task-completed-" + props.index}
+              checked={complete}
+              id={'task-completed-' + props.index}
               onChange={handleCheckbox}
             />
           </Card.Body>

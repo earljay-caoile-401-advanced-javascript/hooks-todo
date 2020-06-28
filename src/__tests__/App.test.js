@@ -4,17 +4,17 @@ import App from '../App';
 
 describe('the whole app', () => {
   const dummyTask = {
-    description: 'cook green eggs and ham',
-    assignedTo: 'Sam I Am',
+    text: 'cook green eggs and ham',
+    assignee: 'Sam I Am',
     difficulty: 3,
-    wasCompleted: false,
+    completed: false,
   };
 
   const secondDummy = {
-    description: 'take shower',
-    assignedTo: 'Bob Saget',
+    text: 'take shower',
+    assignee: 'Bob Saget',
     difficulty: 1,
-    wasCompleted: true,
+    completed: true,
   };
 
   const fillOutForm = (component, taskObj) => {
@@ -29,7 +29,7 @@ describe('the whole app', () => {
     expect(taskTextarea).toBeDefined();
     const descriptionEvent = {
       target: {
-        value: taskObj.description,
+        value: taskObj.text,
       },
     };
     taskTextarea.simulate('change', descriptionEvent);
@@ -39,7 +39,7 @@ describe('the whole app', () => {
     expect(taskOwner).toBeDefined();
     const ownerEvent = {
       target: {
-        value: taskObj.assignedTo,
+        value: taskObj.assignee,
       },
     };
     taskOwner.simulate('change', ownerEvent);
@@ -56,7 +56,7 @@ describe('the whole app', () => {
     taskDifficulty.simulate('change', difficultyEvent);
     taskDifficulty.getDOMNode().required = false;
 
-    if (taskObj.wasCompleted) {
+    if (taskObj.completed) {
       const trueClickEvent = {
         target: {
           checked: true,
@@ -78,8 +78,8 @@ describe('the whole app', () => {
   };
 
   const verifyCardContents = (card, task) => {
-    expect(card.childAt(0).text()).toBe('description: ' + task.description);
-    expect(card.childAt(1).text()).toBe('assigned to: ' + task.assignedTo);
+    expect(card.childAt(0).text()).toBe('description: ' + task.text);
+    expect(card.childAt(1).text()).toBe('assigned to: ' + task.assignee);
     expect(card.childAt(2).text()).toBe('difficulty: ' + task.difficulty);
 
     expect(card.childAt(3).text()).toBe('completed');
