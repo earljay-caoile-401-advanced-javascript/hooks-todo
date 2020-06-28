@@ -21,7 +21,7 @@ describe('the whole app', () => {
     expect(component).toBeDefined();
 
     const todoForm = component.find('#main-content');
-
+    component.find('form').getDOMNode().novalidate = false;
     expect(todoForm).toBeDefined();
     expect(todoForm.find('h2').text()).toBe('ToDo Form');
 
@@ -33,6 +33,7 @@ describe('the whole app', () => {
       },
     };
     taskTextarea.simulate('change', descriptionEvent);
+    taskTextarea.getDOMNode().required = false;
 
     const taskOwner = todoForm.find('input#task-person');
     expect(taskOwner).toBeDefined();
@@ -42,6 +43,7 @@ describe('the whole app', () => {
       },
     };
     taskOwner.simulate('change', ownerEvent);
+    taskOwner.getDOMNode().required = false;
 
     const taskDifficulty = todoForm.find('select#task-difficulty');
     expect(taskDifficulty).toBeDefined();
@@ -67,9 +69,8 @@ describe('the whole app', () => {
   };
 
   const submitAndChangePage = (component) => {
-    const submitBtn = component.find('button.btn-info');
-    expect(submitBtn).toBeDefined();
-    submitBtn.simulate('click');
+    const form = component.find('form');
+    form.simulate('submit');
 
     const todoList = component.find('#main-content');
     expect(todoList.find('h2').text()).toBe('Tasks ToDo');
