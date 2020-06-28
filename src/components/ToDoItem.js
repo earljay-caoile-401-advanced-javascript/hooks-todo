@@ -13,8 +13,8 @@ import If from './If';
  *   <TodoItem
  *     key="0"
  *     task={
- *        description: 'cook green eggs and ham'
- *        assignedTo: 'Sam I Am',
+ *        text: 'cook green eggs and ham'
+ *        assignee: 'Sam I Am',
  *        difficulty: 3,
  *        wasCompleted: false
  *      }
@@ -30,7 +30,9 @@ function TodoItem(props) {
 
   function handleCheckbox(e) {
     setCompleted(e.target.checked);
-    props.onChange(e.target.checked, parseInt(props.index));
+    const taskCopy = { ...props.task };
+    taskCopy.complete = e.target.checked;
+    props.editTask(parseInt(props.index), taskCopy);
   }
 
   return (

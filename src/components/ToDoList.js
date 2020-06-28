@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TodoItem from './ToDoItem';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -14,77 +14,40 @@ import If from './If';
  *   <TodoList
  *     tasks=[
  *        {
- *          description: 'cook green eggs and ham'
- *          assignedTo: 'Sam I Am',
+ *          text: 'cook green eggs and ham'
+ *          assignee: 'Sam I Am',
  *          difficulty: 3,
- *          wasCompleted: false,
+ *          completed: false,
  *        },
  *        {
- *          description: 'take a shower',
- *          assignedTo: 'Bob Saget',
+ *          text: 'take a shower',
+ *          assignee: 'Bob Saget',
  *          difficulty: 1,
- *          wasCompleted: true,
+ *          completed: true,
  *        }
  *      ]
     />
  * )
  */
 function ToDoList(props) {
-  const [incompleteTasks, setIncompleteTasks] = useState(0);
-  const [tasksToRender, setTasksToRender] = useState([]);
+  const tasksToRender = [];
 
-  useEffect(() => {
-    const localTaskArr = [];
-    let numIncomplete = 0;
+  if (props.tasks) {
+    for (let i = 0; i < props.tasks.length; i++) {
+      const currTask = props.tasks[i];
 
-    function updateOneCheckbox(checkStatus, index) {
-      const renderToUpdate = localTaskArr[index];
-      renderToUpdate.props.task.complete = checkStatus;
-      if (checkStatus) {
-        numIncomplete--;
-      } else {
-        numIncomplete++;
-      }
-
-      setIncompleteTasks(numIncomplete);
-      setTasksToRender(localTaskArr);
+      tasksToRender.push(
+        <TodoItem key={i} task={currTask} index={i} editTask={props.editTask} />
+      );
     }
-
-    if (props.tasks) {
-      for (let i = 0; i < props.tasks.length; i++) {
-        const currTask = props.tasks[i];
-
-        localTaskArr.push(
-          <TodoItem
-            key={i}
-            task={currTask}
-            index={i}
-            onChange={updateOneCheckbox}
-          />
-        );
-
-        if (!currTask.complete) {
-          numIncomplete++;
-        }
-      }
-
-      setIncompleteTasks(numIncomplete);
-      setTasksToRender(localTaskArr);
-    }
-  }, [props.tasks]);
-
-  useEffect(() => {
-    document.title = `ToDo: ${incompleteTasks} ${
-      incompleteTasks === 1 ? 'task' : 'tasks'
-    } incomplete`;
-  }, [incompleteTasks]);
+  }
 
   return (
     <If condition={props.tasks}>
       <h2 className="mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
         {tasksToRender.length ? (
-          <div className="container mt-4 mb-4">{tasksToRender}</div>
+          <div className="mt-4 mb-4">{tasksToRender}</div>
         ) : (
           <div className="no-tasks mt-4 mb-4">
             <img

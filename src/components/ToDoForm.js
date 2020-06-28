@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, InputGroup } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 
 /**
@@ -27,7 +27,7 @@ function ToDoForm(props) {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      props.onSubmit({
+      props.addTask({
         text,
         assignee,
         difficulty,

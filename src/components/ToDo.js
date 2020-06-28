@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ToDoForm from './ToDoForm';
 import ToDoList from './ToDoList';
 import { Route } from 'react-router-dom';
@@ -15,19 +15,39 @@ import '../styles/todo.scss';
  * )
  */
 function ToDo() {
-  const tasks = [];
+  const [tasks, setTasks] = useState([]);
 
-  function onSubmit(task) {
-    tasks.push(task);
+  function addTask(newTask) {
+    setTasks([...tasks, newTask]);
   }
+
+  function editTask(index, updatedTask) {
+    const tasksCopy = [...tasks];
+    tasksCopy[index] = updatedTask;
+    setTasks(tasksCopy);
+  }
+
+  useEffect(() => {
+    let numIncomplete = 0;
+
+    for (let i = 0; i < tasks.length; i++) {
+      if (!tasks[i].complete) {
+        numIncomplete++;
+      }
+    }
+
+    document.title = `ToDo: ${numIncomplete} ${
+      numIncomplete === 1 ? 'task' : 'tasks'
+    } incomplete`;
+  }, [tasks]);
 
   return (
     <div id="main-content">
       <Route path="/" exact>
-        <ToDoForm onSubmit={onSubmit} />
+        <ToDoForm addTask={addTask} />
       </Route>
       <Route path="/tasks" exact>
-        <ToDoList tasks={tasks} />
+        <ToDoList tasks={tasks} editTask={editTask} />
       </Route>
     </div>
   );
