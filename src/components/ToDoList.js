@@ -84,15 +84,19 @@ function ToDoList(props) {
       <h2 className="mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
         {tasksToRender.length ? (
-          <div className="mt-4 mb-4">{tasksToRender}</div>
+          <div className="container mt-4 mb-4">{tasksToRender}</div>
         ) : (
-          <div className="mt-4 mb-4">
-            <p className="mt-4 mb-4">
+          <div className="no-tasks mt-4 mb-4">
+            <img
+              src={require('../assets/empty-notebook.jpg')}
+              alt="empty notebook"
+            />
+            <p className="mt-4 mb-4 center">
               No tasks to show! Please return to the home page to add a task to
               the todo list.
             </p>
-            <Link to="/" className="mt-4 mb-4">
-              <Button variant="info" className="btn-lg">
+            <Link to="/" className="no-underline mt-4 mb-4">
+              <Button variant="info" className="btn-lg btn-block">
                 Return to Form Page
               </Button>
             </Link>
