@@ -54,6 +54,7 @@ describe('the whole app', () => {
     };
 
     taskDifficulty.simulate('change', difficultyEvent);
+    taskDifficulty.getDOMNode().required = false;
 
     if (taskObj.wasCompleted) {
       const trueClickEvent = {

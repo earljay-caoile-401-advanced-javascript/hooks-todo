@@ -84,13 +84,21 @@ function ToDoForm(props) {
             <Form.Control
               as="select"
               onChange={(e) => setDifficulty(parseInt(e.target.value))}
+              required
+              defaultValue=""
             >
+              <option value="" disabled>
+                Choose a difficulty...
+              </option>
               <option>1</option>
               <option>2</option>
               <option>3</option>
               <option>4</option>
               <option>5</option>
             </Form.Control>
+            <Form.Control.Feedback type="invalid">
+              Please provide a task difficulty.
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group
             controlId="task-completed"
