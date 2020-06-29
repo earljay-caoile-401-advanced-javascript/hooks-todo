@@ -1,150 +1,150 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import App from '../App';
+import { act } from 'react-dom/test-utils';
 
 describe('the whole app', () => {
   const dummyTask = {
     text: 'cook green eggs and ham',
     assignee: 'Sam I Am',
     difficulty: 3,
-    completed: false,
+    completed: true,
   };
 
   const secondDummy = {
     text: 'take shower',
     assignee: 'Bob Saget',
     difficulty: 1,
-    completed: true,
+    completed: false,
   };
 
-  it('can pass a dummy test', () => {
-    expect(dummyTask).toBeTruthy();
+  const trueClickEvent = {
+    target: {
+      checked: true,
+    },
+  };
+
+  const falseClickEvent = {
+    target: {
+      checked: false,
+    },
+  };
+
+  let app;
+
+  beforeAll(async () => {
+    await act(async () => {
+      app = mount(<App />, { attachTo: document.title });
+    });
   });
-  // const fillOutForm = (component, taskObj) => {
-  //   expect(component).toBeDefined();
 
-  //   const todoForm = component.find('#main-content');
-  //   component.find('form').getDOMNode().novalidate = false;
-  //   expect(todoForm).toBeDefined();
-  //   expect(todoForm.find('h2').text()).toBe('ToDo Form');
+  const fillOutForm = (component, taskObj) => {
+    expect(component).toBeDefined();
 
-  //   const taskTextarea = todoForm.find('textarea#task-description');
-  //   expect(taskTextarea).toBeDefined();
-  //   const descriptionEvent = {
-  //     target: {
-  //       value: taskObj.text,
-  //     },
-  //   };
-  //   taskTextarea.simulate('change', descriptionEvent);
-  //   taskTextarea.getDOMNode().required = false;
+    const todoForm = component.find('#main-content');
+    component.find('form').getDOMNode().novalidate = false;
+    expect(todoForm).toBeDefined();
+    expect(todoForm.find('h2').text()).toBe('ToDo Form');
 
-  //   const taskOwner = todoForm.find('input#task-person');
-  //   expect(taskOwner).toBeDefined();
-  //   const ownerEvent = {
-  //     target: {
-  //       value: taskObj.assignee,
-  //     },
-  //   };
-  //   taskOwner.simulate('change', ownerEvent);
-  //   taskOwner.getDOMNode().required = false;
+    const taskTextarea = todoForm.find('textarea#task-description');
+    expect(taskTextarea).toBeDefined();
+    const descriptionEvent = {
+      target: {
+        value: taskObj.text,
+      },
+    };
+    taskTextarea.simulate('change', descriptionEvent);
+    taskTextarea.getDOMNode().required = false;
 
-  //   const taskDifficulty = todoForm.find('select#task-difficulty');
-  //   expect(taskDifficulty).toBeDefined();
-  //   const difficultyEvent = {
-  //     target: {
-  //       value: taskObj.difficulty,
-  //     },
-  //   };
+    const taskOwner = todoForm.find('input#task-person');
+    expect(taskOwner).toBeDefined();
+    const ownerEvent = {
+      target: {
+        value: taskObj.assignee,
+      },
+    };
+    taskOwner.simulate('change', ownerEvent);
+    taskOwner.getDOMNode().required = false;
 
-  //   taskDifficulty.simulate('change', difficultyEvent);
-  //   taskDifficulty.getDOMNode().required = false;
+    const taskDifficulty = todoForm.find('select#task-difficulty');
+    expect(taskDifficulty).toBeDefined();
+    const difficultyEvent = {
+      target: {
+        value: taskObj.difficulty,
+      },
+    };
 
-  //   if (taskObj.completed) {
-  //     const trueClickEvent = {
-  //       target: {
-  //         checked: true,
-  //       },
-  //     };
+    taskDifficulty.simulate('change', difficultyEvent);
+    taskDifficulty.getDOMNode().required = false;
 
-  //     const checkboxSection = component.find('#task-completed-checkbox-form');
-  //     const checkboxInput = checkboxSection.find('input');
-  //     checkboxInput.simulate('change', trueClickEvent);
-  //   }
-  // };
+    const checkboxSection = component.find('#task-completed-checkbox-form');
+    const checkboxInput = checkboxSection.find('input');
 
-  // const submitAndChangePage = (component) => {
-  //   const form = component.find('form');
-  //   form.simulate('submit');
+    if (taskObj.completed) {
+      checkboxInput.simulate('change', trueClickEvent);
+      checkboxInput.getDOMNode().checked = true;
+    } else {
+      checkboxInput.simulate('change', falseClickEvent);
+      checkboxInput.getDOMNode().checked = false;
+    }
+  };
 
-  //   const todoList = component.find('#main-content');
-  //   expect(todoList.find('h2').text()).toBe('Tasks ToDo');
-  // };
+  const submitAndChangePage = (component) => {
+    const form = component.find('form');
+    form.simulate('submit');
 
-  // const verifyCardContents = (card, task) => {
-  //   expect(card.childAt(0).text()).toBe('description: ' + task.text);
-  //   expect(card.childAt(1).text()).toBe('assigned to: ' + task.assignee);
-  //   expect(card.childAt(2).text()).toBe('difficulty: ' + task.difficulty);
+    const todoList = component.find('#main-content');
+    expect(todoList.find('h2').text()).toBe('Tasks ToDo');
+  };
 
-  //   expect(card.childAt(3).text()).toBe('completed');
-  // };
+  const verifyCardContents = (card, task) => {
+    expect(card.childAt(0).text()).toBe('description: ' + task.text);
+    expect(card.childAt(1).text()).toBe('assigned to: ' + task.assignee);
+    expect(card.childAt(2).text()).toBe('difficulty: ' + task.difficulty);
 
-  // const trueClickEvent = {
-  //   target: {
-  //     checked: true,
-  //   },
-  // };
+    expect(card.childAt(3).text()).toBe('completed');
+  };
 
-  // const falseClickEvent = {
-  //   target: {
-  //     checked: false,
-  //   },
-  // };
+  it('can go through the whole submission and list checking process', () => {
+    fillOutForm(app, dummyTask);
+    submitAndChangePage(app);
+    expect(app.find('.card-header').text()).toBe('Task 1');
 
-  // const app = mount(<App />, { attachTo: document.title });
+    const firstCard = app.find('.card-body');
+    verifyCardContents(firstCard, dummyTask);
+    expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-  // it('can go through the whole submission and list checking process', () => {
-  //   fillOutForm(app, dummyTask);
+    const firstCheckbox = firstCard.find('input');
+    firstCheckbox.simulate('change', falseClickEvent);
+    expect(document.title).toBe('ToDo: 1 task incomplete');
 
-  //   submitAndChangePage(app);
+    firstCheckbox.simulate('change', trueClickEvent);
+    expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-  //   expect(app.find('.card-header').text()).toBe('Task 1');
+    const navLinks = app.find('.nav-link');
+    navLinks.at(0).simulate('click', { button: 0 });
+  });
 
-  //   const firstCard = app.find('.card-body');
+  it('can go through through a second form submission and see the first and second tasks on the tasks page', () => {
+    fillOutForm(app, secondDummy);
+    submitAndChangePage(app);
 
-  //   verifyCardContents(firstCard, dummyTask);
-  //   expect(document.title).toBe('ToDo: 1 task incomplete');
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    expect(app.find('.card-header').at(1).text()).toBe('Task 2');
 
-  //   const firstCheckbox = firstCard.find('input');
-  //   firstCheckbox.simulate('change', trueClickEvent);
-  //   expect(document.title).toBe('ToDo: 0 tasks incomplete');
+    const secondCard = app.find('.card-body').at(1);
 
-  //   firstCheckbox.simulate('change', falseClickEvent);
-  //   expect(document.title).toBe('ToDo: 1 task incomplete');
+    verifyCardContents(secondCard, secondDummy);
+    // expect(document.title).toBe('ToDo: 1 task incomplete');
 
-  //   const navLinks = app.find('.nav-link');
-  //   navLinks.at(0).simulate('click', { button: 0 });
-  // });
+    // const secondCheckbox = secondCard.find('input');
+    // secondCheckbox.simulate('change', falseClickEvent);
+    // expect(document.title).toBe('ToDo: 2 tasks incomplete');
 
-  // it('can go through through a second form submission and see the first and second tasks on the tasks page', () => {
-  //   fillOutForm(app, secondDummy);
-  //   submitAndChangePage(app);
-
-  //   expect(app.find('.card-header').at(0).text()).toBe('Task 1');
-  //   expect(app.find('.card-header').at(1).text()).toBe('Task 2');
-
-  //   const secondCard = app.find('.card-body').at(1);
-
-  //   verifyCardContents(secondCard, secondDummy);
-  //   expect(document.title).toBe('ToDo: 1 task incomplete');
-
-  //   const secondCheckbox = secondCard.find('input');
-  //   secondCheckbox.simulate('change', falseClickEvent);
-  //   expect(document.title).toBe('ToDo: 2 tasks incomplete');
-
-  //   secondCheckbox.simulate('change', trueClickEvent);
-  //   const firstCard = app.find('.card-body').at(0);
-  //   const firstCheckbox = firstCard.find('input');
-  //   firstCheckbox.simulate('change', trueClickEvent);
-  //   expect(document.title).toBe('ToDo: 0 tasks incomplete');
-  // });
+    // secondCheckbox.simulate('change', trueClickEvent);
+    // const firstCard = app.find('.card-body').at(0);
+    // const firstCheckbox = firstCard.find('input');
+    // firstCheckbox.simulate('change', trueClickEvent);
+    // expect(document.title).toBe('ToDo: 0 tasks incomplete');
+  });
 });

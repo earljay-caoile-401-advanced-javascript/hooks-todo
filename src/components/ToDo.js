@@ -18,9 +18,9 @@ import useFetch from '../hooks/useFetch';
 function ToDo() {
   const [tasks, setTasks] = useState([]);
   const [numIncomplete, setNumIncomplete] = useState(0);
-
+  const baseUrl = 'https://cf-js-401-api-server.herokuapp.com/api/v1/todo';
   const { setUrl, setRequest, request, isLoading, error, response } = useFetch(
-    'https://cf-js-401-api-server.herokuapp.com/api/v1/todo'
+    baseUrl
   );
 
   function addTask(newTask) {
@@ -31,7 +31,7 @@ function ToDo() {
       body: newTask,
     };
 
-    setUrl('https://cf-js-401-api-server.herokuapp.com/api/v1/todo');
+    setUrl(baseUrl);
     setRequest(requestBody);
   }
 
@@ -56,9 +56,7 @@ function ToDo() {
       body: filteredTask,
     };
 
-    setUrl(
-      `https://cf-js-401-api-server.herokuapp.com/api/v1/todo/${updatedTask.id}`
-    );
+    setUrl(baseUrl + `/${updatedTask.id}`);
     setRequest(requestBody);
   }
 
@@ -72,11 +70,10 @@ function ToDo() {
     if (response) {
       switch (request.method) {
         case 'POST':
-          console.log('hitting put');
+          console.log('hitting post');
           break;
         case 'PUT':
           console.log('hitting put');
-          console.log('What is our response on case PUT?', response);
           break;
         case 'PATCH':
           console.log('hitting patch');
@@ -120,7 +117,7 @@ function ToDo() {
       <Route path="/tasks" exact>
         <ToDoList
           numIncomplete={numIncomplete}
-          isLoading={isLoading}
+          isLoading={isLoading && request.method === 'GET'}
           error={error}
           tasks={tasks}
           editTask={editTask}

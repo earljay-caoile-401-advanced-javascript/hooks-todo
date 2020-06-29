@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 function useFetch(inputUrl) {
   const [url, setUrl] = useState(inputUrl || '');
-  const [request, setRequest] = useState({});
+  const [request, setRequest] = useState({ method: 'GET' });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [response, setResponse] = useState();
