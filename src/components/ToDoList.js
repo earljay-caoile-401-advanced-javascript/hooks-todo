@@ -3,6 +3,7 @@ import TodoItem from './ToDoItem';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import If from './If';
+import LoadingSpinner from './LoadingSpinner';
 
 /**
  * component holding a list of ToDo items and some supplementary text elements
@@ -30,6 +31,7 @@ import If from './If';
  * )
  */
 function ToDoList(props) {
+  // console.log('at the top of ToDoList:', props.numIncomplete);
   const tasksToRender = [];
 
   if (props.tasks) {
@@ -37,7 +39,13 @@ function ToDoList(props) {
       const currTask = props.tasks[i];
 
       tasksToRender.push(
-        <TodoItem key={i} task={currTask} index={i} editTask={props.editTask} />
+        <TodoItem
+          key={i}
+          task={currTask}
+          index={i}
+          editTask={props.editTask}
+          numIncomplete={props.numIncomplete}
+        />
       );
     }
   }
@@ -46,10 +54,12 @@ function ToDoList(props) {
     <If condition={props.tasks}>
       <h2 className="mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
-        {tasksToRender.length ? (
+        {props.isLoading ? (
+          <LoadingSpinner />
+        ) : tasksToRender.length ? (
           <div className="mt-4 mb-4">{tasksToRender}</div>
         ) : (
-          <div className="no-tasks mt-4 mb-4">
+          <div className="no-tasks m-4">
             <img
               src={require('../assets/empty-notebook.jpg')}
               alt="empty notebook"
@@ -58,7 +68,7 @@ function ToDoList(props) {
               No tasks to show! Please return to the home page to add a task to
               the todo list.
             </p>
-            <Link to="/" className="no-underline mt-4 mb-4">
+            <Link to="/" className="no-underline m-4">
               <Button variant="info" className="btn-lg btn-block">
                 Return to Form Page
               </Button>
