@@ -14,10 +14,6 @@ import { Redirect } from 'react-router-dom';
  * )
  */
 function ToDoForm(props) {
-  const [text, setDescription] = useState('');
-  const [assignee, setAssignment] = useState('');
-  const [difficulty, setDifficulty] = useState(1);
-  const [complete, setCompleted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [validated, setValidated] = useState(false);
 
@@ -27,13 +23,7 @@ function ToDoForm(props) {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      props.addTask({
-        text,
-        assignee,
-        difficulty,
-        complete,
-      });
-
+      props.onSubmit();
       setSubmitted(true);
     }
 
@@ -42,7 +32,7 @@ function ToDoForm(props) {
 
   function handleKeyPress(e) {
     if (e.key === 'Enter') {
-      handleSubmit(e);
+      props.onSubmit(e);
     }
   }
 
@@ -58,7 +48,7 @@ function ToDoForm(props) {
             as="textarea"
             rows="3"
             placeholder="wash dishes"
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => props.onChange('text', e.target.value)}
             required
           />
           <Form.Control.Feedback type="invalid">
@@ -70,7 +60,7 @@ function ToDoForm(props) {
           <Form.Control
             type="text"
             placeholder="Bob Saget"
-            onChange={(e) => setAssignment(e.target.value)}
+            onChange={(e) => props.onChange('assignee', e.target.value)}
             onKeyPress={handleKeyPress}
             required
           />
@@ -83,7 +73,9 @@ function ToDoForm(props) {
             <Form.Label>Difficulty</Form.Label>
             <Form.Control
               as="select"
-              onChange={(e) => setDifficulty(parseInt(e.target.value))}
+              onChange={(e) =>
+                props.onChange('difficulty', parseInt(e.target.value))
+              }
               required
               defaultValue=""
             >
@@ -111,7 +103,7 @@ function ToDoForm(props) {
               id="task-completed-checkbox-form"
               label="Completed"
               className="large-checkbox mt-2"
-              onChange={() => setCompleted(!complete)}
+              onChange={(e) => props.onChange('complete', e.target.checked)}
             />
           </Form.Group>
         </Form.Row>

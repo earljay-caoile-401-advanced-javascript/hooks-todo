@@ -4,7 +4,7 @@ import ToDoList from './ToDoList';
 import { Route } from 'react-router-dom';
 import '../styles/todo.scss';
 import useFetch from '../hooks/useFetch';
-
+import useForm from '../hooks/useForm';
 /**
  * component that renders the TodoForm or ToDoList components based on route
  * child component of the main App component
@@ -23,27 +23,27 @@ function ToDo() {
     baseUrl
   );
 
-  function addTask(newTask) {
-    setTasks([...tasks, newTask]);
+  const { handleSubmit, handleChange, data } = useForm(
+    {
+      text: '',
+      assignee: '',
+      difficulty: 1,
+      complete: false,
+    },
+    () => {
+      const newTask = data;
+      const requestBody = {
+        method: 'POST',
+        body: newTask,
+      };
 
-    const requestBody = {
-      method: 'POST',
-      body: newTask,
-    };
-
-    setUrl(baseUrl);
-    setRequest(requestBody);
-  }
+      setUrl(baseUrl);
+      setRequest(requestBody);
+      setTasks([...tasks, newTask]);
+    }
+  );
 
   function editTask(index, updatedTask, currIncomplete) {
-    const tasksCopy = [...tasks];
-    tasksCopy[index] = updatedTask;
-
-    setNumIncomplete(
-      updatedTask.complete ? currIncomplete - 1 : currIncomplete + 1
-    );
-    setTasks(tasksCopy);
-
     const filteredTask = {
       assignee: updatedTask.assignee,
       complete: updatedTask.complete,
@@ -58,6 +58,14 @@ function ToDo() {
 
     setUrl(baseUrl + `/${updatedTask.id}`);
     setRequest(requestBody);
+
+    const tasksCopy = [...tasks];
+    tasksCopy[index] = updatedTask;
+
+    setNumIncomplete(
+      updatedTask.complete ? currIncomplete - 1 : currIncomplete + 1
+    );
+    setTasks(tasksCopy);
   }
 
   useEffect(() => {
@@ -67,52 +75,33 @@ function ToDo() {
   }, [numIncomplete]);
 
   useEffect(() => {
-    if (response) {
-      switch (request.method) {
-        case 'POST':
-          console.log('hitting post');
-          break;
-        case 'PUT':
-          console.log('hitting put');
-          break;
-        case 'PATCH':
-          console.log('hitting patch');
-          break;
-        case 'DELETE':
-          console.log('hitting delete');
-          break;
-        default:
-          console.log('in the default for switch statement');
-          const tasksCopy = [];
-          let incompCounter = 0;
-          if (response && response.results) {
-            for (let i = 0; i < response.results.length; i++) {
-              const result = response.results[i];
-              tasksCopy.push({
-                id: result._id,
-                assignee: result.assignee,
-                complete: result.complete,
-                difficulty: result.difficulty,
-                text: result.text,
-              });
+    if (response && response.results) {
+      const tasksCopy = [];
+      let incompCounter = 0;
+      for (let i = 0; i < response.results.length; i++) {
+        const result = response.results[i];
+        tasksCopy.push({
+          id: result._id,
+          assignee: result.assignee,
+          complete: result.complete,
+          difficulty: result.difficulty,
+          text: result.text,
+        });
 
-              if (!result.complete) {
-                incompCounter++;
-              }
-            }
-
-            setNumIncomplete(incompCounter);
-            setTasks(tasksCopy);
-          }
-          break;
+        if (!result.complete) {
+          incompCounter++;
+        }
       }
+      console.log('what is incompCounter now?', incompCounter);
+      setNumIncomplete(incompCounter);
+      setTasks(tasksCopy);
     }
   }, [response]);
 
   return (
     <div id="main-content">
       <Route path="/" exact>
-        <ToDoForm addTask={addTask} />
+        <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
       </Route>
       <Route path="/tasks" exact>
         <ToDoList
