@@ -25,11 +25,20 @@ function ToDo() {
 
   function addTask(newTask) {
     setTasks([...tasks, newTask]);
+
+    const requestBody = {
+      method: 'POST',
+      body: newTask,
+    };
+
+    setUrl('https://cf-js-401-api-server.herokuapp.com/api/v1/todo');
+    setRequest(requestBody);
   }
 
   function editTask(index, updatedTask, currIncomplete) {
     const tasksCopy = [...tasks];
     tasksCopy[index] = updatedTask;
+
     setNumIncomplete(
       updatedTask.complete ? currIncomplete - 1 : currIncomplete + 1
     );
