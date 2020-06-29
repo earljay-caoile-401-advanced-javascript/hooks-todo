@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
  * @component
  * @example
  * return (
- *   <ToDoForm onSubmit={onSubmit} />
+ *   <ToDoForm onChange={onChange} onSubmit={onSubmit} />
  * )
  */
 function ToDoForm(props) {
@@ -32,7 +32,7 @@ function ToDoForm(props) {
 
   function handleKeyPress(e) {
     if (e.key === 'Enter') {
-      props.onSubmit(e);
+      handleSubmit(e);
     }
   }
 

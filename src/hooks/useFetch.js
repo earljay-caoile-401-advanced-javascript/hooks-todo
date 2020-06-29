@@ -35,7 +35,7 @@ function useFetch(inputUrl) {
         setError(res);
         return;
       }
-
+      console.log('what is res?', res);
       setResponse(await res.json());
     }
 

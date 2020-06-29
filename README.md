@@ -1,8 +1,8 @@
-# Lab 26 — Hooks API
+# Lab 27 — Custom Hooks
 
-## ToDo application, utilizing functional components and the Hooks API
+## ToDo application with custom hooks and remote API
 
-Lab 26 for CF JS 401 Nights
+Lab 27 for CF JS 401 Nights
 
 ### Author: Earl Jay Caoile
 
@@ -10,9 +10,9 @@ Lab 26 for CF JS 401 Nights
 
 #### Submission Reqs
 
-- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/1)
+- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/2)
 - [GitHub actions](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/actions)
-- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-26)
+- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-27)
 
 #### Resources
 
@@ -47,4 +47,4 @@ Lab 26 for CF JS 401 Nights
 
 ### UML
 
-![UML Image](lab-26-uml.png)
+![UML Image](lab-27-uml.png)

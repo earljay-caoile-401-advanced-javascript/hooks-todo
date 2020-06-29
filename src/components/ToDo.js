@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import '../styles/todo.scss';
 import useFetch from '../hooks/useFetch';
 import useForm from '../hooks/useForm';
+
 /**
  * component that renders the TodoForm or ToDoList components based on route
  * child component of the main App component
@@ -27,7 +28,7 @@ function ToDo() {
     {
       text: '',
       assignee: '',
-      difficulty: 1,
+      difficulty: null,
       complete: false,
     },
     addTask
@@ -94,7 +95,7 @@ function ToDo() {
           incompCounter++;
         }
       }
-      console.log('what is incompCounter now?', incompCounter);
+
       setNumIncomplete(incompCounter);
       setTasks(tasksCopy);
     }

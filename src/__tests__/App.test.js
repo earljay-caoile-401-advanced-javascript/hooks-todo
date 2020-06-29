@@ -135,16 +135,5 @@ describe('the whole app', () => {
     const secondCard = app.find('.card-body').at(1);
 
     verifyCardContents(secondCard, secondDummy);
-    // expect(document.title).toBe('ToDo: 1 task incomplete');
-
-    // const secondCheckbox = secondCard.find('input');
-    // secondCheckbox.simulate('change', falseClickEvent);
-    // expect(document.title).toBe('ToDo: 2 tasks incomplete');
-
-    // secondCheckbox.simulate('change', trueClickEvent);
-    // const firstCard = app.find('.card-body').at(0);
-    // const firstCheckbox = firstCard.find('input');
-    // firstCheckbox.simulate('change', trueClickEvent);
-    // expect(document.title).toBe('ToDo: 0 tasks incomplete');
   });
 });
