@@ -30,18 +30,20 @@ function ToDo() {
       difficulty: 1,
       complete: false,
     },
-    () => {
-      const newTask = data;
-      const requestBody = {
-        method: 'POST',
-        body: newTask,
-      };
-
-      setUrl(baseUrl);
-      setRequest(requestBody);
-      setTasks([...tasks, newTask]);
-    }
+    addTask
   );
+
+  function addTask() {
+    const newTask = data;
+    const requestBody = {
+      method: 'POST',
+      body: newTask,
+    };
+
+    setUrl(baseUrl);
+    setRequest(requestBody);
+    setTasks([...tasks, newTask]);
+  }
 
   function editTask(index, updatedTask, currIncomplete) {
     const filteredTask = {

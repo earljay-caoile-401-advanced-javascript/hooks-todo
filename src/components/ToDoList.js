@@ -31,7 +31,6 @@ import LoadingSpinner from './LoadingSpinner';
  * )
  */
 function ToDoList(props) {
-  // console.log('at the top of ToDoList:', props.numIncomplete);
   const tasksToRender = [];
 
   if (props.tasks) {

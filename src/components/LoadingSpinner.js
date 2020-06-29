@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 /**
- * Stretch goal component from lab 23 (displays while fetching API data)
+ * component that displays while an API fetch function is taking place
+ * uses Font Awesome to display the magic
  * @return  {object}  JSX content to be rendered
  */
 function LoadingSpinner() {

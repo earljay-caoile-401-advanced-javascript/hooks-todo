@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * custom React hook that helps another component perform an API fetch
+ * @param {String} inputUrl -  url to perform the fetch with
+ * @returns several variables and functions to be used elsewhere
+ */
 function useFetch(inputUrl) {
   const [url, setUrl] = useState(inputUrl || '');
   const [request, setRequest] = useState({ method: 'GET' });
@@ -9,9 +14,9 @@ function useFetch(inputUrl) {
 
   useEffect(() => {
     async function customFetch() {
-      await setIsLoading(true);
-      await setError(null);
-      await setResponse(null);
+      setIsLoading(true);
+      setError(null);
+      setResponse(null);
 
       const res = await fetch(url, {
         method: request.method || 'GET',
@@ -24,14 +29,14 @@ function useFetch(inputUrl) {
         headers: { ...request.headers, 'Content-Type': 'application/json' },
       });
 
-      await setIsLoading(false);
+      setIsLoading(false);
 
       if (res.status >= 300) {
-        await setError(res);
+        setError(res);
         return;
       }
 
-      await setResponse(await res.json());
+      setResponse(await res.json());
     }
 
     if (request) {
