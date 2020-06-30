@@ -76,7 +76,7 @@ function ToDo() {
   }
 
   function deleteTask(deleteIndex) {
-    console.log('Are we in deleteTask?', deleteIndex);
+    // console.log('Are we in deleteTask?', deleteIndex);
     const taskToDelete = tasks[deleteIndex];
 
     const requestBody = {
@@ -91,7 +91,7 @@ function ToDo() {
     }
 
     const filteredArr = tasks.filter((task, index) => index !== deleteIndex);
-    console.log('what is filteredArr?', filteredArr);
+    // console.log('what is filteredArr?', filteredArr);
     setTasks(filteredArr);
   }
 
@@ -102,7 +102,7 @@ function ToDo() {
   }, [numIncomplete]);
 
   useEffect(() => {
-    console.log('What is response?', response);
+    // console.log('What is response?', response);
     if (response && response.results) {
       const tasksCopy = [];
       let incompCounter = 0;

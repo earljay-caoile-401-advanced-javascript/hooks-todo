@@ -167,8 +167,6 @@ describe('the whole app', () => {
     const firstDeleteButton = firstDeleteContainer.find('button');
     firstDeleteButton.simulate('click');
 
-    const bodyGroup = app.find('.card-header');
-    console.log(bodyGroup.html());
     expect(app.find('.card-body-group')).toHaveLength(1);
 
     expect(app.find('.card-body-group')).toHaveLength(1);
