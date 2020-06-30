@@ -79,7 +79,7 @@ function ToDo() {
   }
 
   function deleteTask(deleteIndex) {
-    const taskToDelete = tasks[deleteIndex];
+    const taskToDelete = { ...tasks[deleteIndex] };
 
     const requestBody = {
       method: 'DELETE',

@@ -39,7 +39,7 @@ function ToDoList(props) {
 
       tasksToRender.push(
         <TodoItem
-          key={Math.random(i * 1000) + currTask}
+          key={currTask + i}
           task={currTask}
           index={i}
           editTask={props.editTask}
