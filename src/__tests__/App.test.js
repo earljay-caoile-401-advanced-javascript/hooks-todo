@@ -98,11 +98,20 @@ describe('the whole app', () => {
   };
 
   const verifyCardContents = (card, task) => {
-    expect(card.childAt(0).text()).toBe('description: ' + task.text);
-    expect(card.childAt(1).text()).toBe('assigned to: ' + task.assignee);
-    expect(card.childAt(2).text()).toBe('difficulty: ' + task.difficulty);
+    const firstCardBody = card.find('.card-body').at(0);
 
-    expect(card.childAt(3).text()).toBe('completed');
+    expect(firstCardBody.childAt(0).text()).toBe('description: ' + task.text);
+    expect(firstCardBody.childAt(1).text()).toBe(
+      'assigned to: ' + task.assignee
+    );
+    expect(firstCardBody.childAt(2).text()).toBe(
+      'difficulty: ' + task.difficulty
+    );
+
+    expect(firstCardBody.childAt(3).text()).toBe('completed');
+
+    const deleteContainer = card.find('.card-body').at(1);
+    expect(deleteContainer.text()).toBe('Delete');
   };
 
   it('can go through the whole submission and list checking process', () => {
@@ -110,8 +119,8 @@ describe('the whole app', () => {
     submitAndChangePage(app);
     expect(app.find('.card-header').text()).toBe('Task 1');
 
-    const firstCard = app.find('.card-body');
-    // verifyCardContents(firstCard, dummyTask);
+    const firstCard = app.find('.card-body-group');
+    verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
     const firstCheckbox = firstCard.find('input');
@@ -132,8 +141,20 @@ describe('the whole app', () => {
     expect(app.find('.card-header').at(0).text()).toBe('Task 1');
     expect(app.find('.card-header').at(1).text()).toBe('Task 2');
 
-    const secondCard = app.find('.card-body').at(1);
+    const firstCard = app.find('.card-body-group').at(0);
+    const secondCard = app.find('.card-body-group').at(1);
+    verifyCardContents(secondCard, secondDummy);
 
-    // verifyCardContents(secondCard, secondDummy);
+    expect(document.title).toBe('ToDo: 1 task incomplete');
+
+    const firstCheckbox = firstCard.find('input').at(0);
+    firstCheckbox.simulate('change', falseClickEvent);
+    expect(document.title).toBe('ToDo: 2 tasks incomplete');
+
+    const secondCheckbox = secondCard.find('input').at(0);
+    secondCheckbox.simulate('change', trueClickEvent);
+    firstCheckbox.simulate('change', trueClickEvent);
+
+    expect(document.title).toBe('ToDo: 0 tasks incomplete');
   });
 });
