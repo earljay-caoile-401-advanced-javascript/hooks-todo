@@ -35,19 +35,22 @@ function ToDo() {
     baseReq
   );
 
-  const { handleSubmit, handleChange, data } = useForm(baseData, addTask);
+  const { handleSubmit, handleChange, data, setData } = useForm(
+    baseData,
+    addTask
+  );
 
   function addTask() {
-    const newTask = data;
     const requestBody = {
       method: 'POST',
-      body: newTask,
+      body: data,
     };
 
     setUrl(baseUrl);
     setRequest(requestBody);
-    setNumIncomplete(newTask.complete ? numIncomplete : numIncomplete + 1);
-    setTasks([...tasks, newTask]);
+    setNumIncomplete(data.complete ? numIncomplete : numIncomplete + 1);
+    setTasks([...tasks, data]);
+    setData(baseData);
   }
 
   function editTask(index, updatedTask) {
@@ -76,7 +79,6 @@ function ToDo() {
   }
 
   function deleteTask(deleteIndex) {
-    // console.log('Are we in deleteTask?', deleteIndex);
     const taskToDelete = tasks[deleteIndex];
 
     const requestBody = {
@@ -91,7 +93,6 @@ function ToDo() {
     }
 
     const filteredArr = tasks.filter((task, index) => index !== deleteIndex);
-    // console.log('what is filteredArr?', filteredArr);
     setTasks(filteredArr);
   }
 
@@ -102,29 +103,54 @@ function ToDo() {
   }, [numIncomplete]);
 
   useEffect(() => {
-    // console.log('What is response?', response);
-    if (response && response.results) {
-      const tasksCopy = [];
-      let incompCounter = 0;
-      for (let i = 0; i < response.results.length; i++) {
-        const result = response.results[i];
-        tasksCopy.push({
-          id: result._id,
-          assignee: result.assignee,
-          complete: result.complete,
-          difficulty: result.difficulty,
-          text: result.text,
-        });
-
-        if (!result.complete) {
-          incompCounter++;
-        }
+    if (response) {
+      switch (request.method) {
+        case 'GET':
+          if (response.results) {
+            const tasksCopy = [];
+            let incompCounter = 0;
+            for (let i = 0; i < response.results.length; i++) {
+              const result = response.results[i];
+              tasksCopy.push({
+                id: result._id,
+                assignee: result.assignee,
+                complete: result.complete,
+                difficulty: result.difficulty,
+                text: result.text,
+              });
+              if (!result.complete) {
+                incompCounter++;
+              }
+            }
+            setNumIncomplete(incompCounter);
+            setTasks(tasksCopy);
+          }
+          break;
+        case 'POST':
+          const tasksCopy = [...tasks];
+          if (!isLoading && response) {
+            const postIndex = tasks.length ? tasks.length - 1 : 0;
+            if (response._id) {
+              tasksCopy[postIndex].id = response._id;
+            }
+          }
+          setTasks(tasksCopy);
+          console.log('tasks at the end of POST:', tasks);
+          break;
+        case 'PUT':
+          console.log('triggered PUT');
+          break;
+        case 'PATCH':
+          console.log('triggered PATCH');
+          break;
+        case 'DELETE':
+          console.log('triggered DELETE');
+          break;
+        default:
+          break;
       }
-
-      setNumIncomplete(incompCounter);
-      setTasks(tasksCopy);
     }
-  }, [response]);
+  }, [response, request.method]);
 
   return (
     <div id="main-content">
