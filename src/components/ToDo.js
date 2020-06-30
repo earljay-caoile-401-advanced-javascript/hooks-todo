@@ -20,30 +20,34 @@ function ToDo() {
   const [tasks, setTasks] = useState([]);
   const [numIncomplete, setNumIncomplete] = useState(0);
   const baseUrl = 'https://cf-js-401-api-server.herokuapp.com/api/v1/todo';
+  const baseData = {
+    text: '',
+    assignee: '',
+    difficulty: null,
+    complete: false,
+  };
+
+  const baseReq = {
+    method: 'GET',
+  };
   const { setUrl, setRequest, request, isLoading, error, response } = useFetch(
-    baseUrl
+    baseUrl,
+    baseReq
   );
 
-  const { handleSubmit, handleChange, data } = useForm(
-    {
-      text: '',
-      assignee: '',
-      difficulty: null,
-      complete: false,
-    },
-    addTask
-  );
+  const { handleSubmit, handleChange, data } = useForm(baseData, addTask);
 
   function addTask() {
+    const newTask = data;
     const requestBody = {
       method: 'POST',
-      body: data,
+      body: newTask,
     };
 
     setUrl(baseUrl);
     setRequest(requestBody);
-    setNumIncomplete(data.complete ? numIncomplete : numIncomplete + 1);
-    setTasks([...tasks, data]);
+    setNumIncomplete(newTask.complete ? numIncomplete : numIncomplete + 1);
+    setTasks([...tasks, newTask]);
   }
 
   function editTask(index, updatedTask) {
@@ -71,9 +75,9 @@ function ToDo() {
     setTasks(tasksCopy);
   }
 
-  function deleteTask(index, currIncomplete) {
-    console.log('Are we in deleteTask?', index);
-    const taskToDelete = tasks[index];
+  function deleteTask(deleteIndex) {
+    console.log('Are we in deleteTask?', deleteIndex);
+    const taskToDelete = tasks[deleteIndex];
 
     const requestBody = {
       method: 'DELETE',
@@ -83,10 +87,10 @@ function ToDo() {
     setRequest(requestBody);
 
     if (!taskToDelete.complete) {
-      setNumIncomplete(currIncomplete - 1);
+      setNumIncomplete(numIncomplete - 1);
     }
 
-    const filteredArr = tasks.filter((task) => task.id !== taskToDelete.id);
+    const filteredArr = tasks.filter((task, index) => index !== deleteIndex);
     console.log('what is filteredArr?', filteredArr);
     setTasks(filteredArr);
   }
@@ -98,6 +102,7 @@ function ToDo() {
   }, [numIncomplete]);
 
   useEffect(() => {
+    console.log('What is response?', response);
     if (response && response.results) {
       const tasksCopy = [];
       let incompCounter = 0;

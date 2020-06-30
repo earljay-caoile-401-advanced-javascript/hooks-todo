@@ -15,9 +15,16 @@ function useForm(obj, submitFunction) {
     setData(newData);
   }
 
-  function handleSubmit() {
-    console.log('What is data?', data);
-    submitFunction();
+  function handleSubmit(event) {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    } else {
+      submitFunction();
+      return true;
+    }
   }
 
   return {

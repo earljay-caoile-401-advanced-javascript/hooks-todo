@@ -42,7 +42,6 @@ describe('the whole app', () => {
     expect(component).toBeDefined();
 
     const todoForm = component.find('#main-content');
-    // console.log('What is todoForm html?', todoForm.html());
     component.find('form').getDOMNode().novalidate = false;
     expect(todoForm).toBeDefined();
     expect(todoForm.find('h2').text()).toBe('ToDo Form');
@@ -118,10 +117,6 @@ describe('the whole app', () => {
   it('can go through the whole submission and list checking process', () => {
     fillOutForm(app, dummyTask);
     submitAndChangePage(app);
-    console.log(
-      'html after submitAndChange:',
-      app.find('#main-content').html()
-    );
     expect(app.find('.card-header').text()).toBe('Task 1');
 
     const firstCard = app.find('.card-body-group');
@@ -163,23 +158,27 @@ describe('the whole app', () => {
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
   });
 
-  // it('can delete multiple items', () => {
-  //   const firstCard = app.find('.card-body-group').at(0);
-  //   const secondCard = app.find('.card-body-group').at(1);
-  //   expect(app.find('.card-body-group')).toHaveLength(2);
+  it('can delete multiple items', () => {
+    const firstCard = app.find('.card-body-group').at(0);
+    expect(app.find('.card-body-group')).toHaveLength(2);
 
-  //   const firstDeleteContainer = firstCard.find('.card-body').at(1);
-  //   // expect(firstDeleteContainer.text()).toBe('Delete');
+    const firstDeleteContainer = firstCard.find('.card-body').at(1);
 
-  //   const firstDeleteButton = firstDeleteContainer.find('button');
-  //   console.log('button?', firstDeleteButton.html());
-  //   firstDeleteButton.simulate('click');
+    const firstDeleteButton = firstDeleteContainer.find('button');
+    firstDeleteButton.simulate('click');
 
-  //   // const bodyGroup = app.find('.card-header');
-  //   // console.log(bodyGroup.html());
-  //   // expect(app.find('.card-body-group')).toHaveLength(1);
+    const bodyGroup = app.find('.card-header');
+    console.log(bodyGroup.html());
+    expect(app.find('.card-body-group')).toHaveLength(1);
 
-  //   // const mainContent = app.find('#main-content');
-  //   // console.log('What is main content now?', mainContent.html());
-  // });
+    expect(app.find('.card-body-group')).toHaveLength(1);
+    const lastCard = app.find('.card-body-group').at(0);
+    const lastDeleteContainer = lastCard.find('.card-body').at(1);
+
+    const lastDeleteButton = lastDeleteContainer.find('button');
+    lastDeleteButton.simulate('click');
+
+    const mainContent = app.find('#main-content');
+    expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();
+  });
 });

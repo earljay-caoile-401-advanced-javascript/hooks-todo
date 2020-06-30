@@ -18,15 +18,7 @@ function ToDoForm(props) {
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
-      props.onSubmit();
-      setSubmitted(true);
-    }
-
+    setSubmitted(props.onSubmit(event));
     setValidated(true);
   };
 
