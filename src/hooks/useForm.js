@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 /**
  * custom React hook handles form change and submission of a form component
  * @param {Object} obj -  base object representing the fields the form should have
@@ -5,13 +7,16 @@
  * @returns several variables and functions to be used elsewhere
  */
 function useForm(obj, submitFunction) {
-  const data = obj || {};
+  const [data, setData] = useState(obj || {});
 
   function handleChange(key, val) {
-    data[key] = val;
+    const newData = { ...data };
+    newData[key] = val;
+    setData(newData);
   }
 
   function handleSubmit() {
+    console.log('What is data?', data);
     submitFunction();
   }
 
@@ -19,6 +24,7 @@ function useForm(obj, submitFunction) {
     handleChange,
     handleSubmit,
     data,
+    setData,
   };
 }
 

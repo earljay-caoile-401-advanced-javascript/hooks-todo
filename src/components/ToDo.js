@@ -35,19 +35,18 @@ function ToDo() {
   );
 
   function addTask() {
-    const newTask = data;
     const requestBody = {
       method: 'POST',
-      body: newTask,
+      body: data,
     };
 
     setUrl(baseUrl);
     setRequest(requestBody);
-    setNumIncomplete(newTask.complete ? numIncomplete : numIncomplete + 1);
-    setTasks([...tasks, newTask]);
+    setNumIncomplete(data.complete ? numIncomplete : numIncomplete + 1);
+    setTasks([...tasks, data]);
   }
 
-  function editTask(index, updatedTask, currIncomplete) {
+  function editTask(index, updatedTask) {
     const filteredTask = {
       assignee: updatedTask.assignee,
       complete: updatedTask.complete,
@@ -67,7 +66,7 @@ function ToDo() {
     tasksCopy[index] = updatedTask;
 
     setNumIncomplete(
-      updatedTask.complete ? currIncomplete - 1 : currIncomplete + 1
+      updatedTask.complete ? numIncomplete - 1 : numIncomplete + 1
     );
     setTasks(tasksCopy);
   }

@@ -31,11 +31,7 @@ function TodoItem(props) {
     setCompleted(e.target.checked);
     const taskCopy = { ...props.task };
     taskCopy.complete = e.target.checked;
-    props.editTask(
-      parseInt(props.index),
-      taskCopy,
-      parseInt(props.numIncomplete)
-    );
+    props.editTask(parseInt(props.index), taskCopy);
   }
 
   return (

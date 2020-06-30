@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react';
  * @param {String} inputUrl -  url to perform the fetch with
  * @returns several variables and functions to be used elsewhere
  */
-function useFetch(inputUrl) {
-  const [url, setUrl] = useState(inputUrl || '');
-  const [request, setRequest] = useState({ method: 'GET' });
+function useFetch(baseUrl, baseReq) {
+  const [url, setUrl] = useState(baseUrl || '');
+  const [request, setRequest] = useState(baseReq);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [response, setResponse] = useState();

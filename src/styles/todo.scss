@@ -25,9 +25,12 @@
 }
 
 .no-tasks {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
-  img {
+  * {
     width: 65vw;
 
     @media (min-width: 1200px) {
@@ -35,11 +38,24 @@
     }
 
     @media (min-width: 1920px) {
-      width: 45vw;
+      width: 42.5vw;
     }
 
     @media (max-width: 768px) {
       width: 75vw;
+    }
+  }
+
+  p {
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    text-align: center;
+
+    * {
+      width: 100%;
     }
   }
 }
@@ -57,7 +73,6 @@
   @media (min-width: 576px) {
     display: flex;
     flex-direction: row;
-    //   box-sizing: border-box;
 
     .task-info {
       box-sizing: border-box;
