@@ -43,6 +43,7 @@ Lab 27 for CF JS 401 Nights
 - click the submit button
 - click the checkbox on tasks page showing your new ToDo task repeatedly to toggle the title
 - repeat the above 3 steps to generate a second task
+- delete as many items as you'd like
 - smile
 
 ### UML
