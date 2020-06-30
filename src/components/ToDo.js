@@ -103,12 +103,30 @@ function ToDo() {
   }, [numIncomplete]);
 
   useEffect(() => {
+    const tasksCopy = [...tasks];
+    let incompCounter = numIncomplete;
+
     if (response) {
       switch (request.method) {
-        case 'GET':
+        case 'POST':
+          if (!isLoading && response) {
+            const postIndex = tasksCopy.length ? tasksCopy.length - 1 : 0;
+            if (response._id) {
+              tasksCopy[postIndex].id = response._id;
+            }
+          }
+          break;
+        case 'PUT':
+          console.log('triggered PUT');
+          break;
+        case 'PATCH':
+          console.log('triggered PATCH');
+          break;
+        case 'DELETE':
+          console.log('triggered DELETE');
+          break;
+        default:
           if (response.results) {
-            const tasksCopy = [];
-            let incompCounter = 0;
             for (let i = 0; i < response.results.length; i++) {
               const result = response.results[i];
               tasksCopy.push({
@@ -122,34 +140,15 @@ function ToDo() {
                 incompCounter++;
               }
             }
-            setNumIncomplete(incompCounter);
-            setTasks(tasksCopy);
           }
-          break;
-        case 'POST':
-          const tasksCopy = [...tasks];
-          if (!isLoading && response) {
-            const postIndex = tasks.length ? tasks.length - 1 : 0;
-            if (response._id) {
-              tasksCopy[postIndex].id = response._id;
-            }
-          }
-          setTasks(tasksCopy);
-          break;
-        case 'PUT':
-          console.log('triggered PUT');
-          break;
-        case 'PATCH':
-          console.log('triggered PATCH');
-          break;
-        case 'DELETE':
-          console.log('triggered DELETE');
-          break;
-        default:
           break;
       }
     }
-  }, [response, request.method]);
+
+    setNumIncomplete(incompCounter);
+    setTasks(tasksCopy);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [response, request.method, isLoading]);
 
   return (
     <div id="main-content">
