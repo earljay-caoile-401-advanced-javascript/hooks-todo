@@ -43,6 +43,7 @@ function ToDo() {
 
     setUrl(baseUrl);
     setRequest(requestBody);
+    setNumIncomplete(newTask.complete ? numIncomplete : numIncomplete + 1);
     setTasks([...tasks, newTask]);
   }
 
@@ -69,6 +70,26 @@ function ToDo() {
       updatedTask.complete ? currIncomplete - 1 : currIncomplete + 1
     );
     setTasks(tasksCopy);
+  }
+
+  function deleteTask(index, currIncomplete) {
+    console.log('Are we in deleteTask?', index);
+    const taskToDelete = tasks[index];
+
+    const requestBody = {
+      method: 'DELETE',
+    };
+
+    setUrl(baseUrl + `/${taskToDelete.id}`);
+    setRequest(requestBody);
+
+    if (!taskToDelete.complete) {
+      setNumIncomplete(currIncomplete - 1);
+    }
+
+    const filteredArr = tasks.filter((task) => task.id !== taskToDelete.id);
+    console.log('what is filteredArr?', filteredArr);
+    setTasks(filteredArr);
   }
 
   useEffect(() => {
@@ -113,6 +134,7 @@ function ToDo() {
           error={error}
           tasks={tasks}
           editTask={editTask}
+          deleteTask={deleteTask}
         />
       </Route>
     </div>

@@ -52,3 +52,25 @@
   font-size: 24px;
   padding: $spacing;
 }
+
+.card-body-group {
+  @media (min-width: 576px) {
+    display: flex;
+    flex-direction: row;
+    //   box-sizing: border-box;
+
+    .task-info {
+      box-sizing: border-box;
+      width: 60%;
+    }
+  }
+
+  .delete-btn-body {
+    align-self: center;
+    text-align: center;
+
+    button {
+      width: 100%;
+    }
+  }
+}

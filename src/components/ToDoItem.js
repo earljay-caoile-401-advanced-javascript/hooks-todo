@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Card } from 'react-bootstrap';
-import { Form } from 'react-bootstrap';
+import { Card, Form, Button } from 'react-bootstrap';
 import If from './If';
 
 /**
@@ -44,18 +43,30 @@ function TodoItem(props) {
       <div className="mt-4 mb-4 todo-item-container">
         <Card>
           <Card.Header>Task {props.index + 1}</Card.Header>
-          <Card.Body>
-            <Card.Text>description: {props.task.text}</Card.Text>
-            <Card.Text>assigned to: {props.task.assignee}</Card.Text>
-            <Card.Text>difficulty: {props.task.difficulty}</Card.Text>
-            <Form.Check
-              type="checkbox"
-              label="completed"
-              checked={complete}
-              id={'task-completed-' + props.index}
-              onChange={handleCheckbox}
-            />
-          </Card.Body>
+          <div className="card-body-group">
+            <Card.Body className="task-info">
+              <Card.Text>description: {props.task.text}</Card.Text>
+              <Card.Text>assigned to: {props.task.assignee}</Card.Text>
+              <Card.Text>difficulty: {props.task.difficulty}</Card.Text>
+              <Form.Check
+                type="checkbox"
+                label="completed"
+                checked={complete}
+                id={'task-completed-' + props.index}
+                onChange={handleCheckbox}
+              />
+            </Card.Body>
+            <Card.Body className="delete-btn-body">
+              <Button
+                variant="danger"
+                onClick={() =>
+                  props.deleteTask(props.index, parseInt(props.numIncomplete))
+                }
+              >
+                Delete
+              </Button>
+            </Card.Body>
+          </div>
         </Card>
       </div>
     </If>

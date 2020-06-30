@@ -44,6 +44,7 @@ function ToDoList(props) {
           index={i}
           editTask={props.editTask}
           numIncomplete={props.numIncomplete}
+          deleteTask={props.deleteTask}
         />
       );
     }
