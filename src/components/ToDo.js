@@ -135,7 +135,6 @@ function ToDo() {
             }
           }
           setTasks(tasksCopy);
-          console.log('tasks at the end of POST:', tasks);
           break;
         case 'PUT':
           console.log('triggered PUT');
