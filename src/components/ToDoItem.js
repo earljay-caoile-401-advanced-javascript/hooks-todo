@@ -23,12 +23,7 @@ import If from './If';
  * )
  */
 function TodoItem(props) {
-  const [complete, setCompleted] = useState(
-    props && props.task ? props.task.complete : null
-  );
-
   function handleCheckbox(e) {
-    setCompleted(e.target.checked);
     const taskCopy = { ...props.task };
     taskCopy.complete = e.target.checked;
     props.editTask(parseInt(props.index), taskCopy);
@@ -47,7 +42,7 @@ function TodoItem(props) {
               <Form.Check
                 type="checkbox"
                 label="completed"
-                checked={complete}
+                checked={props.task.complete}
                 id={props.index}
                 onChange={handleCheckbox}
               />
