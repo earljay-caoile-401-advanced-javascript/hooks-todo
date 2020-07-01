@@ -31,10 +31,14 @@ function ToDo() {
     method: 'GET',
   };
 
-  const { setUrl, setRequest, request, isLoading, error, response } = useFetch(
-    baseUrl,
-    baseReq
-  );
+  const {
+    setUrl,
+    setRequest,
+    request,
+    isLoading,
+    error,
+    response,
+  } = useFetch();
 
   const { handleSubmit, handleChange, data, setData } = useForm(
     addTask,
@@ -91,6 +95,15 @@ function ToDo() {
   }
 
   /**
+   * simple function that performs a GET fetch to grab all ToDo tasks
+   * used in conjunction with the componentDidMount-like useEffect hook to re-render on a timer
+   */
+  function getTasks() {
+    setUrl(baseUrl);
+    setRequest(baseReq);
+  }
+
+  /**
    * helper function that deletes an existing task
    * makes a DELETE API fetch
    * @param {Number} deleteIndex - index of the task object to delete
@@ -112,6 +125,19 @@ function ToDo() {
     const filteredArr = tasks.filter((task, index) => index !== deleteIndex);
     setTasks(filteredArr);
   }
+
+  /**
+   * simple hook that does the initial API GET fetch as well as re-fetches on a timer
+   * currently set to re-fetch every 5 minutes
+   */
+  useEffect(() => {
+    getTasks();
+
+    setInterval(() => {
+      getTasks();
+    }, 300000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * simple hook that console errors any error messages
@@ -185,7 +211,7 @@ function ToDo() {
     setNumIncomplete(incompCounter);
     setTasks(tasksCopy);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [response, request.method, isLoading]);
+  }, [response, request, isLoading]);
 
   return (
     <div id="main-content">
