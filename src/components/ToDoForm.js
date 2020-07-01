@@ -33,7 +33,12 @@ function ToDoForm(props) {
   ) : (
     <>
       <h2 className="text-center mb-4">ToDo Form</h2>
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form
+        noValidate
+        validated={validated}
+        className="fade-in"
+        onSubmit={handleSubmit}
+      >
         <Form.Group controlId="task-description">
           <Form.Label>Task</Form.Label>
           <Form.Control
@@ -94,14 +99,14 @@ function ToDoForm(props) {
               type="checkbox"
               id="task-completed-checkbox-form"
               label="Completed"
-              className="large-checkbox mt-2"
+              className="large-checkbox mt-3"
               onChange={(e) => props.onChange('complete', e.target.checked)}
             />
           </Form.Group>
         </Form.Row>
         <Button
           variant="info"
-          className="mt-4 mb-4 btn-lg btn-block"
+          className="mt-5 mb-5 btn-lg btn-block"
           type="submit"
         >
           Submit

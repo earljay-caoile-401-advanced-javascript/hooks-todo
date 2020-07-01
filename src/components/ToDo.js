@@ -31,14 +31,10 @@ function ToDo() {
     method: 'GET',
   };
 
-  const {
-    setUrl,
-    setRequest,
-    request,
-    isLoading,
-    error,
-    response,
-  } = useFetch();
+  const { setUrl, setRequest, request, isLoading, error, response } = useFetch(
+    baseUrl,
+    baseReq
+  );
 
   const { handleSubmit, handleChange, data, setData } = useForm(
     addTask,
@@ -127,15 +123,11 @@ function ToDo() {
   }
 
   /**
-   * simple hook that does the initial API GET fetch as well as re-fetches on a timer
+   * simple hook that performs API GET fetch on a timer
    * currently set to re-fetch every 5 minutes
    */
   useEffect(() => {
-    getTasks();
-
-    setInterval(() => {
-      getTasks();
-    }, 300000);
+    setInterval(getTasks, 300000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

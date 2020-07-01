@@ -64,7 +64,7 @@ function ToDoList(props) {
             </h3>
           </div>
         ) : tasksToRender.length ? (
-          <div className="mt-4 mb-4">{tasksToRender}</div>
+          <div className="mt-4 mb-4 fade-in">{tasksToRender}</div>
         ) : (
           <div className="no-tasks m-4">
             <img
