@@ -55,6 +55,14 @@ function ToDoList(props) {
       <div className="mt-4 mb-4">
         {props.isLoading ? (
           <LoadingSpinner />
+        ) : props.error ? (
+          <div className="no-tasks m-4">
+            <img src={require('../assets/broken-glass.jpg')} alt="error" />
+            <h3 className="mt-5 mb-5 center error">
+              Sorry, but our website is currently experiencing issues. Please
+              try again later!
+            </h3>
+          </div>
         ) : tasksToRender.length ? (
           <div className="mt-4 mb-4">{tasksToRender}</div>
         ) : (

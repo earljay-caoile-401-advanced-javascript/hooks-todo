@@ -30,6 +30,7 @@ function ToDo() {
   const baseReq = {
     method: 'GET',
   };
+
   const { setUrl, setRequest, request, isLoading, error, response } = useFetch(
     baseUrl,
     baseReq
@@ -111,6 +112,15 @@ function ToDo() {
     const filteredArr = tasks.filter((task, index) => index !== deleteIndex);
     setTasks(filteredArr);
   }
+
+  /**
+   * simple hook that console errors any error messages
+   */
+  useEffect(() => {
+    if (error) {
+      console.error('Uh oh, we got an error!', error);
+    }
+  }, [error]);
 
   /**
    * hook that triggers whenever numIncomplete gets updated to update the page title with
