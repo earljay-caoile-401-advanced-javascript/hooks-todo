@@ -24,6 +24,11 @@ Lab 27 for CF JS 401 Nights
 - [[ESLint] Feedback for 'exhaustive-deps' lint rule](https://github.com/facebook/react/issues/14920)
 - [Viewport vs Percentage Units](https://bitsofco.de/viewport-vs-percentage-units/)
 - [How to call an API every minute for a Dashboard in REACT](https://stackoverflow.com/questions/48601813/how-to-call-an-api-every-minute-for-a-dashboard-in-react)
+- [Font Awesome Spinner Icons](https://www.w3schools.com/icons/fontawesome_icons_spinner.asp)
+- [Using CSS for a fade-in effect on page load](https://stackoverflow.com/questions/11679567/using-css-for-a-fade-in-effect-on-page-load)
+- [how to CSS shake image](https://www.w3schools.com/howto/howto_css_shake_image.asp)
+- [Flexbox Centering Guide](https://onextrapixel.com/flexbox-centering-guide/)
+- [react-bootstrap how to collapse menu when item is selected](https://stackoverflow.com/questions/32452695/react-bootstrap-how-to-collapse-menu-when-item-is-selected)
 
 ### Documentation
 
@@ -41,7 +46,7 @@ Lab 27 for CF JS 401 Nights
 
 ### Using the App
 
-- fill out form on the hokme page
+- fill out form on the home page
 - click the submit button
 - click the checkbox on tasks page showing your new ToDo task repeatedly to toggle the title
 - repeat the above 3 steps to generate a second task
