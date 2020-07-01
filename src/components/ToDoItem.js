@@ -15,7 +15,7 @@ import If from './If';
  *        text: 'cook green eggs and ham'
  *        assignee: 'Sam I Am',
  *        difficulty: 3,
- *        wasCompleted: false
+ *        complete: false
  *      }
  *     index="0"
  *     onChange={updateOneCheckbox}

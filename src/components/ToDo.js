@@ -36,8 +36,8 @@ function ToDo() {
   );
 
   const { handleSubmit, handleChange, data, setData } = useForm(
-    baseData,
-    addTask
+    addTask,
+    baseData
   );
 
   /**
@@ -112,14 +112,22 @@ function ToDo() {
     setTasks(filteredArr);
   }
 
+  /**
+   * hook that triggers whenever numIncomplete gets updated to update the page title with
+   * the current amount of incomplete tasks
+   */
   useEffect(() => {
     document.title = `ToDo: ${numIncomplete} ${
       numIncomplete === 1 ? 'task' : 'tasks'
     } incomplete`;
   }, [numIncomplete]);
 
+  /**
+   * multi-purpose hook that triggers whenever a request or response triggers
+   * probably not the most elegant solution, but it works...
+   */
   useEffect(() => {
-    const tasksCopy = [...tasks];
+    let tasksCopy = [...tasks];
     let incompCounter = numIncomplete;
 
     if (response) {
@@ -143,6 +151,9 @@ function ToDo() {
           break;
         default:
           if (response.results) {
+            tasksCopy = [];
+            incompCounter = 0;
+
             for (let i = 0; i < response.results.length; i++) {
               const result = response.results[i];
               tasksCopy.push({

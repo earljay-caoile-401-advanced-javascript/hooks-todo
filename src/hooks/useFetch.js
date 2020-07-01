@@ -12,6 +12,10 @@ function useFetch(baseUrl, baseReq) {
   const [error, setError] = useState();
   const [response, setResponse] = useState();
 
+  /**
+   * hook that triggers when a user enters a url or request
+   * designed to only do the fetch on a populated request
+   */
   useEffect(() => {
     async function customFetch() {
       setIsLoading(true);

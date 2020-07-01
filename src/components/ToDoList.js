@@ -18,13 +18,13 @@ import LoadingSpinner from './LoadingSpinner';
  *          text: 'cook green eggs and ham'
  *          assignee: 'Sam I Am',
  *          difficulty: 3,
- *          completed: false,
+ *          complete: false,
  *        },
  *        {
  *          text: 'take a shower',
  *          assignee: 'Bob Saget',
  *          difficulty: 1,
- *          completed: true,
+ *          complete: true,
  *        }
  *      ]
     />
