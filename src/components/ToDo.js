@@ -40,6 +40,10 @@ function ToDo() {
     addTask
   );
 
+  /**
+   * helper function that adds a task to the ToDo list
+   * makes a POST API fetch
+   */
   function addTask() {
     const requestBody = {
       method: 'POST',
@@ -53,6 +57,13 @@ function ToDo() {
     setData(baseData);
   }
 
+  /**
+   * helper function that edits an existing task
+   * makes a PUT API fetch
+   * currently only toggling checkbox complete status
+   * @param {Number} index - index of the task object in the tasks array to edit
+   * @param {Object} updatedTask - object with the updated task parameters
+   */
   function editTask(index, updatedTask) {
     const filteredTask = {
       assignee: updatedTask.assignee,
@@ -78,6 +89,11 @@ function ToDo() {
     setTasks(tasksCopy);
   }
 
+  /**
+   * helper function that deletes an existing task
+   * makes a DELETE API fetch
+   * @param {Number} deleteIndex - index of the task object to delete
+   */
   function deleteTask(deleteIndex) {
     const taskToDelete = { ...tasks[deleteIndex] };
 
