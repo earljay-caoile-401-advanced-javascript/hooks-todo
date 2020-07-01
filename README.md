@@ -23,6 +23,7 @@ Lab 27 for CF JS 401 Nights
 - [Can I change the checkbox size using CSS?](https://stackoverflow.com/questions/306924/can-i-change-the-checkbox-size-using-css)
 - [[ESLint] Feedback for 'exhaustive-deps' lint rule](https://github.com/facebook/react/issues/14920)
 - [Viewport vs Percentage Units](https://bitsofco.de/viewport-vs-percentage-units/)
+- [How to call an API every minute for a Dashboard in REACT](https://stackoverflow.com/questions/48601813/how-to-call-an-api-every-minute-for-a-dashboard-in-react)
 
 ### Documentation
 
