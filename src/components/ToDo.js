@@ -127,7 +127,10 @@ function ToDo() {
    * currently set to re-fetch every 5 minutes
    */
   useEffect(() => {
-    setInterval(getTasks, 300000);
+    setInterval(() => {
+      console.log('triggering a GET re-fetch');
+      getTasks();
+    }, 300000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
