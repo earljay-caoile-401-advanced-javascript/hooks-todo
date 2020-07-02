@@ -67,8 +67,12 @@
 }
 
 .loading {
-  font-size: 24px;
-  padding: $spacing;
+  font-size: 50px;
+  display: flex;
+  margin: auto;
+  padding-top: 30vh;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-body-group {

@@ -1,8 +1,8 @@
-# Lab 27 — Custom Hooks
+# Lab 28 — Context API
 
-## ToDo application with custom hooks and remote API
+## ToDo application with remote API, custom hooks, and context
 
-Lab 27 for CF JS 401 Nights
+Labs 26, 27, and 28 for CF JS 401 Nights
 
 ### Author: Earl Jay Caoile
 
@@ -10,9 +10,9 @@ Lab 27 for CF JS 401 Nights
 
 #### Submission Reqs
 
-- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/2)
+- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/3)
 - [GitHub actions](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/actions)
-- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-27)
+- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-28)
 - [Netlify Deployment](https://clever-heyrovsky-cb81ec.netlify.app/)
 
 #### Resources

@@ -53,6 +53,7 @@ describe('the whole app', () => {
         value: taskObj.text,
       },
     };
+
     await taskTextarea.simulate('change', descriptionEvent);
     taskTextarea.getDOMNode().required = false;
 
@@ -63,6 +64,7 @@ describe('the whole app', () => {
         value: taskObj.assignee,
       },
     };
+
     await taskOwner.simulate('change', ownerEvent);
     taskOwner.getDOMNode().required = false;
 
@@ -121,7 +123,6 @@ describe('the whole app', () => {
     await act(async () => {
       await fillOutForm(app, dummyTask);
       await submitAndChangePage(app);
-      await app.update();
     });
 
     expect(app.find('.card-header').text()).toBe('Task 1');
@@ -138,7 +139,7 @@ describe('the whole app', () => {
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
     const navLinks = app.find('.nav-link');
-    navLinks.at(0).simulate('click', { button: 0 });
+    await navLinks.at(0).simulate('click', { button: 0 });
   });
 
   test('can go through through a second form submission and see the first and second tasks on the tasks page', async () => {

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import TodoItem from './ToDoItem';
-import { Button } from 'react-bootstrap';
+import { Button, Pagination } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import If from './If';
 import LoadingSpinner from './LoadingSpinner';
+import { ListContext } from './Settings';
 
 /**
  * component holding a list of ToDo items and some supplementary text elements
@@ -31,23 +32,40 @@ import LoadingSpinner from './LoadingSpinner';
  * )
  */
 function ToDoList(props) {
-  const tasksToRender = [];
+  const displayData = useContext(ListContext);
+  const [pageIndex, setPage] = useState(0);
+  const [displayItems, setDisplayItems] = useState([]);
 
-  if (props.tasks) {
-    for (let i = 0; i < props.tasks.length; i++) {
-      const currTask = props.tasks[i];
+  useEffect(() => {
+    const tasksToRender = [];
 
-      tasksToRender.push(
-        <TodoItem
-          key={currTask + i}
-          task={currTask}
-          index={i}
-          editTask={props.editTask}
-          deleteTask={props.deleteTask}
-        />
-      );
+    if (props.tasks) {
+      let i = 0 + pageIndex * displayData.displayCount;
+      let max = Math.min(i + displayData.displayCount, props.tasks.length);
+
+      for (i; i < max; i++) {
+        const currTask = props.tasks[i];
+
+        tasksToRender.push(
+          <TodoItem
+            key={currTask + i}
+            task={currTask}
+            index={i}
+            editTask={props.editTask}
+            deleteTask={props.deleteTask}
+          />
+        );
+      }
     }
-  }
+
+    setDisplayItems(tasksToRender);
+  }, [
+    props.tasks,
+    pageIndex,
+    displayData.displayCount,
+    props.deleteTask,
+    props.editTask,
+  ]);
 
   return (
     <If condition={props.tasks}>
@@ -63,8 +81,32 @@ function ToDoList(props) {
               try again later!
             </h3>
           </div>
-        ) : tasksToRender.length ? (
-          <div className="mt-4 mb-4 fade-in">{tasksToRender}</div>
+        ) : displayItems.length ? (
+          <div className="mt-4 mb-4 fade-in">
+            <Pagination>
+              <If condition={pageIndex - 1 >= 0}>
+                <Pagination.Prev
+                  onClick={(e) => {
+                    e.target.disabled = pageIndex - 1 < 0;
+                    setPage(pageIndex - 1);
+                  }}
+                >
+                  {'< Prev'}
+                </Pagination.Prev>
+              </If>
+              <Pagination.Item active>{pageIndex + 1}</Pagination.Item>
+              <If condition={pageIndex + 1 < displayItems.length}>
+                <Pagination.Next
+                  onClick={(e) => {
+                    setPage(pageIndex + 1);
+                  }}
+                >
+                  {'Next >'}
+                </Pagination.Next>
+              </If>
+            </Pagination>
+            <>{displayItems}</>
+          </div>
         ) : (
           <div className="no-tasks m-4">
             <img

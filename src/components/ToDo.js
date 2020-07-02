@@ -205,8 +205,8 @@ function ToDo() {
   }, [numIncomplete]);
 
   /**
-   * multi-purpose hook that triggers whenever a request or response triggers
-   * probably not the most elegant solution, but it works...
+   * hook that re-counts the number of incomplete tasks whenever a GET fetch occurs
+   * cut down from a previuosly overly bloated hook
    */
   useEffect(() => {
     if (response && response.results && !isLoading) {
