@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TodoItem from './ToDoItem';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import If from './If';
+import LoadingSpinner from './LoadingSpinner';
 
 /**
  * component holding a list of ToDo items and some supplementary text elements
@@ -14,85 +15,68 @@ import If from './If';
  *   <TodoList
  *     tasks=[
  *        {
- *          description: 'cook green eggs and ham'
- *          assignedTo: 'Sam I Am',
+ *          text: 'cook green eggs and ham'
+ *          assignee: 'Sam I Am',
  *          difficulty: 3,
- *          wasCompleted: false,
+ *          complete: false,
  *        },
  *        {
- *          description: 'take a shower',
- *          assignedTo: 'Bob Saget',
+ *          text: 'take a shower',
+ *          assignee: 'Bob Saget',
  *          difficulty: 1,
- *          wasCompleted: true,
+ *          complete: true,
  *        }
  *      ]
     />
  * )
  */
 function ToDoList(props) {
-  const [incompleteTasks, setIncompleteTasks] = useState(0);
-  const [tasksToRender, setTasksToRender] = useState([]);
+  const tasksToRender = [];
 
-  useEffect(() => {
-    const localTaskArr = [];
-    let numIncomplete = 0;
+  if (props.tasks) {
+    for (let i = 0; i < props.tasks.length; i++) {
+      const currTask = props.tasks[i];
 
-    function updateOneCheckbox(checkStatus, index) {
-      const renderToUpdate = localTaskArr[index];
-      renderToUpdate.props.task.wasCompleted = checkStatus;
-      if (checkStatus) {
-        numIncomplete--;
-      } else {
-        numIncomplete++;
-      }
-  
-      setIncompleteTasks(numIncomplete);
-      setTasksToRender(localTaskArr);
+      tasksToRender.push(
+        <TodoItem
+          key={currTask + i}
+          task={currTask}
+          index={i}
+          editTask={props.editTask}
+          deleteTask={props.deleteTask}
+        />
+      );
     }
-    
-    if (props.tasks) {
-      for (let i = 0; i < props.tasks.length; i++) {
-        const currTask = props.tasks[i];
-
-        localTaskArr.push(
-          <TodoItem
-            key={i}
-            task={currTask}
-            index={i}
-            onChange={updateOneCheckbox}
-          />
-        );
-
-        if (!currTask.wasCompleted) {
-          numIncomplete++;
-        }
-      }
-
-      setIncompleteTasks(numIncomplete);
-      setTasksToRender(localTaskArr);
-    }
-  }, [props.tasks]);
-
-  useEffect(() => {
-    document.title = `ToDo: ${incompleteTasks} ${
-      incompleteTasks === 1 ? 'task' : 'tasks'
-    } incomplete`;
-  }, [incompleteTasks]);
+  }
 
   return (
     <If condition={props.tasks}>
       <h2 className="mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
-        {tasksToRender.length ? (
-          <div className="mt-4 mb-4">{tasksToRender}</div>
+        {props.isLoading ? (
+          <LoadingSpinner />
+        ) : props.error ? (
+          <div className="no-tasks m-4">
+            <img src={require('../assets/broken-glass.jpg')} alt="error" />
+            <h3 className="mt-5 mb-5 center error">
+              Sorry, but our website is currently experiencing issues. Please
+              try again later!
+            </h3>
+          </div>
+        ) : tasksToRender.length ? (
+          <div className="mt-4 mb-4 fade-in">{tasksToRender}</div>
         ) : (
-          <div className="mt-4 mb-4">
-            <p className="mt-4 mb-4">
+          <div className="no-tasks m-4">
+            <img
+              src={require('../assets/empty-notebook.jpg')}
+              alt="empty notebook"
+            />
+            <p className="mt-4 mb-4 center">
               No tasks to show! Please return to the home page to add a task to
               the todo list.
             </p>
-            <Link to="/" className="mt-4 mb-4">
-              <Button variant="info" className="btn-lg">
+            <Link to="/" className="no-underline m-4">
+              <Button variant="info" className="btn-lg btn-block">
                 Return to Form Page
               </Button>
             </Link>

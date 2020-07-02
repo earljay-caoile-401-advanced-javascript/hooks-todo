@@ -1,8 +1,8 @@
-# Lab 26 — Hooks API
+# Lab 27 — Custom Hooks
 
-## ToDo application, utilizing functional components and the Hooks API
+## ToDo application with custom hooks and remote API
 
-Lab 26 for CF JS 401 Nights
+Lab 27 for CF JS 401 Nights
 
 ### Author: Earl Jay Caoile
 
@@ -10,10 +10,10 @@ Lab 26 for CF JS 401 Nights
 
 #### Submission Reqs
 
-- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/1)
+- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/2)
 - [GitHub actions](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/actions)
-- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-26)
-- [Netlify Deployment](https://vibrant-spence-82da44.netlify.app/)
+- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-27)
+- [Netlify Deployment](https://clever-heyrovsky-cb81ec.netlify.app/)
 
 #### Resources
 
@@ -23,6 +23,12 @@ Lab 26 for CF JS 401 Nights
 - [Can I change the checkbox size using CSS?](https://stackoverflow.com/questions/306924/can-i-change-the-checkbox-size-using-css)
 - [[ESLint] Feedback for 'exhaustive-deps' lint rule](https://github.com/facebook/react/issues/14920)
 - [Viewport vs Percentage Units](https://bitsofco.de/viewport-vs-percentage-units/)
+- [How to call an API every minute for a Dashboard in REACT](https://stackoverflow.com/questions/48601813/how-to-call-an-api-every-minute-for-a-dashboard-in-react)
+- [Font Awesome Spinner Icons](https://www.w3schools.com/icons/fontawesome_icons_spinner.asp)
+- [Using CSS for a fade-in effect on page load](https://stackoverflow.com/questions/11679567/using-css-for-a-fade-in-effect-on-page-load)
+- [how to CSS shake image](https://www.w3schools.com/howto/howto_css_shake_image.asp)
+- [Flexbox Centering Guide](https://onextrapixel.com/flexbox-centering-guide/)
+- [react-bootstrap how to collapse menu when item is selected](https://stackoverflow.com/questions/32452695/react-bootstrap-how-to-collapse-menu-when-item-is-selected)
 
 ### Documentation
 
@@ -40,12 +46,13 @@ Lab 26 for CF JS 401 Nights
 
 ### Using the App
 
-- fill out form on the hokme page
+- fill out form on the home page
 - click the submit button
 - click the checkbox on tasks page showing your new ToDo task repeatedly to toggle the title
 - repeat the above 3 steps to generate a second task
+- delete as many items as you'd like
 - smile
 
 ### UML
 
-![UML Image](lab-26-uml.png)
+![UML Image](lab-27-uml.png)

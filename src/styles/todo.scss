@@ -1,7 +1,7 @@
 @import 'variables';
 
 .form-check-input {
-  transform: scale(1.25);
+  transform: scale(1.5);
   top: 0.1rem;
 }
 
@@ -15,5 +15,79 @@
   label {
     display: flex;
     flex-direction: row-reverse;
+  }
+}
+
+.flex-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-tasks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  * {
+    width: 65vw;
+
+    @media (min-width: 1200px) {
+      width: 55vw;
+    }
+
+    @media (min-width: 1920px) {
+      width: 42.5vw;
+    }
+
+    @media (max-width: 768px) {
+      width: 75vw;
+    }
+  }
+
+  p,
+  h2,
+  h3 {
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    text-align: center;
+
+    * {
+      width: 100%;
+    }
+  }
+}
+
+.no-underline:hover {
+  text-decoration: none;
+}
+
+.loading {
+  font-size: 24px;
+  padding: $spacing;
+}
+
+.card-body-group {
+  @media (min-width: 576px) {
+    display: flex;
+    flex-direction: row;
+
+    .task-info {
+      box-sizing: border-box;
+      width: 60%;
+    }
+  }
+
+  .delete-btn-body {
+    align-self: center;
+    text-align: center;
+
+    button {
+      width: 100%;
+    }
   }
 }

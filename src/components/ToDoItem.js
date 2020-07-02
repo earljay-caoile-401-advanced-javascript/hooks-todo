@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Card } from 'react-bootstrap';
-import { Form } from 'react-bootstrap';
+import React from 'react';
+import { Card, Form, Button } from 'react-bootstrap';
 import If from './If';
 
 /**
@@ -13,10 +12,10 @@ import If from './If';
  *   <TodoItem
  *     key="0"
  *     task={
- *        description: 'cook green eggs and ham'
- *        assignedTo: 'Sam I Am',
+ *        text: 'cook green eggs and ham'
+ *        assignee: 'Sam I Am',
  *        difficulty: 3,
- *        wasCompleted: false
+ *        complete: false
  *      }
  *     index="0"
  *     onChange={updateOneCheckbox}
@@ -24,13 +23,10 @@ import If from './If';
  * )
  */
 function TodoItem(props) {
-  const [wasCompleted, setCompleted] = useState(
-    props && props.task ? props.task.wasCompleted : null
-  );
-
   function handleCheckbox(e) {
-    setCompleted(e.target.checked);
-    props.onChange(e.target.checked, parseInt(props.index));
+    const taskCopy = { ...props.task };
+    taskCopy.complete = e.target.checked;
+    props.editTask(parseInt(props.index), taskCopy);
   }
 
   return (
@@ -38,18 +34,30 @@ function TodoItem(props) {
       <div className="mt-4 mb-4 todo-item-container">
         <Card>
           <Card.Header>Task {props.index + 1}</Card.Header>
-          <Card.Body>
-            <Card.Text>description: {props.task.description}</Card.Text>
-            <Card.Text>assigned to: {props.task.assignedTo}</Card.Text>
-            <Card.Text>difficulty: {props.task.difficulty}</Card.Text>
-            <Form.Check
-              type="checkbox"
-              label="completed"
-              checked={wasCompleted}
-              id={"task-completed-" + props.index}
-              onChange={handleCheckbox}
-            />
-          </Card.Body>
+          <div className="card-body-group">
+            <Card.Body className="task-info">
+              <Card.Text>description: {props.task.text}</Card.Text>
+              <Card.Text>assigned to: {props.task.assignee}</Card.Text>
+              <Card.Text>difficulty: {props.task.difficulty}</Card.Text>
+              <Form.Check
+                type="checkbox"
+                label="completed"
+                checked={props.task.complete}
+                id={'task-checkbox-' + props.index}
+                onChange={handleCheckbox}
+              />
+            </Card.Body>
+            <Card.Body className="delete-btn-body">
+              <Button
+                variant="danger"
+                onClick={() =>
+                  props.deleteTask(props.index, parseInt(props.numIncomplete))
+                }
+              >
+                Delete
+              </Button>
+            </Card.Body>
+          </div>
         </Card>
       </div>
     </If>

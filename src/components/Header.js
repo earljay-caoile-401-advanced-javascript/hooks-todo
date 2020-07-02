@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/header.scss';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -20,9 +20,16 @@ function Header() {
 
   const navLinks = [];
 
+  const [expanded, setExpanded] = useState(false);
+
   for (let i = 0; i < links.length; i++) {
     navLinks.push(
-      <Link className="nav-link" key={i} to={links[i].url}>
+      <Link
+        className="nav-link"
+        key={i}
+        to={links[i].url}
+        onClick={() => setTimeout(() => setExpanded(false), 100)}
+      >
         {links[i].displayName}
       </Link>
     );
@@ -30,11 +37,14 @@ function Header() {
 
   return (
     <>
-      <Navbar id="main-header" variant="dark" expand="md">
+      <Navbar id="main-header" variant="dark" expand="md" expanded={expanded}>
         <Navbar.Brand>
           <h1>ToDo List</h1>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          onClick={() => setExpanded(!expanded)}
+        />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <>{navLinks}</>

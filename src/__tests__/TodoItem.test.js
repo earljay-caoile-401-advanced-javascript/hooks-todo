@@ -5,10 +5,10 @@ import ToDoItem from '../components/ToDoItem';
 describe('ToDoItem component', () => {
   it('displays the proper html and text on render', () => {
     const dummyTask = {
-      description: 'cook green eggs and ham',
-      assignedTo: 'Sam I Am',
+      text: 'cook green eggs and ham',
+      assignee: 'Sam I Am',
       difficulty: 3,
-      wasCompleted: false,
+      complete: false,
     };
 
     const component = render(<ToDoItem task={dummyTask} index={0} />);
