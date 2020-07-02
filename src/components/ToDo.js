@@ -42,16 +42,17 @@ function ToDo() {
   );
 
   /**
-   * helper function that adds a task to the ToDo list
+   * function that adds a task to the ToDo list
    * makes a POST API fetch
-   * currently, the setNumIncomplete and setTasks are necessary for testing but not
-   * in the actual app since there is a hook that does GET fetch after this function
+   * currently, the setIncompleteAndTasks is necessary for testing but not
+   * in the actual app since runGet in the requestBody does a follow-up GET fetch
    */
   function addTask() {
     async function postHelper() {
       const requestBody = {
         method: 'POST',
         body: data,
+        runGet: true,
       };
 
       await setUrl(baseUrl);
@@ -64,39 +65,15 @@ function ToDo() {
       data,
     ]);
     setData(baseData);
-    getTasks();
   }
 
-  function resultsCounter(results) {
-    let tasksCopy = [...tasks];
-    let incompCounter = numIncomplete;
-
-    if (results) {
-      tasksCopy = [];
-      incompCounter = 0;
-
-      for (let i = 0; i < results.length; i++) {
-        const result = results[i];
-        tasksCopy.push({
-          id: result._id,
-          assignee: result.assignee,
-          complete: result.complete,
-          difficulty: result.difficulty,
-          text: result.text,
-        });
-
-        if (!result.complete) {
-          incompCounter++;
-        }
-      }
-    }
-
-    setIncompleteAndTasks(incompCounter, tasksCopy);
-  }
-
-  function setIncompleteAndTasks(newIncomp, newTasks) {
-    setNumIncomplete(newIncomp);
-    setTasks(newTasks);
+  /**
+   * simple function that performs a GET fetch to grab all ToDo tasks
+   * used in conjunction with the componentDidMount-like useEffect hook to re-render on a timer
+   */
+  function getTasks() {
+    setUrl(baseUrl);
+    setRequest(baseReq);
   }
 
   /**
@@ -132,16 +109,7 @@ function ToDo() {
   }
 
   /**
-   * simple function that performs a GET fetch to grab all ToDo tasks
-   * used in conjunction with the componentDidMount-like useEffect hook to re-render on a timer
-   */
-  function getTasks() {
-    setUrl(baseUrl);
-    setRequest(baseReq);
-  }
-
-  /**
-   * helper function that deletes an existing task
+   * function that deletes an existing task
    * makes a DELETE API fetch
    * @param {Number} deleteIndex - index of the task object to delete
    */
@@ -161,6 +129,48 @@ function ToDo() {
       taskToDelete.complete ? numIncomplete : numIncomplete,
       filteredArr
     );
+  }
+
+  /**
+   * helper function that iterates through an array and updates the state for numIncomplete
+   * and tasks
+   * @param {Array} results - array of tasks to iterate through
+   */
+  function resultsCounter(results) {
+    let tasksCopy = [...tasks];
+    let incompCounter = numIncomplete;
+
+    if (results) {
+      tasksCopy = [];
+      incompCounter = 0;
+
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        tasksCopy.push({
+          id: result._id,
+          assignee: result.assignee,
+          complete: result.complete,
+          difficulty: result.difficulty,
+          text: result.text,
+        });
+
+        if (!result.complete) {
+          incompCounter++;
+        }
+      }
+    }
+
+    setIncompleteAndTasks(incompCounter, tasksCopy);
+  }
+
+  /**
+   * helper function that sets the number of incomplete items and tasks
+   * @param {Number} newIncomp - new value for numIncomplete number
+   * @param {Array} newTasks - new value for tasks array
+   */
+  function setIncompleteAndTasks(newIncomp, newTasks) {
+    setNumIncomplete(newIncomp);
+    setTasks(newTasks);
   }
 
   /**

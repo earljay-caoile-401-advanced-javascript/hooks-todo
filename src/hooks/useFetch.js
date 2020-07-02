@@ -14,7 +14,7 @@ function useFetch(baseUrl, baseReq) {
 
   /**
    * hook that triggers when a user enters a url or request
-   * designed to only do the fetch on a populated request
+   * designed to only do a fetch on a populated request
    */
   useEffect(() => {
     async function customFetch() {
@@ -33,12 +33,12 @@ function useFetch(baseUrl, baseReq) {
         headers: { ...request.headers, 'Content-Type': 'application/json' },
       });
 
-      // if (request && request.runGet) {
-      //   res = await fetch(url, {
-      //     method: 'GET',
-      //     headers: { 'Content-Type': 'application/json' },
-      //   });
-      // }
+      if (canRunGet(request, res)) {
+        res = await fetch(baseUrl || url, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
 
       await setIsLoading(false);
       await setRequest(null);
@@ -47,13 +47,23 @@ function useFetch(baseUrl, baseReq) {
         setError(res);
         return;
       }
+
       await setResponse(await res.json());
     }
 
     if (request) {
       customFetch();
     }
-  }, [request, url]);
+  }, [request, baseUrl, url]);
+
+  /**
+   * helper function that determines whether a follow-up GET fetch can be run
+   * @param {Object} req - request object
+   * @param {Object} res - result from the previous fetch
+   */
+  function canRunGet(req, res) {
+    return req && req.runGet && res && res.status < 300;
+  }
 
   return {
     setUrl,
