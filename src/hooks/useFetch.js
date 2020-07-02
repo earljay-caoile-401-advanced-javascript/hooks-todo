@@ -18,11 +18,11 @@ function useFetch(baseUrl, baseReq) {
    */
   useEffect(() => {
     async function customFetch() {
-      setIsLoading(true);
-      setError(null);
-      setResponse(null);
+      await setIsLoading(true);
+      await setError(null);
+      await setResponse(null);
 
-      const res = await fetch(url, {
+      let res = await fetch(url, {
         method: request.method || 'GET',
         body:
           request.method === 'POST' ||
@@ -33,14 +33,21 @@ function useFetch(baseUrl, baseReq) {
         headers: { ...request.headers, 'Content-Type': 'application/json' },
       });
 
-      setIsLoading(false);
+      // if (request && request.runGet) {
+      //   res = await fetch(url, {
+      //     method: 'GET',
+      //     headers: { 'Content-Type': 'application/json' },
+      //   });
+      // }
+
+      await setIsLoading(false);
+      await setRequest(null);
 
       if (res.status >= 300) {
         setError(res);
         return;
       }
-
-      setResponse(await res.json());
+      await setResponse(await res.json());
     }
 
     if (request) {

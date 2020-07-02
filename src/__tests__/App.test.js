@@ -38,7 +38,7 @@ describe('the whole app', () => {
     });
   });
 
-  const fillOutForm = (component, taskObj) => {
+  const fillOutForm = async (component, taskObj) => {
     expect(component).toBeDefined();
 
     const todoForm = component.find('#main-content');
@@ -53,7 +53,7 @@ describe('the whole app', () => {
         value: taskObj.text,
       },
     };
-    taskTextarea.simulate('change', descriptionEvent);
+    await taskTextarea.simulate('change', descriptionEvent);
     taskTextarea.getDOMNode().required = false;
 
     const taskOwner = todoForm.find('input#task-person');
@@ -63,7 +63,7 @@ describe('the whole app', () => {
         value: taskObj.assignee,
       },
     };
-    taskOwner.simulate('change', ownerEvent);
+    await taskOwner.simulate('change', ownerEvent);
     taskOwner.getDOMNode().required = false;
 
     const taskDifficulty = todoForm.find('select#task-difficulty');
@@ -74,30 +74,33 @@ describe('the whole app', () => {
       },
     };
 
-    taskDifficulty.simulate('change', difficultyEvent);
+    await taskDifficulty.simulate('change', difficultyEvent);
     taskDifficulty.getDOMNode().required = false;
 
     const checkboxSection = component.find('#task-completed-checkbox-form');
     const checkboxInput = checkboxSection.find('input');
 
     if (taskObj.completed) {
-      checkboxInput.simulate('change', trueClickEvent);
+      await checkboxInput.simulate('change', trueClickEvent);
       checkboxInput.getDOMNode().checked = true;
     } else {
-      checkboxInput.simulate('change', falseClickEvent);
+      await checkboxInput.simulate('change', falseClickEvent);
       checkboxInput.getDOMNode().checked = false;
     }
   };
 
-  const submitAndChangePage = (component) => {
-    const form = component.find('form');
-    form.simulate('submit');
+  const submitAndChangePage = async (component) => {
+    await act(async () => {
+      const form = component.find('form');
+      await form.simulate('submit');
+      await component.update();
+    });
 
     const todoList = component.find('#main-content');
     expect(todoList.find('h2').text()).toBe('Tasks ToDo');
   };
 
-  const verifyCardContents = (card, task) => {
+  const verifyCardContents = async (card, task) => {
     const firstCardBody = card.find('.card-body').at(0);
 
     expect(firstCardBody.childAt(0).text()).toBe('description: ' + task.text);
@@ -114,67 +117,71 @@ describe('the whole app', () => {
     expect(deleteContainer.text()).toBe('Delete');
   };
 
-  it('can go through the whole submission and list checking process', () => {
-    fillOutForm(app, dummyTask);
-    submitAndChangePage(app);
+  test('can go through the whole submission and list checking process', async () => {
+    await act(async () => {
+      await fillOutForm(app, dummyTask);
+      await submitAndChangePage(app);
+      await app.update();
+    });
+
     expect(app.find('.card-header').text()).toBe('Task 1');
 
     const firstCard = app.find('.card-body-group');
-    verifyCardContents(firstCard, dummyTask);
+    await verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
     const firstCheckbox = firstCard.find('input');
-    firstCheckbox.simulate('change', falseClickEvent);
+    await firstCheckbox.simulate('change', falseClickEvent);
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
-    firstCheckbox.simulate('change', trueClickEvent);
+    await firstCheckbox.simulate('change', trueClickEvent);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
     const navLinks = app.find('.nav-link');
     navLinks.at(0).simulate('click', { button: 0 });
   });
 
-  it('can go through through a second form submission and see the first and second tasks on the tasks page', () => {
-    fillOutForm(app, secondDummy);
-    submitAndChangePage(app);
+  test('can go through through a second form submission and see the first and second tasks on the tasks page', async () => {
+    await act(async () => {
+      await fillOutForm(app, secondDummy);
+      await submitAndChangePage(app);
+    });
 
     expect(app.find('.card-header').at(0).text()).toBe('Task 1');
     expect(app.find('.card-header').at(1).text()).toBe('Task 2');
 
     const firstCard = app.find('.card-body-group').at(0);
     const secondCard = app.find('.card-body-group').at(1);
-    verifyCardContents(secondCard, secondDummy);
+    await verifyCardContents(secondCard, secondDummy);
 
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
     const firstCheckbox = firstCard.find('input').at(0);
-    firstCheckbox.simulate('change', falseClickEvent);
+    await firstCheckbox.simulate('change', falseClickEvent);
     expect(document.title).toBe('ToDo: 2 tasks incomplete');
 
     const secondCheckbox = secondCard.find('input').at(0);
-    secondCheckbox.simulate('change', trueClickEvent);
-    firstCheckbox.simulate('change', trueClickEvent);
+    await secondCheckbox.simulate('change', trueClickEvent);
+    await firstCheckbox.simulate('change', trueClickEvent);
 
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
   });
 
-  it('can delete multiple items', () => {
+  test('can delete multiple items', async () => {
     const firstCard = app.find('.card-body-group').at(0);
     expect(app.find('.card-body-group')).toHaveLength(2);
 
     const firstDeleteContainer = firstCard.find('.card-body').at(1);
 
     const firstDeleteButton = firstDeleteContainer.find('button');
-    firstDeleteButton.simulate('click');
+    await firstDeleteButton.simulate('click');
 
     expect(app.find('.card-body-group')).toHaveLength(1);
 
-    expect(app.find('.card-body-group')).toHaveLength(1);
     const lastCard = app.find('.card-body-group').at(0);
     const lastDeleteContainer = lastCard.find('.card-body').at(1);
-
     const lastDeleteButton = lastDeleteContainer.find('button');
-    lastDeleteButton.simulate('click');
+    await lastDeleteButton.simulate('click');
 
     const mainContent = app.find('#main-content');
     expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();

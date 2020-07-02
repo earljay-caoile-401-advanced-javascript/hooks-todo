@@ -44,20 +44,59 @@ function ToDo() {
   /**
    * helper function that adds a task to the ToDo list
    * makes a POST API fetch
-   * currently, the last 3 lines are necessary in order to pass UI tests even though they're not needed
+   * currently, the setNumIncomplete and setTasks are necessary for testing but not
    * in the actual app since there is a hook that does GET fetch after this function
    */
   function addTask() {
-    const requestBody = {
-      method: 'POST',
-      body: data,
-    };
+    async function postHelper() {
+      const requestBody = {
+        method: 'POST',
+        body: data,
+      };
 
-    setUrl(baseUrl);
-    setRequest(requestBody);
-    setNumIncomplete(data.complete ? numIncomplete : numIncomplete + 1);
-    setTasks([...tasks, data]);
+      await setUrl(baseUrl);
+      await setRequest(requestBody);
+    }
+
+    postHelper();
+    setIncompleteAndTasks(data.complete ? numIncomplete : numIncomplete + 1, [
+      ...tasks,
+      data,
+    ]);
     setData(baseData);
+    getTasks();
+  }
+
+  function resultsCounter(results) {
+    let tasksCopy = [...tasks];
+    let incompCounter = numIncomplete;
+
+    if (results) {
+      tasksCopy = [];
+      incompCounter = 0;
+
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        tasksCopy.push({
+          id: result._id,
+          assignee: result.assignee,
+          complete: result.complete,
+          difficulty: result.difficulty,
+          text: result.text,
+        });
+
+        if (!result.complete) {
+          incompCounter++;
+        }
+      }
+    }
+
+    setIncompleteAndTasks(incompCounter, tasksCopy);
+  }
+
+  function setIncompleteAndTasks(newIncomp, newTasks) {
+    setNumIncomplete(newIncomp);
+    setTasks(newTasks);
   }
 
   /**
@@ -116,12 +155,12 @@ function ToDo() {
     setUrl(baseUrl + `/${taskToDelete.id}`);
     setRequest(requestBody);
 
-    if (!taskToDelete.complete) {
-      setNumIncomplete(numIncomplete - 1);
-    }
-
     const filteredArr = tasks.filter((_task, index) => index !== deleteIndex);
-    setTasks(filteredArr);
+
+    setIncompleteAndTasks(
+      taskToDelete.complete ? numIncomplete : numIncomplete,
+      filteredArr
+    );
   }
 
   /**
@@ -160,49 +199,9 @@ function ToDo() {
    * probably not the most elegant solution, but it works...
    */
   useEffect(() => {
-    let tasksCopy = [...tasks];
-    let incompCounter = numIncomplete;
-
-    if (response && !isLoading) {
-      switch (request.method) {
-        case 'POST':
-          console.log('triggered POST');
-          getTasks();
-          break;
-        case 'PUT':
-          console.log('triggered PUT');
-          break;
-        case 'PATCH':
-          console.log('triggered PATCH');
-          break;
-        case 'DELETE':
-          console.log('triggered DELETE');
-          break;
-        default:
-          if (response.results) {
-            tasksCopy = [];
-            incompCounter = 0;
-
-            for (let i = 0; i < response.results.length; i++) {
-              const result = response.results[i];
-              tasksCopy.push({
-                id: result._id,
-                assignee: result.assignee,
-                complete: result.complete,
-                difficulty: result.difficulty,
-                text: result.text,
-              });
-              if (!result.complete) {
-                incompCounter++;
-              }
-            }
-          }
-          break;
-      }
+    if (response && response.results && !isLoading) {
+      resultsCounter(response.results);
     }
-
-    setNumIncomplete(incompCounter);
-    setTasks(tasksCopy);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response, isLoading]);
 
@@ -214,7 +213,7 @@ function ToDo() {
       <Route path="/tasks" exact>
         <ToDoList
           numIncomplete={numIncomplete}
-          isLoading={isLoading && request.method === 'GET'}
+          isLoading={isLoading && request && request.method === 'GET'}
           error={error}
           tasks={tasks}
           editTask={editTask}
