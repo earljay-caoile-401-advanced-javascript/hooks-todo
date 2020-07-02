@@ -44,6 +44,8 @@ function ToDo() {
   /**
    * helper function that adds a task to the ToDo list
    * makes a POST API fetch
+   * currently, the last 3 lines are necessary in order to pass UI tests even though they're not needed
+   * in the actual app since there is a hook that does GET fetch after this function
    */
   function addTask() {
     const requestBody = {
@@ -118,7 +120,7 @@ function ToDo() {
       setNumIncomplete(numIncomplete - 1);
     }
 
-    const filteredArr = tasks.filter((task, index) => index !== deleteIndex);
+    const filteredArr = tasks.filter((_task, index) => index !== deleteIndex);
     setTasks(filteredArr);
   }
 
@@ -164,6 +166,7 @@ function ToDo() {
     if (response && !isLoading) {
       switch (request.method) {
         case 'POST':
+          console.log('triggered POST');
           getTasks();
           break;
         case 'PUT':
@@ -201,7 +204,7 @@ function ToDo() {
     setNumIncomplete(incompCounter);
     setTasks(tasksCopy);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [response, request, isLoading]);
+  }, [response, isLoading]);
 
   return (
     <div id="main-content">
