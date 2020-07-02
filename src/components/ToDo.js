@@ -161,15 +161,10 @@ function ToDo() {
     let tasksCopy = [...tasks];
     let incompCounter = numIncomplete;
 
-    if (response) {
+    if (response && !isLoading) {
       switch (request.method) {
         case 'POST':
-          if (!isLoading && response) {
-            const postIndex = tasksCopy.length ? tasksCopy.length - 1 : 0;
-            if (response._id) {
-              tasksCopy[postIndex].id = response._id;
-            }
-          }
+          getTasks();
           break;
         case 'PUT':
           console.log('triggered PUT');
