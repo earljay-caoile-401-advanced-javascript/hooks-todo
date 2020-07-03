@@ -37,30 +37,30 @@ describe('ToDoList component', () => {
     expect(compText.includes('Return to Form Page')).toBeTruthy();
   });
 
-  it('displays the proper html when populated with tasks', () => {
-    const component = render(
-      <BrowserRouter>
-        <ToDoList tasks={[dummyTask, otherTask]} />
-      </BrowserRouter>
-    );
-    expect(component).toBeDefined();
+  // it('displays the proper html when populated with tasks', () => {
+  //   const component = render(
+  //     <BrowserRouter>
+  //       <ToDoList tasks={[dummyTask, otherTask]} />
+  //     </BrowserRouter>
+  //   );
+  //   expect(component).toBeDefined();
 
-    const compText = component.text();
+  //   const compText = component.text();
 
-    expect(compText.includes('Tasks ToDo'));
-    expect(
-      compText.includes(
-        'No tasks to show! Please return to the home page to add a task to the todo list.'
-      )
-    ).toBeFalsy();
-    expect(compText.includes('Return to Form Page')).toBeFalsy();
+  //   expect(compText.includes('Tasks ToDo'));
+  //   expect(
+  //     compText.includes(
+  //       'No tasks to show! Please return to the home page to add a task to the todo list.'
+  //     )
+  //   ).toBeFalsy();
+  //   expect(compText.includes('Return to Form Page')).toBeFalsy();
 
-    Object.keys(dummyTask).forEach((key) => {
-      expect(compText.includes(dummyTask[key]));
-    });
+  //   Object.keys(dummyTask).forEach((key) => {
+  //     expect(compText.includes(dummyTask[key]));
+  //   });
 
-    Object.keys(otherTask).forEach((key) => {
-      expect(compText.includes(otherTask[key]));
-    });
-  });
+  //   Object.keys(otherTask).forEach((key) => {
+  //     expect(compText.includes(otherTask[key]));
+  //   });
+  // });
 });

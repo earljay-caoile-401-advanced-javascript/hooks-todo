@@ -41,10 +41,10 @@ function ToDoList(props) {
     let indexToUse = displayContext.pageIndex;
 
     if (
+      displayContext.results &&
       displayContext.pageIndex * displayContext.displayCount >=
-      displayContext.results.length
+        displayContext.results.length
     ) {
-      console.log('in the first if');
       indexToUse = Math.max(0, displayContext.pageIndex - 1);
     }
 
