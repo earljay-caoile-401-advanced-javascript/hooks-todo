@@ -21,7 +21,7 @@ describe('ToDoList component', () => {
   it('displays the proper initial html and text on render', () => {
     const component = render(
       <BrowserRouter>
-        <ToDoList tasks={[]} />
+        <ToDoList />
       </BrowserRouter>
     );
     expect(component).toBeDefined();

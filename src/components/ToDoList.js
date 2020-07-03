@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import TodoItem from './ToDoItem';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import If from './If';
 import LoadingSpinner from './LoadingSpinner';
 import { ListContext } from './Contexts';
 import Settings from './Settings';
@@ -34,10 +33,22 @@ import Settings from './Settings';
  */
 function ToDoList(props) {
   const displayContext = useContext(ListContext);
+
   const [displayItems, setDisplayItems] = useState([]);
 
   useEffect(() => {
     const tasksToRender = [];
+    let indexToUse = displayContext.pageIndex;
+
+    if (
+      displayContext.pageIndex * displayContext.displayCount >=
+      displayContext.results.length
+    ) {
+      console.log('in the first if');
+      indexToUse = Math.max(0, displayContext.pageIndex - 1);
+    }
+
+    displayContext.setPageIndex(indexToUse);
 
     if (displayContext.results) {
       let i = 0 + displayContext.pageIndex * displayContext.displayCount;
@@ -61,7 +72,7 @@ function ToDoList(props) {
   }, [displayContext]);
 
   return (
-    <If condition={displayContext.results}>
+    <>
       <h2 className="mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
         {props.isLoading ? (
@@ -74,7 +85,7 @@ function ToDoList(props) {
               try again later!
             </h3>
           </div>
-        ) : displayItems.length ? (
+        ) : displayItems && displayItems.length ? (
           <div className="mt-4 mb-4 fade-in">
             <Settings />
             <>{displayItems}</>
@@ -97,7 +108,7 @@ function ToDoList(props) {
           </div>
         )}
       </div>
-    </If>
+    </>
   );
 }
 

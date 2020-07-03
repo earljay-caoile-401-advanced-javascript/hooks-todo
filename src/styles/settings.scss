@@ -1,0 +1,32 @@
+@import 'variables';
+
+.settings-dark {
+  color: white;
+  background-color: $teal;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.task-count,
+.task-pages {
+  padding: $spacing 0;
+  display: flex;
+  justify-content: flex-end;
+
+  input {
+    max-width: 15em;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
