@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import '../styles/todo.scss';
 import useFetch from '../hooks/useFetch';
 import useForm from '../hooks/useForm';
+import { ListContext } from './Contexts';
 
 /**
  * component that renders the TodoForm or ToDoList components based on route
@@ -19,6 +20,9 @@ import useForm from '../hooks/useForm';
 function ToDo() {
   const [tasks, setTasks] = useState([]);
   const [numIncomplete, setNumIncomplete] = useState(0);
+  const [displayCount, setDisplayCount] = useState(3);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [onLastPage, setOnLastPage] = useState(0);
   const baseUrl = 'https://cf-js-401-api-server.herokuapp.com/api/v1/todo';
   const baseData = {
     text: '',
@@ -217,19 +221,30 @@ function ToDo() {
 
   return (
     <div id="main-content">
-      <Route path="/" exact>
-        <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
-      </Route>
-      <Route path="/tasks" exact>
-        <ToDoList
-          numIncomplete={numIncomplete}
-          isLoading={isLoading && request && request.method === 'GET'}
-          error={error}
-          tasks={tasks}
-          editTask={editTask}
-          deleteTask={deleteTask}
-        />
-      </Route>
+      <ListContext.Provider
+        value={{
+          results: tasks,
+          displayCount,
+          setDisplayCount,
+          pageIndex,
+          setPageIndex,
+          onLastPage,
+          setOnLastPage,
+        }}
+      >
+        <Route path="/" exact>
+          <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
+        </Route>
+        <Route path="/tasks" exact>
+          <ToDoList
+            numIncomplete={numIncomplete}
+            isLoading={isLoading && request && request.method === 'GET'}
+            error={error}
+            editTask={editTask}
+            deleteTask={deleteTask}
+          />
+        </Route>
+      </ListContext.Provider>
     </div>
   );
 }

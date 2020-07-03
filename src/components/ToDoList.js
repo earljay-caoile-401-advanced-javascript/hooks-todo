@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import TodoItem from './ToDoItem';
-import { Button, Pagination } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import If from './If';
 import LoadingSpinner from './LoadingSpinner';
-import { ListContext } from './Settings';
+import { ListContext } from './Contexts';
+import Settings from './Settings';
 
 /**
  * component holding a list of ToDo items and some supplementary text elements
@@ -32,19 +33,23 @@ import { ListContext } from './Settings';
  * )
  */
 function ToDoList(props) {
-  const displayData = useContext(ListContext);
-  const [pageIndex, setPage] = useState(0);
+  const displayContext = useContext(ListContext);
   const [displayItems, setDisplayItems] = useState([]);
 
   useEffect(() => {
     const tasksToRender = [];
 
-    if (props.tasks) {
-      let i = 0 + pageIndex * displayData.displayCount;
-      let max = Math.min(i + displayData.displayCount, props.tasks.length);
+    if (displayContext.results) {
+      let i = 0 + displayContext.pageIndex * displayContext.displayCount;
+      let max = Math.min(
+        i + displayContext.displayCount,
+        displayContext.results.length
+      );
+
+      displayContext.setOnLastPage(max === displayContext.results.length);
 
       for (i; i < max; i++) {
-        const currTask = props.tasks[i];
+        const currTask = displayContext.results[i];
 
         tasksToRender.push(
           <TodoItem
@@ -59,16 +64,15 @@ function ToDoList(props) {
     }
 
     setDisplayItems(tasksToRender);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    props.tasks,
-    pageIndex,
-    displayData.displayCount,
-    props.deleteTask,
-    props.editTask,
+    displayContext.results,
+    displayContext.pageIndex,
+    displayContext.displayCount,
   ]);
 
   return (
-    <If condition={props.tasks}>
+    <If condition={displayContext.results}>
       <h2 className="mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
         {props.isLoading ? (
@@ -83,28 +87,7 @@ function ToDoList(props) {
           </div>
         ) : displayItems.length ? (
           <div className="mt-4 mb-4 fade-in">
-            <Pagination>
-              <If condition={pageIndex - 1 >= 0}>
-                <Pagination.Prev
-                  onClick={(e) => {
-                    e.target.disabled = pageIndex - 1 < 0;
-                    setPage(pageIndex - 1);
-                  }}
-                >
-                  {'< Prev'}
-                </Pagination.Prev>
-              </If>
-              <Pagination.Item active>{pageIndex + 1}</Pagination.Item>
-              <If condition={pageIndex + 1 < displayItems.length}>
-                <Pagination.Next
-                  onClick={(e) => {
-                    setPage(pageIndex + 1);
-                  }}
-                >
-                  {'Next >'}
-                </Pagination.Next>
-              </If>
-            </Pagination>
+            <Settings />
             <>{displayItems}</>
           </div>
         ) : (
