@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import If from './If';
-
+import { CrudContext } from './Contexts';
 /**
  * component representing a single ToDo item
  * used as a child component of the ToDoList component
@@ -23,10 +23,12 @@ import If from './If';
  * )
  */
 function TodoItem(props) {
+  const crudFunctions = useContext(CrudContext);
+
   function handleCheckbox(e) {
     const taskCopy = { ...props.task };
     taskCopy.complete = e.target.checked;
-    props.editTask(parseInt(props.index), taskCopy);
+    crudFunctions.editTask(parseInt(props.index), taskCopy);
   }
 
   return (
@@ -51,7 +53,10 @@ function TodoItem(props) {
               <Button
                 variant="danger"
                 onClick={() =>
-                  props.deleteTask(props.index, parseInt(props.numIncomplete))
+                  crudFunctions.deleteTask(
+                    props.index,
+                    parseInt(props.numIncomplete)
+                  )
                 }
               >
                 Delete

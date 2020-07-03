@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import '../styles/todo.scss';
 import useFetch from '../hooks/useFetch';
 import useForm from '../hooks/useForm';
-import { ListContext } from './Contexts';
+import { ListContext, CrudContext } from './Contexts';
 
 /**
  * component that renders the TodoForm or ToDoList components based on route
@@ -232,18 +232,18 @@ function ToDo() {
           setOnLastPage,
         }}
       >
-        <Route path="/" exact>
-          <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
-        </Route>
-        <Route path="/tasks" exact>
-          <ToDoList
-            numIncomplete={numIncomplete}
-            isLoading={isLoading && request && request.method === 'GET'}
-            error={error}
-            editTask={editTask}
-            deleteTask={deleteTask}
-          />
-        </Route>
+        <CrudContext.Provider value={{ editTask, deleteTask }}>
+          <Route path="/" exact>
+            <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
+          </Route>
+          <Route path="/tasks" exact>
+            <ToDoList
+              numIncomplete={numIncomplete}
+              isLoading={isLoading && request && request.method === 'GET'}
+              error={error}
+            />
+          </Route>
+        </CrudContext.Provider>
       </ListContext.Provider>
     </div>
   );

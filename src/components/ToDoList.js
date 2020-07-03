@@ -52,24 +52,13 @@ function ToDoList(props) {
         const currTask = displayContext.results[i];
 
         tasksToRender.push(
-          <TodoItem
-            key={currTask + i}
-            task={currTask}
-            index={i}
-            editTask={props.editTask}
-            deleteTask={props.deleteTask}
-          />
+          <TodoItem key={currTask + i} task={currTask} index={i} />
         );
       }
     }
 
     setDisplayItems(tasksToRender);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    displayContext.results,
-    displayContext.pageIndex,
-    displayContext.displayCount,
-  ]);
+  }, [displayContext]);
 
   return (
     <If condition={displayContext.results}>
