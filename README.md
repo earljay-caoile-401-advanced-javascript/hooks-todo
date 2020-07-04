@@ -13,7 +13,7 @@ Labs 26, 27, and 28 for CF JS 401 Nights
 - [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/3)
 - [GitHub actions](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/actions)
 - [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-28)
-- [Netlify Deployment](https://clever-heyrovsky-cb81ec.netlify.app/)
+- [Netlify Deployment](https://elastic-hopper-626eb2.netlify.app/)
 
 #### Resources
 
