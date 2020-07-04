@@ -92,7 +92,6 @@ function ToDo() {
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
-    console.log('entering editTask:', index, updatedTask);
     async function putHelper() {
       const filteredTask = {
         assignee: updatedTask.assignee,
@@ -111,6 +110,7 @@ function ToDo() {
     }
 
     putHelper();
+
     const tasksCopy = [...tasks];
 
     if (showCompleted) {
@@ -129,7 +129,6 @@ function ToDo() {
       updatedTask.complete ? numIncomplete - 1 : numIncomplete + 1,
       tasksCopy
     );
-    console.log('tasksCopy at end:', tasksCopy);
   }
 
   /**
@@ -138,12 +137,16 @@ function ToDo() {
    * @param {Number} deleteIndex - index of the task object to delete
    */
   function deleteTask(deleteIndex, taskToDelete) {
-    const requestBody = {
-      method: 'DELETE',
-    };
+    async function deleteHelper() {
+      const requestBody = {
+        method: 'DELETE',
+      };
 
-    setUrl(baseUrl + `/${taskToDelete.id}`);
-    setRequest(requestBody);
+      await setUrl(baseUrl + `/${taskToDelete.id}`);
+      await setRequest(requestBody);
+    }
+
+    deleteHelper();
 
     const filteredArr = tasks.filter((task, index) =>
       task.id ? task.id !== taskToDelete.id : index !== deleteIndex
