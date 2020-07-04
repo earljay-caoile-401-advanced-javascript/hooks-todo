@@ -92,28 +92,31 @@ function ToDo() {
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
-    const filteredTask = {
-      assignee: updatedTask.assignee,
-      complete: updatedTask.complete,
-      difficulty: updatedTask.difficulty,
-      text: updatedTask.text,
-    };
+    async function putHelper() {
+      const filteredTask = {
+        assignee: updatedTask.assignee,
+        complete: updatedTask.complete,
+        difficulty: updatedTask.difficulty,
+        text: updatedTask.text,
+      };
 
-    const requestBody = {
-      method: 'PUT',
-      body: filteredTask,
-    };
+      const requestBody = {
+        method: 'PUT',
+        body: filteredTask,
+      };
 
-    setUrl(baseUrl + `/${updatedTask.id}`);
-    setRequest(requestBody);
+      await setUrl(baseUrl + `/${updatedTask.id}`);
+      await setRequest(requestBody);
+    }
 
+    putHelper();
     const tasksCopy = [...tasks];
     tasksCopy[index] = updatedTask;
 
-    setNumIncomplete(
-      updatedTask.complete ? numIncomplete - 1 : numIncomplete + 1
+    setIncompleteAndTasks(
+      updatedTask.complete ? numIncomplete - 1 : numIncomplete + 1,
+      tasksCopy
     );
-    setTasks(tasksCopy);
   }
 
   /**
