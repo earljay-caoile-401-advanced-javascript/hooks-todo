@@ -226,31 +226,31 @@ describe('the whole app', () => {
     const taskText = taskCount.find('input');
     expect(taskText.getDOMNode().value).toBe('3');
 
-    // const minusBtn = taskCount.find('.minus-btn').at(0);
-    // await minusBtn.simulate('click');
-    // expect(taskText.getDOMNode().value).toBe('2');
+    const minusBtn = taskCount.find('.minus-btn').at(0);
+    await minusBtn.simulate('click');
+    expect(taskText.getDOMNode().value).toBe('2');
 
-    // expect(app.find('.card-header')).toHaveLength(2);
-    // expect(app.find('.card-header').at(0).text()).toBe('Task 1');
-    // expect(app.find('.card-header').at(1).text()).toBe('Task 2');
+    expect(app.find('.card-header')).toHaveLength(2);
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    expect(app.find('.card-header').at(1).text()).toBe('Task 2');
 
-    // await minusBtn.simulate('click');
-    // expect(app.find('.card-header')).toHaveLength(1);
-    // expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    await minusBtn.simulate('click');
+    expect(app.find('.card-header')).toHaveLength(1);
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
 
-    // const plusBtn = taskCount.find('.plus-btn').at(0);
-    // await plusBtn.simulate('click');
-    // await plusBtn.simulate('click');
-    // expect(app.find('.card-header')).toHaveLength(3);
+    const plusBtn = taskCount.find('.plus-btn').at(0);
+    await plusBtn.simulate('click');
+    await plusBtn.simulate('click');
+    expect(app.find('.card-header')).toHaveLength(3);
 
-    // const checkboxContainer = settings.find('#complete-toggle').at(0);
-    // const checkbox = checkboxContainer.find('input');
+    const checkboxContainer = settings.find('#complete-toggle').at(0);
+    const checkbox = checkboxContainer.find('input');
 
-    // await checkbox.simulate('change', falseClickEvent);
-    // checkbox.getDOMNode().checked = false;
-    // expect(app.find('.card-header')).toHaveLength(2);
+    await checkbox.simulate('change', falseClickEvent);
+    checkbox.getDOMNode().checked = false;
+    expect(app.find('.card-header')).toHaveLength(2);
 
-    // await checkbox.simulate('change', trueClickEvent);
-    // expect(app.find('.card-header')).toHaveLength(3);
+    await checkbox.simulate('change', trueClickEvent);
+    expect(app.find('.card-header')).toHaveLength(3);
   });
 });

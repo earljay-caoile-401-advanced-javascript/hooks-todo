@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { InputGroup, Pagination, Button, Form } from 'react-bootstrap';
 import { ListContext } from './Contexts';
 import useForm from '../hooks/useForm';
@@ -22,6 +22,16 @@ function Settings() {
   const [tasksToDisplay, setTasksToDisplay] = useState(
     displayContext.displayCount
   );
+
+  /**
+   * trying to add cleanup so GitHub stops yelling at me
+   */
+  useEffect(() => {
+    return () => {
+      setValidated(false);
+      setTasksToDisplay(0);
+    };
+  }, [validated]);
 
   /**
    * function that changes the number of results to display if "form submission is successful"
