@@ -36,17 +36,15 @@ input[type='number'] {
   margin-left: 10%;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 630px) {
   .task-pages {
-    display: block;
-    text-align: center;
+    flex-direction: column;
+    .pagination {
+      align-self: center;
+    }
   }
 
   .show-completed {
-    margin-left: auto;
+    text-align: center;
   }
-
-  // .pagination {
-  //   text-align: center;
-  // }
 }

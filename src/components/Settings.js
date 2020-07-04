@@ -3,6 +3,7 @@ import { InputGroup, Pagination, Button, Form } from 'react-bootstrap';
 import { ListContext } from './Contexts';
 import useForm from '../hooks/useForm';
 import '../styles/settings.scss';
+import If from './If';
 
 /**
  * component holding settings used to customize a list of items and how
@@ -104,6 +105,11 @@ function Settings() {
       </Form>
       <div className="task-pages">
         <Pagination>
+          <Pagination.First
+            onClick={() => {
+              displayContext.setPageIndex(0);
+            }}
+          />
           <Pagination.Prev
             disabled={displayContext.pageIndex === 0}
             onClick={() => {
@@ -112,9 +118,27 @@ function Settings() {
           >
             {'< Prev'}
           </Pagination.Prev>
+          <If condition={displayContext.pageIndex}>
+            <Pagination.Item
+              onClick={() =>
+                displayContext.setPageIndex(displayContext.pageIndex - 1)
+              }
+            >
+              {displayContext.pageIndex}
+            </Pagination.Item>
+          </If>
           <Pagination.Item active>
             {displayContext.pageIndex + 1}
           </Pagination.Item>
+          <If condition={!displayContext.onLastPage}>
+            <Pagination.Item
+              onClick={() => {
+                displayContext.setPageIndex(displayContext.pageIndex + 1);
+              }}
+            >
+              {displayContext.pageIndex + 2}
+            </Pagination.Item>
+          </If>
           <Pagination.Next
             disabled={displayContext.onLastPage}
             onClick={() => {
@@ -123,6 +147,15 @@ function Settings() {
           >
             {'Next >'}
           </Pagination.Next>
+          <Pagination.Last
+            onClick={() =>
+              displayContext.setPageIndex(
+                Math.floor(
+                  displayContext.results.length / displayContext.displayCount
+                )
+              )
+            }
+          />
         </Pagination>
         <Form.Check
           type="checkbox"
