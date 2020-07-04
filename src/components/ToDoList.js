@@ -14,7 +14,7 @@ import Settings from './Settings';
  * @example
  * return (
  *   <TodoList
- *     tasks=[
+ *     tasks={[
  *        {
  *          text: 'cook green eggs and ham'
  *          assignee: 'Sam I Am',
@@ -27,7 +27,7 @@ import Settings from './Settings';
  *          difficulty: 1,
  *          complete: true,
  *        }
- *      ]
+ *      ]}
     />
  * )
  */
@@ -74,6 +74,21 @@ function ToDoList(props) {
     setDisplayItems(tasksToRender);
   }, [displayContext]);
 
+  /**
+   * helper function that determines if all tasks are complete
+   * used to determine content to display
+   * @returns {Boolean} hasOnlyCompleteTasks - whether there are tasks to render, but all of them are complete
+   */
+  function hasOnlyCompleteTasks() {
+    return (
+      displayContext &&
+      displayContext.results &&
+      displayContext.results.length &&
+      displayItems &&
+      !displayItems.length
+    );
+  }
+
   return (
     <>
       <h2 className="text-center mb-4">Tasks ToDo</h2>
@@ -93,8 +108,20 @@ function ToDoList(props) {
             <Settings />
             <>{displayItems}</>
           </div>
+        ) : hasOnlyCompleteTasks() ? (
+          <div className="no-tasks">
+            <img src={require('../assets/graduated.jpg')} alt="graduated" />
+            <p className="mt-4 mb-4 center">Hooray! All tasks are complete!</p>
+            <Button
+              variant="info"
+              className="btn-lg btn-block"
+              onClick={() => displayContext.setShowCompleted(true)}
+            >
+              Show Completed Tasks
+            </Button>
+          </div>
         ) : (
-          <div className="no-tasks m-4">
+          <div className="no-tasks">
             <img
               src={require('../assets/empty-notebook.jpg')}
               alt="empty notebook"
