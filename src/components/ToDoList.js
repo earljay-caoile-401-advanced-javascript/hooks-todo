@@ -36,6 +36,10 @@ function ToDoList(props) {
 
   const [displayItems, setDisplayItems] = useState([]);
 
+  /**
+   * hook that handles data from display context to create the list of items to render
+   * changes dynamically based on chosen user settings
+   */
   useEffect(() => {
     const tasksToRender = [];
     let indexToUse = displayContext.pageIndex;
@@ -63,7 +67,7 @@ function ToDoList(props) {
     for (; i < max; i++) {
       const currTask = filteredTasks[i];
       tasksToRender.push(
-        <TodoItem key={currTask + i} task={currTask} index={i} />
+        <TodoItem key={currTask + i} data={currTask} index={i} />
       );
     }
 

@@ -55,4 +55,4 @@ Labs 26, 27, and 28 for CF JS 401 Nights
 
 ### UML
 
-![UML Image](lab-27-uml.png)
+![UML Image](lab-28-uml.png)

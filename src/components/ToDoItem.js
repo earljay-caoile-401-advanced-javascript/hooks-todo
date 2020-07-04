@@ -11,7 +11,7 @@ import { CrudContext } from './Contexts';
  * return (
  *   <TodoItem
  *     key="0"
- *     task={
+ *     data={
  *        text: 'cook green eggs and ham'
  *        assignee: 'Sam I Am',
  *        difficulty: 3,
@@ -26,25 +26,25 @@ function TodoItem(props) {
   const crudFunctions = useContext(CrudContext);
 
   function handleCheckbox(e) {
-    const taskCopy = { ...props.task };
+    const taskCopy = { ...props.data };
     taskCopy.complete = e.target.checked;
     crudFunctions.editTask(parseInt(props.index), taskCopy);
   }
 
   return (
-    <If condition={props && props.task}>
+    <If condition={props && props.data}>
       <div className="mt-4 mb-4 todo-item-container">
         <Card>
           <Card.Header>Task {props.index + 1}</Card.Header>
           <div className="card-body-group">
             <Card.Body className="task-info">
-              <Card.Text>description: {props.task.text}</Card.Text>
-              <Card.Text>assigned to: {props.task.assignee}</Card.Text>
-              <Card.Text>difficulty: {props.task.difficulty}</Card.Text>
+              <Card.Text>description: {props.data.text}</Card.Text>
+              <Card.Text>assigned to: {props.data.assignee}</Card.Text>
+              <Card.Text>difficulty: {props.data.difficulty}</Card.Text>
               <Form.Check
                 type="checkbox"
                 label="completed"
-                checked={props.task.complete}
+                checked={props.data.complete}
                 id={'task-checkbox-' + props.index}
                 onChange={handleCheckbox}
               />

@@ -103,7 +103,7 @@ function Settings() {
           </InputGroup.Append>
         </InputGroup>
       </Form>
-      <div className="task-group-2">
+      <div className="set-group-2">
         <Form.Check
           type="checkbox"
           id="complete-toggle"
