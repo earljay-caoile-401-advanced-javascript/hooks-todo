@@ -40,32 +40,31 @@ function ToDoList(props) {
     const tasksToRender = [];
     let indexToUse = displayContext.pageIndex;
 
+    const filteredTasks = displayContext.showCompleted
+      ? displayContext.results
+      : displayContext.results.filter((task) => !task.complete);
+
     if (
-      displayContext.results &&
+      filteredTasks &&
+      displayContext.pageIndex &&
       displayContext.pageIndex * displayContext.displayCount >=
-        displayContext.results.length
+        filteredTasks.length
     ) {
       indexToUse = Math.max(0, displayContext.pageIndex - 1);
     }
 
     displayContext.setPageIndex(indexToUse);
 
-    if (displayContext.results) {
-      let i = 0 + displayContext.pageIndex * displayContext.displayCount;
-      let max = Math.min(
-        i + displayContext.displayCount,
-        displayContext.results.length
+    let i = 0 + displayContext.pageIndex * displayContext.displayCount;
+    let max = Math.min(i + displayContext.displayCount, filteredTasks.length);
+
+    displayContext.setOnLastPage(max === filteredTasks.length);
+
+    for (; i < max; i++) {
+      const currTask = filteredTasks[i];
+      tasksToRender.push(
+        <TodoItem key={currTask + i} task={currTask} index={i} />
       );
-
-      displayContext.setOnLastPage(max === displayContext.results.length);
-
-      for (i; i < max; i++) {
-        const currTask = displayContext.results[i];
-
-        tasksToRender.push(
-          <TodoItem key={currTask + i} task={currTask} index={i} />
-        );
-      }
     }
 
     setDisplayItems(tasksToRender);

@@ -22,7 +22,9 @@ function ToDo() {
   const [numIncomplete, setNumIncomplete] = useState(0);
   const [displayCount, setDisplayCount] = useState(3);
   const [pageIndex, setPageIndex] = useState(0);
-  const [onLastPage, setOnLastPage] = useState(0);
+  const [onLastPage, setOnLastPage] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(true);
+
   const baseUrl = 'https://cf-js-401-api-server.herokuapp.com/api/v1/todo';
   const baseData = {
     text: '',
@@ -230,6 +232,8 @@ function ToDo() {
           setPageIndex,
           onLastPage,
           setOnLastPage,
+          showCompleted,
+          setShowCompleted,
         }}
       >
         <CrudContext.Provider value={{ editTask, deleteTask }}>

@@ -20,6 +20,7 @@ input[type='number'] {
   padding: $spacing 0;
   display: flex;
   justify-content: flex-end;
+  flex-direction: row;
 
   input {
     max-width: 15em;
@@ -29,4 +30,23 @@ input[type='number'] {
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+.show-completed {
+  margin-left: 10%;
+}
+
+@media (max-width: 520px) {
+  .task-pages {
+    display: block;
+    text-align: center;
+  }
+
+  .show-completed {
+    margin-left: auto;
+  }
+
+  // .pagination {
+  //   text-align: center;
+  // }
 }
