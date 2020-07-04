@@ -88,7 +88,8 @@ function ToDo() {
    * helper function that edits an existing task
    * makes a PUT API fetch
    * currently only toggling checkbox complete status
-   * @param {Number} index - index of the task object in the tasks array to edit
+   * @param {Number} index - index of the task object in the tasks array to edit (only used
+   * when all tasks are displayed)
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
@@ -134,7 +135,9 @@ function ToDo() {
   /**
    * function that deletes an existing task
    * makes a DELETE API fetch
-   * @param {Number} deleteIndex - index of the task object to delete
+   * @param {Number} deleteIndex - index of the task object to delete (only used
+   * when all tasks are displayed or testing doesn't give an id)
+   * @param {Object} taskToDelete - object of the task to delete
    */
   function deleteTask(deleteIndex, taskToDelete) {
     async function deleteHelper() {
