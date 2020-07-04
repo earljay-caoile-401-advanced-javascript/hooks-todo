@@ -53,10 +53,9 @@ function TodoItem(props) {
               <Button
                 variant="danger"
                 onClick={() =>
-                  crudFunctions.deleteTask(
-                    props.index,
-                    parseInt(props.numIncomplete)
-                  )
+                  crudFunctions.deleteTask(parseInt(props.index), {
+                    ...props.data,
+                  })
                 }
               >
                 Delete

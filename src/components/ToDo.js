@@ -92,6 +92,7 @@ function ToDo() {
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
+    console.log('entering editTask:', index, updatedTask);
     async function putHelper() {
       const filteredTask = {
         assignee: updatedTask.assignee,
@@ -111,12 +112,24 @@ function ToDo() {
 
     putHelper();
     const tasksCopy = [...tasks];
-    tasksCopy[index] = updatedTask;
+
+    if (showCompleted) {
+      tasksCopy[index] = updatedTask;
+    } else {
+      for (let i = 0; i < tasksCopy.length; i++) {
+        const task = tasksCopy[i];
+        if (task.id === updatedTask.id) {
+          tasksCopy[i] = updatedTask;
+          break;
+        }
+      }
+    }
 
     setIncompleteAndTasks(
       updatedTask.complete ? numIncomplete - 1 : numIncomplete + 1,
       tasksCopy
     );
+    console.log('tasksCopy at end:', tasksCopy);
   }
 
   /**
@@ -124,9 +137,7 @@ function ToDo() {
    * makes a DELETE API fetch
    * @param {Number} deleteIndex - index of the task object to delete
    */
-  function deleteTask(deleteIndex) {
-    const taskToDelete = { ...tasks[deleteIndex] };
-
+  function deleteTask(deleteIndex, taskToDelete) {
     const requestBody = {
       method: 'DELETE',
     };
@@ -134,7 +145,9 @@ function ToDo() {
     setUrl(baseUrl + `/${taskToDelete.id}`);
     setRequest(requestBody);
 
-    const filteredArr = tasks.filter((_task, index) => index !== deleteIndex);
+    const filteredArr = tasks.filter((task, index) =>
+      task.id ? task.id !== taskToDelete.id : index !== deleteIndex
+    );
 
     setIncompleteAndTasks(
       taskToDelete.complete ? numIncomplete : numIncomplete,
