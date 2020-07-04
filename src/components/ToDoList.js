@@ -72,7 +72,7 @@ function ToDoList(props) {
 
   return (
     <>
-      <h2 className="mb-4">Tasks ToDo</h2>
+      <h2 className="text-center mb-4">Tasks ToDo</h2>
       <div className="mt-4 mb-4">
         {props.isLoading ? (
           <LoadingSpinner />
@@ -85,7 +85,7 @@ function ToDoList(props) {
             </h3>
           </div>
         ) : displayItems && displayItems.length ? (
-          <div className="mt-4 mb-4 fade-in">
+          <div className="mb-4 fade-in">
             <Settings />
             <>{displayItems}</>
           </div>

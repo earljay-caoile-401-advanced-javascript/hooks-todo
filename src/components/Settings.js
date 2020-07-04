@@ -103,7 +103,15 @@ function Settings() {
           </InputGroup.Append>
         </InputGroup>
       </Form>
-      <div className="task-pages">
+      <div className="task-group-2">
+        <Form.Check
+          type="checkbox"
+          id="complete-toggle"
+          label="Show Completed Tasks"
+          className="show-completed mt-2"
+          checked={displayContext.showCompleted}
+          onChange={(e) => displayContext.setShowCompleted(e.target.checked)}
+        />
         <Pagination>
           <Pagination.First
             onClick={() => {
@@ -159,14 +167,6 @@ function Settings() {
             }
           />
         </Pagination>
-        <Form.Check
-          type="checkbox"
-          id="complete-toggle"
-          label="Show Completed Tasks"
-          className="show-completed mt-2"
-          checked={displayContext.showCompleted}
-          onChange={(e) => displayContext.setShowCompleted(e.target.checked)}
-        />
       </div>
     </div>
   );

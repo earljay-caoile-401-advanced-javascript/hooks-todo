@@ -24,12 +24,12 @@ function useForm(callback, initObj) {
   /**
    * event handler function that handles page submission
    * designed to work with HTML page form validation
-   * @param {Object} event - event object (we weant to inspect the currentTarget property)
+   * @param {Object} e - event object (we weant to inspect the currentTarget property)
    */
-  function handleSubmit(event) {
-    const form = event.currentTarget;
-    event.preventDefault();
-    event.stopPropagation();
+  function handleSubmit(e) {
+    const form = e.currentTarget;
+    e.preventDefault();
+    e.stopPropagation();
     if (form.checkValidity() === false) {
       return false;
     } else {
