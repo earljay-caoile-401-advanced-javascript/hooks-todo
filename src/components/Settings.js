@@ -83,15 +83,15 @@ function Settings() {
           />
           <InputGroup.Append>
             <Button
+              className="minus-btn"
               variant="info"
-              className="task-count"
               onClick={() => handleClick(Math.max(tasksToDisplay - 1, 1))}
             >
               -
             </Button>
             <Button
+              className="plus-btn"
               variant="info"
-              className="task-count"
               onClick={() =>
                 handleClick(
                   Math.min(tasksToDisplay + 1, displayContext.results.length)
@@ -111,6 +111,7 @@ function Settings() {
             }}
           />
           <Pagination.Prev
+            className="prev-pg"
             disabled={displayContext.pageIndex === 0}
             onClick={() => {
               displayContext.setPageIndex(displayContext.pageIndex - 1);
@@ -140,6 +141,7 @@ function Settings() {
             </Pagination.Item>
           </If>
           <Pagination.Next
+            className="next-pg"
             disabled={displayContext.onLastPage}
             onClick={() => {
               displayContext.setPageIndex(displayContext.pageIndex + 1);
@@ -159,7 +161,7 @@ function Settings() {
         </Pagination>
         <Form.Check
           type="checkbox"
-          id="task-completed-checkbox-form"
+          id="complete-toggle"
           label="Show Completed Tasks"
           className="show-completed mt-2"
           checked={displayContext.showCompleted}

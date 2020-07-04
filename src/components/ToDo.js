@@ -71,6 +71,8 @@ function ToDo() {
       data,
     ]);
     setData(baseData);
+    setPageIndex(0);
+    setShowCompleted(true);
   }
 
   /**

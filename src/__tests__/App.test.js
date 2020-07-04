@@ -8,14 +8,21 @@ describe('the whole app', () => {
     text: 'cook green eggs and ham',
     assignee: 'Sam I Am',
     difficulty: 3,
-    completed: true,
+    complete: true,
   };
 
   const secondDummy = {
-    text: 'take shower',
+    text: 'shouting expletives',
     assignee: 'Bob Saget',
     difficulty: 1,
-    completed: false,
+    complete: false,
+  };
+
+  const thirdDummy = {
+    text: 'work on my guns',
+    assignee: 'Ron Burgundy',
+    difficulty: 4,
+    complete: false,
   };
 
   const trueClickEvent = {
@@ -82,7 +89,7 @@ describe('the whole app', () => {
     const checkboxSection = component.find('#task-completed-checkbox-form');
     const checkboxInput = checkboxSection.find('input');
 
-    if (taskObj.completed) {
+    if (taskObj.complete) {
       await checkboxInput.simulate('change', trueClickEvent);
       checkboxInput.getDOMNode().checked = true;
     } else {
@@ -186,5 +193,59 @@ describe('the whole app', () => {
 
     const mainContent = app.find('#main-content');
     expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();
+
+    const navLinks = app.find('.nav-link');
+    await navLinks.at(0).simulate('click', { button: 0 });
+  });
+
+  test('can show pagination', async () => {
+    await act(async () => {
+      await fillOutForm(app, dummyTask);
+      await submitAndChangePage(app);
+      const navLinks = app.find('.nav-link');
+      await navLinks.at(0).simulate('click', { button: 0 });
+      await fillOutForm(app, secondDummy);
+      await submitAndChangePage(app);
+      await navLinks.at(0).simulate('click', { button: 0 });
+      await fillOutForm(app, thirdDummy);
+      await submitAndChangePage(app);
+    });
+
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    expect(app.find('.card-header').at(1).text()).toBe('Task 2');
+    expect(app.find('.card-header').at(2).text()).toBe('Task 3');
+
+    const settings = app.find('#settings');
+    const taskCount = settings.find('.task-count').at(0);
+    const taskText = taskCount.find('input');
+    expect(taskText.getDOMNode().value).toBe('3');
+
+    const minusBtn = taskCount.find('.minus-btn').at(0);
+    await minusBtn.simulate('click');
+    expect(taskText.getDOMNode().value).toBe('2');
+
+    expect(app.find('.card-header')).toHaveLength(2);
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    expect(app.find('.card-header').at(1).text()).toBe('Task 2');
+
+    await minusBtn.simulate('click');
+    expect(app.find('.card-header')).toHaveLength(1);
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    await app.update();
+
+    const plusBtn = taskCount.find('.plus-btn').at(0);
+    await plusBtn.simulate('click');
+    await plusBtn.simulate('click');
+    expect(app.find('.card-header')).toHaveLength(3);
+
+    const checkboxContainer = settings.find('#complete-toggle').at(0);
+    const checkbox = checkboxContainer.find('input');
+
+    await checkbox.simulate('change', falseClickEvent);
+    checkbox.getDOMNode().checked = false;
+    expect(app.find('.card-header')).toHaveLength(2);
+
+    await checkbox.simulate('change', trueClickEvent);
+    expect(app.find('.card-header')).toHaveLength(3);
   });
 });
