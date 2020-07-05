@@ -181,22 +181,16 @@ describe('the whole app', () => {
     const firstDeleteContainer = firstCard.find('.card-body').at(1);
 
     const firstDeleteButton = firstDeleteContainer.find('button');
-
-    await act(async () => {
-      await firstDeleteButton.simulate('click');
-      await app.update();
-    });
+    firstDeleteButton.simulate('click');
 
     expect(app.find('.card-body-group')).toHaveLength(1);
 
+    expect(app.find('.card-body-group')).toHaveLength(1);
     const lastCard = app.find('.card-body-group').at(0);
     const lastDeleteContainer = lastCard.find('.card-body').at(1);
-    const lastDeleteButton = lastDeleteContainer.find('button');
 
-    await act(async () => {
-      await lastDeleteButton.simulate('click');
-      await app.update();
-    });
+    const lastDeleteButton = lastDeleteContainer.find('button');
+    lastDeleteButton.simulate('click');
 
     const mainContent = app.find('#main-content');
     expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();

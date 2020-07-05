@@ -136,16 +136,12 @@ function ToDo() {
    * @param {Object} taskToDelete - object of the task to delete
    */
   function deleteTask(deleteIndex, taskToDelete) {
-    async function deleteHelper() {
-      const requestBody = {
-        method: 'DELETE',
-      };
+    const requestBody = {
+      method: 'DELETE',
+    };
 
-      await setUrl(baseUrl + `/${taskToDelete.id}`);
-      await setRequest(requestBody);
-    }
-
-    deleteHelper();
+    setUrl(baseUrl + `/${taskToDelete.id}`);
+    setRequest(requestBody);
 
     const filteredArr = tasks.filter((task, index) =>
       task.id ? task.id !== taskToDelete.id : index !== deleteIndex
