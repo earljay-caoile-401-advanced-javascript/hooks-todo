@@ -224,6 +224,10 @@ function ToDo() {
     document.title = `ToDo: ${numIncomplete} ${
       numIncomplete === 1 ? 'task' : 'tasks'
     } incomplete`;
+
+    return () => {
+      document.title = 'This component is dead, Jim!';
+    };
   }, [numIncomplete]);
 
   /**

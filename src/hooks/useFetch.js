@@ -54,6 +54,11 @@ function useFetch(baseUrl, baseReq) {
     if (request) {
       customFetch();
     }
+
+    return () => {
+      setUrl(null);
+      setRequest(null);
+    };
   }, [request, baseUrl, url]);
 
   /**
