@@ -72,6 +72,10 @@ function ToDoList(props) {
     }
 
     setDisplayItems(tasksToRender);
+
+    return () => {
+      setDisplayItems([]);
+    };
   }, [displayContext]);
 
   /**

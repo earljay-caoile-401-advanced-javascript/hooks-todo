@@ -93,24 +93,20 @@ function ToDo() {
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
-    async function putHelper() {
-      const filteredTask = {
-        assignee: updatedTask.assignee,
-        complete: updatedTask.complete,
-        difficulty: updatedTask.difficulty,
-        text: updatedTask.text,
-      };
+    const filteredTask = {
+      assignee: updatedTask.assignee,
+      complete: updatedTask.complete,
+      difficulty: updatedTask.difficulty,
+      text: updatedTask.text,
+    };
 
-      const requestBody = {
-        method: 'PUT',
-        body: filteredTask,
-      };
+    const requestBody = {
+      method: 'PUT',
+      body: filteredTask,
+    };
 
-      await setUrl(baseUrl + `/${updatedTask.id}`);
-      await setRequest(requestBody);
-    }
-
-    putHelper();
+    setUrl(baseUrl + `/${updatedTask.id}`);
+    setRequest(requestBody);
 
     const tasksCopy = [...tasks];
 
