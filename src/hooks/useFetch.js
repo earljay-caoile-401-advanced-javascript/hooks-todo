@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react';
  * @param {String} inputUrl -  url to perform the fetch with
  * @returns several variables and functions to be used elsewhere
  */
-function useFetch(baseUrl, baseReq) {
+function useFetch(baseUrl, baseReq, initTrigger) {
   const [url, setUrl] = useState(baseUrl || '');
   const [request, setRequest] = useState(baseReq);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [response, setResponse] = useState();
+  const [fetchTrigger, setFetchTrigger] = useState(initTrigger || false);
 
   /**
    * hook that triggers when a user enters a url or request
@@ -40,7 +41,7 @@ function useFetch(baseUrl, baseReq) {
         });
       }
 
-      await setRequest(null);
+      await setFetchTrigger(false);
 
       if (res.status >= 300) {
         await setError(res);
@@ -52,7 +53,7 @@ function useFetch(baseUrl, baseReq) {
       await setIsLoading(false);
     }
 
-    if (request) {
+    if (request && fetchTrigger) {
       customFetch();
     }
 
@@ -60,7 +61,7 @@ function useFetch(baseUrl, baseReq) {
       setUrl(null);
       setRequest(null);
     };
-  }, [request, baseUrl, url]);
+  }, [request, baseUrl, url, fetchTrigger]);
 
   /**
    * helper function that determines whether a follow-up GET fetch can be run
@@ -74,6 +75,7 @@ function useFetch(baseUrl, baseReq) {
   return {
     setUrl,
     setRequest,
+    setFetchTrigger,
     request,
     isLoading,
     error,

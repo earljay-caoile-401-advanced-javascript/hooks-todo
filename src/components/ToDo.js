@@ -37,10 +37,15 @@ function ToDo() {
     method: 'GET',
   };
 
-  const { setUrl, setRequest, request, isLoading, error, response } = useFetch(
-    baseUrl,
-    baseReq
-  );
+  const {
+    setUrl,
+    setRequest,
+    setFetchTrigger,
+    request,
+    isLoading,
+    error,
+    response,
+  } = useFetch(baseUrl, baseReq, true);
 
   const { handleSubmit, handleChange, data, setData } = useForm(
     addTask,
@@ -62,6 +67,7 @@ function ToDo() {
 
     setUrl(baseUrl);
     setRequest(requestBody);
+    setFetchTrigger(true);
     setIncompleteAndTasks(data.complete ? numIncomplete : numIncomplete + 1, [
       ...tasks,
       data,
@@ -78,6 +84,7 @@ function ToDo() {
   function getTasks() {
     setUrl(baseUrl);
     setRequest(baseReq);
+    setFetchTrigger(true);
   }
 
   /**
@@ -103,6 +110,7 @@ function ToDo() {
 
     setUrl(baseUrl + `/${updatedTask.id}`);
     setRequest(requestBody);
+    setFetchTrigger(true);
 
     const tasksCopy = [...tasks];
 
@@ -138,6 +146,7 @@ function ToDo() {
 
     setUrl(baseUrl + `/${taskToDelete.id}`);
     setRequest(requestBody);
+    setFetchTrigger(true);
 
     const filteredArr = tasks.filter((task, index) =>
       task.id ? task.id !== taskToDelete.id : index !== deleteIndex
