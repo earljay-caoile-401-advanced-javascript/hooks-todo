@@ -65,9 +65,7 @@ function ToDo() {
       runGet: true,
     };
 
-    setUrl(baseUrl);
-    setRequest(requestBody);
-    setFetchTrigger(true);
+    fetchHelper(baseUrl, requestBody);
     setIncompleteAndTasks(data.complete ? numIncomplete : numIncomplete + 1, [
       ...tasks,
       data,
@@ -78,13 +76,23 @@ function ToDo() {
   }
 
   /**
+   * helper function that sets up the useFetch hook with the appropriate parameters and enables
+   * a fetch by setting the fetch trigger to true
+   * @param {String} url - url to be used for the API fetch
+   * @param {Object} reqBody - request body to be used for the API fetch
+   */
+  function fetchHelper(url, reqBody) {
+    setUrl(url);
+    setRequest(reqBody);
+    setFetchTrigger(true);
+  }
+
+  /**
    * simple function that performs a GET fetch to grab all ToDo tasks
    * used in conjunction with the componentDidMount-like useEffect hook to re-render on a timer
    */
   function getTasks() {
-    setUrl(baseUrl);
-    setRequest(baseReq);
-    setFetchTrigger(true);
+    fetchHelper(baseUrl, baseReq);
   }
 
   /**
@@ -108,9 +116,7 @@ function ToDo() {
       body: filteredTask,
     };
 
-    setUrl(baseUrl + `/${updatedTask.id}`);
-    setRequest(requestBody);
-    setFetchTrigger(true);
+    fetchHelper(baseUrl + `/${updatedTask.id}`, requestBody);
 
     const tasksCopy = [...tasks];
 
@@ -144,9 +150,7 @@ function ToDo() {
       method: 'DELETE',
     };
 
-    setUrl(baseUrl + `/${taskToDelete.id}`);
-    setRequest(requestBody);
-    setFetchTrigger(true);
+    fetchHelper(baseUrl + `/${taskToDelete.id}`, requestBody);
 
     const filteredArr = tasks.filter((task, index) =>
       task.id ? task.id !== taskToDelete.id : index !== deleteIndex
