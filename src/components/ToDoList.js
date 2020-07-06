@@ -14,20 +14,9 @@ import Settings from './Settings';
  * @example
  * return (
  *   <TodoList
- *     tasks={[
- *        {
- *          text: 'cook green eggs and ham'
- *          assignee: 'Sam I Am',
- *          difficulty: 3,
- *          complete: false,
- *        },
- *        {
- *          text: 'take a shower',
- *          assignee: 'Bob Saget',
- *          difficulty: 1,
- *          complete: true,
- *        }
- *      ]}
+ *     numIncomplete={4}
+ *     isLoading={false}
+ *     error={undefined}
     />
  * )
  */

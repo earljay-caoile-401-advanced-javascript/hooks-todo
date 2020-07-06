@@ -100,7 +100,7 @@ code {
   @media (max-width: 768px) {
     margin: 0;
     margin-top: 10vh;
-    padding: $spacing;
+    padding: $spacing * 2.5 $spacing;
   }
 
   @media (max-width: 314px) {
