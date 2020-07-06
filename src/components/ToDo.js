@@ -164,7 +164,6 @@ function ToDo() {
    * @param {Array} results - array of tasks to iterate through
    */
   function resultsCounter(results) {
-    console.log('Are we in here?', results);
     let tasksCopy = [...tasks];
     let incompCounter = numIncomplete;
 
