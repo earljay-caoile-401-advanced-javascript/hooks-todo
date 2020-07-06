@@ -54,18 +54,14 @@ function ToDo() {
    * in the actual app since runGet in the requestBody does a follow-up GET fetch
    */
   function addTask() {
-    async function postHelper() {
-      const requestBody = {
-        method: 'POST',
-        body: data,
-        runGet: true,
-      };
+    const requestBody = {
+      method: 'POST',
+      body: data,
+      runGet: true,
+    };
 
-      await setUrl(baseUrl);
-      await setRequest(requestBody);
-    }
-
-    postHelper();
+    setUrl(baseUrl);
+    setRequest(requestBody);
     setIncompleteAndTasks(data.complete ? numIncomplete : numIncomplete + 1, [
       ...tasks,
       data,
@@ -159,6 +155,7 @@ function ToDo() {
    * @param {Array} results - array of tasks to iterate through
    */
   function resultsCounter(results) {
+    console.log('Are we in here?', results);
     let tasksCopy = [...tasks];
     let incompCounter = numIncomplete;
 

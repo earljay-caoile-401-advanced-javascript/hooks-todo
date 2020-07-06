@@ -99,11 +99,9 @@ describe('the whole app', () => {
   };
 
   const submitAndChangePage = async (component) => {
-    await act(async () => {
-      const form = component.find('form');
-      await form.simulate('submit');
-      await component.update();
-    });
+    const form = component.find('form');
+    await form.simulate('submit');
+    await component.update();
 
     const todoList = component.find('#main-content');
     expect(todoList.find('h2').text()).toBe('Tasks ToDo');
@@ -127,32 +125,29 @@ describe('the whole app', () => {
   };
 
   test('can go through the whole submission and list checking process', async () => {
-    await act(async () => {
-      await fillOutForm(app, dummyTask);
-      await submitAndChangePage(app);
-      expect(app.find('.card-header').text()).toBe('Task 1');
+    await fillOutForm(app, dummyTask);
+    await submitAndChangePage(app);
 
-      const firstCard = app.find('.card-body-group');
-      await verifyCardContents(firstCard, dummyTask);
-      expect(document.title).toBe('ToDo: 0 tasks incomplete');
+    expect(app.find('.card-header').text()).toBe('Task 1');
 
-      const firstCheckbox = firstCard.find('input');
-      await firstCheckbox.simulate('change', falseClickEvent);
-      expect(document.title).toBe('ToDo: 1 task incomplete');
+    const firstCard = app.find('.card-body-group');
+    await verifyCardContents(firstCard, dummyTask);
+    expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-      await firstCheckbox.simulate('change', trueClickEvent);
-      expect(document.title).toBe('ToDo: 0 tasks incomplete');
-    });
+    const firstCheckbox = firstCard.find('input');
+    await firstCheckbox.simulate('change', falseClickEvent);
+    expect(document.title).toBe('ToDo: 1 task incomplete');
+
+    await firstCheckbox.simulate('change', trueClickEvent);
+    expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
     const navLinks = app.find('.nav-link');
     await navLinks.at(0).simulate('click', { button: 0 });
   });
 
   test('can go through through a second form submission and see the first and second tasks on the tasks page', async () => {
-    await act(async () => {
-      await fillOutForm(app, secondDummy);
-      await submitAndChangePage(app);
-    });
+    await fillOutForm(app, secondDummy);
+    await submitAndChangePage(app);
 
     expect(app.find('.card-header').at(0).text()).toBe('Task 1');
     expect(app.find('.card-header').at(1).text()).toBe('Task 2');
@@ -200,17 +195,15 @@ describe('the whole app', () => {
   });
 
   test('can show pagination', async () => {
-    await act(async () => {
-      await fillOutForm(app, dummyTask);
-      await submitAndChangePage(app);
-      const navLinks = app.find('.nav-link');
-      await navLinks.at(0).simulate('click', { button: 0 });
-      await fillOutForm(app, secondDummy);
-      await submitAndChangePage(app);
-      await navLinks.at(0).simulate('click', { button: 0 });
-      await fillOutForm(app, thirdDummy);
-      await submitAndChangePage(app);
-    });
+    await fillOutForm(app, dummyTask);
+    await submitAndChangePage(app);
+    const navLinks = app.find('.nav-link');
+    await navLinks.at(0).simulate('click', { button: 0 });
+    await fillOutForm(app, secondDummy);
+    await submitAndChangePage(app);
+    await navLinks.at(0).simulate('click', { button: 0 });
+    await fillOutForm(app, thirdDummy);
+    await submitAndChangePage(app);
 
     expect(app.find('.card-header').at(0).text()).toBe('Task 1');
     expect(app.find('.card-header').at(1).text()).toBe('Task 2');

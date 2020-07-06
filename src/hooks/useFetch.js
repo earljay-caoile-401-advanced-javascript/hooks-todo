@@ -40,15 +40,16 @@ function useFetch(baseUrl, baseReq) {
         });
       }
 
-      await setIsLoading(false);
       await setRequest(null);
 
       if (res.status >= 300) {
-        setError(res);
+        await setError(res);
+        await setIsLoading(false);
         return;
       }
 
       await setResponse(await res.json());
+      await setIsLoading(false);
     }
 
     if (request) {
