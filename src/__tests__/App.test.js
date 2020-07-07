@@ -203,11 +203,14 @@ describe('the whole app', () => {
 
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
-    // await mockFetchHelper({ ...dummyTask, complete: false }, 0);
-    // const firstCheckbox = firstCard.find('input').at(0);
-    // await firstCheckbox.simulate('change', falseClickEvent);
-    // await act(async () => await app.update());
-    // expect(document.title).toBe('ToDo: 2 tasks incomplete');
+    await act(async () => {
+      await mockFetchHelper({ ...dummyTask, complete: false }, 0);
+      const firstCheckbox = firstCard.find('input').at(0);
+      await firstCheckbox.simulate('change', falseClickEvent);
+      await app.update();
+    });
+
+    expect(document.title).toBe('ToDo: 2 tasks incomplete');
 
     // await mockFetchHelper({ ...secondDummy, complete: true }, 1);
     // const secondCheckbox = secondCard.find('input').at(0);
