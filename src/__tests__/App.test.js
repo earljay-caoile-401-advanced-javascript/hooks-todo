@@ -101,7 +101,6 @@ describe('the whole app', () => {
   const submitAndChangePage = async (component) => {
     const form = component.find('form');
     await form.simulate('submit');
-    await component.update();
 
     const todoList = component.find('#main-content');
     expect(todoList.find('h2').text()).toBe('Tasks ToDo');
@@ -245,5 +244,20 @@ describe('the whole app', () => {
 
     await checkbox.simulate('change', trueClickEvent);
     expect(app.find('.card-header')).toHaveLength(3);
+
+    await minusBtn.simulate('click');
+
+    const paginationUl = settings.find('.pagination');
+    const firstPage = paginationUl.find('a').at(0);
+    const lastPage = paginationUl.find('a').at(1);
+
+    await lastPage.simulate('click');
+    expect(app.find('.card-header')).toHaveLength(1);
+    expect(app.find('.card-header').at(0).text()).toBe('Task 3');
+
+    await firstPage.simulate('click');
+    expect(app.find('.card-header')).toHaveLength(2);
+    expect(app.find('.card-header').at(0).text()).toBe('Task 1');
+    expect(app.find('.card-header').at(1).text()).toBe('Task 2');
   });
 });

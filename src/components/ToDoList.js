@@ -100,7 +100,7 @@ function ToDoList(props) {
           <div className="mb-4 fade-in">
             <div className="task-count-settings">
               <h3>
-                Total tasks:{' '}
+                Total Tasks:{' '}
                 {displayContext.results && displayContext.results.length}
               </h3>
               <Settings />
