@@ -213,13 +213,13 @@ describe('the whole app', () => {
       const secondCheckbox = secondCard.find('input').at(0);
       await secondCheckbox.simulate('change', trueClickEvent);
       await app.update();
+
+      await mockFetchHelper({ ...dummyTask, complete: true }, 0);
+      await firstCheckbox.simulate('change', trueClickEvent);
+      await app.update();
+
+      expect(document.title).toBe('ToDo: 0 tasks incomplete');
     });
-
-    // await mockFetchHelper({ ...dummyTask, complete: true }, 0);
-    // await firstCheckbox.simulate('change', trueClickEvent);
-    // await act(async () => await app.update());
-
-    // expect(document.title).toBe('ToDo: 0 tasks incomplete');
   });
 
   // test('can delete multiple items', async () => {
