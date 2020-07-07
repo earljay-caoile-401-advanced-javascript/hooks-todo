@@ -99,12 +99,14 @@ describe('the whole app', () => {
   };
 
   const submitAndChangePage = async (component) => {
-    const form = component.find('form');
-    await form.simulate('submit');
-    await component.update();
+    await act(async () => {
+      const form = component.find('form');
+      await form.simulate('submit');
+      await component.update();
 
-    const todoList = component.find('#main-content');
-    expect(todoList.find('h2').text()).toBe('Tasks ToDo');
+      const todoList = component.find('#main-content');
+      expect(todoList.find('h2').text()).toBe('Tasks ToDo');
+    });
   };
 
   const verifyCardContents = async (card, task) => {
@@ -124,30 +126,51 @@ describe('the whole app', () => {
     expect(deleteContainer.text()).toBe('Delete');
   };
 
+  const mockFetchHelper = (reqBody, id) => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ ...reqBody, id, testing: true }),
+      })
+    );
+  };
+
+  const returnToHomePage = async (component) => {
+    const navLinks = component.find('.nav-link');
+    await navLinks.at(0).simulate('click', { button: 0 });
+  };
+
   test('can go through the whole submission and list checking process', async () => {
     await fillOutForm(app, dummyTask);
-    await submitAndChangePage(app);
+    mockFetchHelper(dummyTask, 0);
 
+    await submitAndChangePage(app);
+    await act(async () => await app.update());
     expect(app.find('.card-header').text()).toBe('Task 1');
 
     const firstCard = app.find('.card-body-group');
     await verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
+    mockFetchHelper({ ...dummyTask, complete: false }, 0);
     const firstCheckbox = firstCard.find('input');
     await firstCheckbox.simulate('change', falseClickEvent);
+    await act(async () => await app.update());
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
+    mockFetchHelper({ ...dummyTask, complete: true }, 0);
     await firstCheckbox.simulate('change', trueClickEvent);
+    await act(async () => await app.update());
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-    const navLinks = app.find('.nav-link');
-    await navLinks.at(0).simulate('click', { button: 0 });
+    await returnToHomePage(app);
   });
 
   test('can go through through a second form submission and see the first and second tasks on the tasks page', async () => {
     await fillOutForm(app, secondDummy);
+    mockFetchHelper(secondDummy, 1);
+
     await submitAndChangePage(app);
+    await act(async () => await app.update());
 
     expect(app.find('.card-header').at(0).text()).toBe('Task 1');
     expect(app.find('.card-header').at(1).text()).toBe('Task 2');
@@ -158,13 +181,20 @@ describe('the whole app', () => {
 
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
+    mockFetchHelper({ ...dummyTask, complete: false }, 0);
     const firstCheckbox = firstCard.find('input').at(0);
     await firstCheckbox.simulate('change', falseClickEvent);
+    await act(async () => await app.update());
     expect(document.title).toBe('ToDo: 2 tasks incomplete');
 
+    mockFetchHelper({ ...secondDummy, complete: true }, 1);
     const secondCheckbox = secondCard.find('input').at(0);
     await secondCheckbox.simulate('change', trueClickEvent);
+    await act(async () => await app.update());
+
+    mockFetchHelper({ ...dummyTask, complete: true }, 0);
     await firstCheckbox.simulate('change', trueClickEvent);
+    await act(async () => await app.update());
 
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
   });
@@ -175,35 +205,42 @@ describe('the whole app', () => {
 
     const firstDeleteContainer = firstCard.find('.card-body').at(1);
 
+    mockFetchHelper(dummyTask, 0);
     const firstDeleteButton = firstDeleteContainer.find('button');
-    firstDeleteButton.simulate('click');
-
+    await firstDeleteButton.simulate('click');
+    await act(async () => await app.update());
     expect(app.find('.card-body-group')).toHaveLength(1);
 
-    expect(app.find('.card-body-group')).toHaveLength(1);
+    mockFetchHelper(dummyTask, 1);
     const lastCard = app.find('.card-body-group').at(0);
     const lastDeleteContainer = lastCard.find('.card-body').at(1);
-
     const lastDeleteButton = lastDeleteContainer.find('button');
     lastDeleteButton.simulate('click');
+    await act(async () => await app.update());
 
     const mainContent = app.find('#main-content');
     expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();
 
-    const navLinks = app.find('.nav-link');
-    await navLinks.at(0).simulate('click', { button: 0 });
+    await returnToHomePage(app);
   });
 
   test('can show pagination', async () => {
     await fillOutForm(app, dummyTask);
+    mockFetchHelper(dummyTask, 0);
     await submitAndChangePage(app);
-    const navLinks = app.find('.nav-link');
-    await navLinks.at(0).simulate('click', { button: 0 });
+    await returnToHomePage(app);
+    await act(async () => await app.update());
+
+    mockFetchHelper(secondDummy, 1);
     await fillOutForm(app, secondDummy);
     await submitAndChangePage(app);
-    await navLinks.at(0).simulate('click', { button: 0 });
+    await returnToHomePage(app);
+    await act(async () => await app.update());
+
+    mockFetchHelper(thirdDummy, 2);
     await fillOutForm(app, thirdDummy);
     await submitAndChangePage(app);
+    await act(async () => await app.update());
 
     expect(app.find('.card-header').at(0).text()).toBe('Task 1');
     expect(app.find('.card-header').at(1).text()).toBe('Task 2');
