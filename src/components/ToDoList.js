@@ -98,7 +98,13 @@ function ToDoList(props) {
           </div>
         ) : displayItems && displayItems.length ? (
           <div className="mb-4 fade-in">
-            <Settings />
+            <div className="task-count-settings">
+              <h3>
+                Total tasks:{' '}
+                {displayContext.results && displayContext.results.length}
+              </h3>
+              <Settings />
+            </div>
             <>{displayItems}</>
           </div>
         ) : hasOnlyCompleteTasks() ? (

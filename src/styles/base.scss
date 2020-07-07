@@ -125,3 +125,26 @@ code {
     }
   }
 }
+
+.task-count-settings {
+  display: flex;
+  flex-direction: row;
+
+  h3 {
+    width: 25%;
+    color: $darkBlue;
+    align-self: center;
+
+    @media (max-width: 950px) {
+      display: none;
+    }
+  }
+
+  #settings {
+    width: 75%;
+
+    @media (max-width: 950px) {
+      width: 100%;
+    }
+  }
+}
