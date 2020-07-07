@@ -208,12 +208,12 @@ describe('the whole app', () => {
       await firstCheckbox.simulate('change', falseClickEvent);
       await app.update();
       expect(document.title).toBe('ToDo: 2 tasks incomplete');
-    });
 
-    // await mockFetchHelper({ ...secondDummy, complete: true }, 1);
-    // const secondCheckbox = secondCard.find('input').at(0);
-    // await secondCheckbox.simulate('change', trueClickEvent);
-    // await act(async () => await app.update());
+      await mockFetchHelper({ ...secondDummy, complete: true }, 1);
+      const secondCheckbox = secondCard.find('input').at(0);
+      await secondCheckbox.simulate('change', trueClickEvent);
+      await app.update();
+    });
 
     // await mockFetchHelper({ ...dummyTask, complete: true }, 0);
     // await firstCheckbox.simulate('change', trueClickEvent);
