@@ -126,12 +126,19 @@ describe('the whole app', () => {
     expect(deleteContainer.text()).toBe('Delete');
   };
 
-  const mockFetchHelper = (reqBody, id) => {
+  const mockFetchHelper = (reqBody, id, runGet) => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve({ ...reqBody, id, testing: true }),
+        testing: () => Promise.resolve(runGet),
       })
     );
+  };
+
+  const mockGetAll = (inputArr) => {
+    return Promise.resolve({
+      json: () => Promise.resolve({ results: inputArr }),
+    });
   };
 
   const returnToHomePage = async (component) => {
@@ -141,7 +148,15 @@ describe('the whole app', () => {
 
   test('can go through the whole submission and list checking process', async () => {
     await fillOutForm(app, dummyTask);
-    mockFetchHelper(dummyTask, 0);
+    mockFetchHelper(
+      {
+        ...dummyTask,
+        testing: true,
+        mockArray: mockGetAll([{ ...dummyTask, _id: 0 }]),
+      },
+      0,
+      true
+    );
 
     await submitAndChangePage(app);
     await act(async () => await app.update());
@@ -167,7 +182,19 @@ describe('the whole app', () => {
 
   test('can go through through a second form submission and see the first and second tasks on the tasks page', async () => {
     await fillOutForm(app, secondDummy);
-    mockFetchHelper(secondDummy, 1);
+
+    mockFetchHelper(
+      {
+        ...dummyTask,
+        testing: true,
+        mockArray: mockGetAll([
+          { ...dummyTask, _id: 0 },
+          { ...secondDummy, _id: 1 },
+        ]),
+      },
+      1,
+      true
+    );
 
     await submitAndChangePage(app);
     await act(async () => await app.update());
@@ -226,19 +253,51 @@ describe('the whole app', () => {
 
   test('can show pagination', async () => {
     await fillOutForm(app, dummyTask);
-    mockFetchHelper(dummyTask, 0);
+    mockFetchHelper(
+      {
+        ...dummyTask,
+        testing: true,
+        mockArray: mockGetAll([{ ...dummyTask, _id: 0 }]),
+      },
+      0,
+      true
+    );
     await submitAndChangePage(app);
     await returnToHomePage(app);
     await act(async () => await app.update());
 
-    mockFetchHelper(secondDummy, 1);
+    mockFetchHelper(
+      {
+        ...dummyTask,
+        testing: true,
+        mockArray: mockGetAll([
+          { ...dummyTask, _id: 0 },
+          { ...secondDummy, _id: 1 },
+        ]),
+      },
+      1,
+      true
+    );
     await fillOutForm(app, secondDummy);
     await submitAndChangePage(app);
     await returnToHomePage(app);
     await act(async () => await app.update());
 
-    mockFetchHelper(thirdDummy, 2);
+    mockFetchHelper(
+      {
+        ...dummyTask,
+        testing: true,
+        mockArray: mockGetAll([
+          { ...dummyTask, _id: 0 },
+          { ...secondDummy, _id: 1 },
+          { ...thirdDummy, _id: 2 },
+        ]),
+      },
+      2,
+      true
+    );
     await fillOutForm(app, thirdDummy);
+
     await submitAndChangePage(app);
     await act(async () => await app.update());
 

@@ -34,11 +34,14 @@ function useFetch(baseUrl, baseReq, initTrigger) {
         headers: { ...request.headers, 'Content-Type': 'application/json' },
       });
 
-      if (canRunGet(request, res)) {
-        res = await fetch(baseUrl || url, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
+      if (canRunGet(request, res) || (await res.testing())) {
+        const prevRes = await res.json();
+        res = prevRes.testing
+          ? await prevRes.mockArray
+          : await fetch(baseUrl || url, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' },
+            });
       }
 
       await setFetchTrigger(false);
