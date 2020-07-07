@@ -185,7 +185,7 @@ describe('the whole app', () => {
 
     mockFetchHelper(
       {
-        ...dummyTask,
+        ...secondDummy,
         testing: true,
         mockArray: mockGetAll([
           { ...dummyTask, _id: 0 },
@@ -268,7 +268,7 @@ describe('the whole app', () => {
 
     mockFetchHelper(
       {
-        ...dummyTask,
+        ...secondDummy,
         testing: true,
         mockArray: mockGetAll([
           { ...dummyTask, _id: 0 },
@@ -285,7 +285,7 @@ describe('the whole app', () => {
 
     mockFetchHelper(
       {
-        ...dummyTask,
+        ...thirdDummy,
         testing: true,
         mockArray: mockGetAll([
           { ...dummyTask, _id: 0 },
