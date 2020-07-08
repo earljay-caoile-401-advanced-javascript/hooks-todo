@@ -126,10 +126,10 @@ describe('the whole app', () => {
     expect(deleteContainer.text()).toBe('Delete');
   };
 
-  const mockFetchHelper = async (reqBody, id, runGet, mockRes) => {
+  const mockFetchHelper = async (resBody, runGet, mockRes) => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve({ ...reqBody, id, testing: true }),
+        json: () => Promise.resolve({ ...resBody, testing: true }),
         runGet,
         mockGet: () => mockRes,
       })
@@ -144,8 +144,7 @@ describe('the whole app', () => {
   test('can go through the whole submission and list checking process', async () => {
     await fillOutForm(app, dummyTask);
     await mockFetchHelper(
-      dummyTask,
-      0,
+      { ...dummyTask, _id: 0 },
       true,
       Promise.resolve({
         json: () => Promise.resolve({ results: [{ ...dummyTask, _id: 0 }] }),
@@ -160,13 +159,13 @@ describe('the whole app', () => {
     await verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-    mockFetchHelper({ ...dummyTask, complete: false }, 0);
+    mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
     const firstCheckbox = firstCard.find('input');
     await firstCheckbox.simulate('change', falseClickEvent);
     await act(async () => await app.update());
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
-    mockFetchHelper({ ...dummyTask, complete: true }, 0);
+    mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
     await firstCheckbox.simulate('change', trueClickEvent);
     await act(async () => await app.update());
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
@@ -178,8 +177,7 @@ describe('the whole app', () => {
     await act(async () => {
       await fillOutForm(app, secondDummy);
       await mockFetchHelper(
-        secondDummy,
-        1,
+        { ...secondDummy, _id: 1 },
         true,
         Promise.resolve({
           json: () =>
@@ -228,7 +226,7 @@ describe('the whole app', () => {
 
     const firstDeleteContainer = firstCard.find('.card-body').at(1);
 
-    await mockFetchHelper(dummyTask, 0);
+    await mockFetchHelper({ ...dummyTask, _id: 0 });
     const firstDeleteButton = firstDeleteContainer.find('button');
     await firstDeleteButton.simulate('click');
     await act(async () => await app.update());
@@ -244,7 +242,7 @@ describe('the whole app', () => {
     // const mainContent = app.find('#main-content');
     // expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();
 
-    await returnToHomePage(app);
+    // await returnToHomePage(app);
   });
 
   // test('can show pagination', async () => {

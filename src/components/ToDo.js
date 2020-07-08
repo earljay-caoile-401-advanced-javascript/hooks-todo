@@ -104,7 +104,6 @@ function ToDo() {
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
-    console.log('entering editTask', index, updatedTask);
     const filteredTask = {
       assignee: updatedTask.assignee,
       complete: updatedTask.complete,
@@ -163,7 +162,6 @@ function ToDo() {
       taskToDelete.complete ? numIncomplete : numIncomplete,
       filteredArr
     );
-    console.log('What is filteredArr now?', filteredArr);
   }
 
   /**
