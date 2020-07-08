@@ -104,6 +104,7 @@ function ToDo() {
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
+    console.log('entering editTask', index, updatedTask);
     const filteredTask = {
       assignee: updatedTask.assignee,
       complete: updatedTask.complete,
@@ -153,13 +154,16 @@ function ToDo() {
     fetchHelper(baseUrl + `/${taskToDelete.id}`, requestBody);
 
     const filteredArr = tasks.filter((task, index) =>
-      task.id ? task.id !== taskToDelete.id : index !== deleteIndex
+      task.id !== undefined
+        ? task.id !== taskToDelete.id
+        : index !== deleteIndex
     );
 
     setIncompleteAndTasks(
       taskToDelete.complete ? numIncomplete : numIncomplete,
       filteredArr
     );
+    console.log('What is filteredArr now?', filteredArr);
   }
 
   /**

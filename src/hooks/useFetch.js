@@ -51,6 +51,9 @@ function useFetch(baseUrl, baseReq, initTrigger) {
         return;
       }
 
+      if (request.method === 'DELETE') {
+        console.log('what is res after delete?', await res.json());
+      }
       await setResponse(await res.json());
       await setIsLoading(false);
     }
