@@ -232,17 +232,17 @@ describe('the whole app', () => {
     await act(async () => await app.update());
     expect(app.find('.card-body-group')).toHaveLength(1);
 
-    // await mockFetchHelper(secondDummy, 1);
-    // const lastCard = app.find('.card-body-group').at(0);
-    // const lastDeleteContainer = lastCard.find('.card-body').at(1);
-    // const lastDeleteButton = lastDeleteContainer.find('button');
-    // lastDeleteButton.simulate('click');
-    // await act(async () => await app.update());
+    await mockFetchHelper({ ...secondDummy, _id: 1 });
+    const lastCard = app.find('.card-body-group').at(0);
+    const lastDeleteContainer = lastCard.find('.card-body').at(1);
+    const lastDeleteButton = lastDeleteContainer.find('button');
+    lastDeleteButton.simulate('click');
+    await act(async () => await app.update());
 
-    // const mainContent = app.find('#main-content');
-    // expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();
+    const mainContent = app.find('#main-content');
+    expect(mainContent.text().includes('No tasks to show!')).toBeTruthy();
 
-    // await returnToHomePage(app);
+    await returnToHomePage(app);
   });
 
   // test('can show pagination', async () => {
