@@ -142,41 +142,35 @@ describe('the whole app', () => {
   };
 
   test('can go through the whole submission and list checking process', async () => {
-    await fillOutForm(app, dummyTask);
-    await mockFetchHelper(
-      { ...dummyTask, _id: 0 },
-      true,
-      Promise.resolve({
-        json: () => Promise.resolve({ results: [{ ...dummyTask, _id: 0 }] }),
-      })
-    );
-
     await act(async () => {
+      await fillOutForm(app, dummyTask);
+      await mockFetchHelper(
+        { ...dummyTask, _id: 0 },
+        true,
+        Promise.resolve({
+          json: () => Promise.resolve({ results: [{ ...dummyTask, _id: 0 }] }),
+        })
+      );
+
       await submitAndChangePage(app);
       await app.update();
-    });
-    expect(app.find('.card-header').text()).toBe('Task 1');
+      expect(app.find('.card-header').text()).toBe('Task 1');
 
-    const firstCard = app.find('.card-body-group');
-    await verifyCardContents(firstCard, dummyTask);
-    expect(document.title).toBe('ToDo: 0 tasks incomplete');
+      const firstCard = app.find('.card-body-group');
+      await verifyCardContents(firstCard, dummyTask);
+      expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-    await mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
-    const firstCheckbox = firstCard.find('input');
-    await act(async () => {
+      await mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
+      const firstCheckbox = firstCard.find('input');
       await firstCheckbox.simulate('change', falseClickEvent);
-      await app.update();
-    });
-    expect(document.title).toBe('ToDo: 1 task incomplete');
+      expect(document.title).toBe('ToDo: 1 task incomplete');
 
-    await mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
-    await act(async () => {
+      await mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
       await firstCheckbox.simulate('change', trueClickEvent);
-      await app.update();
-    });
-    expect(document.title).toBe('ToDo: 0 tasks incomplete');
+      expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-    await returnToHomePage(app);
+      await returnToHomePage(app);
+    });
   });
 
   test('can go through through a second form submission and see the first and second tasks on the tasks page', async () => {
@@ -210,18 +204,14 @@ describe('the whole app', () => {
       await mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
       const firstCheckbox = firstCard.find('input').at(0);
       await firstCheckbox.simulate('change', falseClickEvent);
-      await app.update();
       expect(document.title).toBe('ToDo: 2 tasks incomplete');
 
       await mockFetchHelper({ ...secondDummy, _id: 1, complete: true });
       const secondCheckbox = secondCard.find('input').at(0);
       await secondCheckbox.simulate('change', trueClickEvent);
-      await app.update();
 
       await mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
       await firstCheckbox.simulate('change', trueClickEvent);
-      await app.update();
-
       expect(document.title).toBe('ToDo: 0 tasks incomplete');
     });
   });
