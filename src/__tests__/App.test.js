@@ -151,23 +151,29 @@ describe('the whole app', () => {
       })
     );
 
-    await submitAndChangePage(app);
-    await act(async () => await app.update());
+    await act(async () => {
+      await submitAndChangePage(app);
+      await app.update();
+    });
     expect(app.find('.card-header').text()).toBe('Task 1');
 
     const firstCard = app.find('.card-body-group');
     await verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-    mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
+    await mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
     const firstCheckbox = firstCard.find('input');
-    await firstCheckbox.simulate('change', falseClickEvent);
-    await act(async () => await app.update());
+    await act(async () => {
+      await firstCheckbox.simulate('change', falseClickEvent);
+      await app.update();
+    });
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
-    mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
-    await firstCheckbox.simulate('change', trueClickEvent);
-    await act(async () => await app.update());
+    await mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
+    await act(async () => {
+      await firstCheckbox.simulate('change', trueClickEvent);
+      await app.update();
+    });
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
     await returnToHomePage(app);
@@ -254,9 +260,12 @@ describe('the whole app', () => {
         json: () => Promise.resolve({ results: [{ ...dummyTask, _id: 0 }] }),
       })
     );
-    await submitAndChangePage(app);
-    await returnToHomePage(app);
-    await act(async () => await app.update());
+
+    await act(async () => {
+      await submitAndChangePage(app);
+      await returnToHomePage(app);
+      await app.update();
+    });
 
     await mockFetchHelper(
       { ...secondDummy, _id: 1 },
@@ -272,9 +281,11 @@ describe('the whole app', () => {
       })
     );
     await fillOutForm(app, secondDummy);
-    await submitAndChangePage(app);
-    await returnToHomePage(app);
-    await act(async () => await app.update());
+    await act(async () => {
+      await submitAndChangePage(app);
+      await returnToHomePage(app);
+      await app.update();
+    });
 
     await mockFetchHelper(
       { ...thirdDummy, _id: 2 },
@@ -291,8 +302,10 @@ describe('the whole app', () => {
       })
     );
     await fillOutForm(app, thirdDummy);
-    await submitAndChangePage(app);
-    await act(async () => await app.update());
+    await act(async () => {
+      await submitAndChangePage(app);
+      await app.update();
+    });
 
     expect(app.find('.card-header').at(0).text()).toBe('Task 1');
     expect(app.find('.card-header').at(1).text()).toBe('Task 2');
