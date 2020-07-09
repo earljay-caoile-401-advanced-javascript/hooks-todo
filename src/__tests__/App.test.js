@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import App from '../App';
 import { act } from 'react-dom/test-utils';
+const uuid = require('uuid').v4;
 
 describe('the whole app', () => {
   const dummyTask = {
@@ -38,6 +39,9 @@ describe('the whole app', () => {
   };
 
   let app;
+  const firstID = uuid();
+  const secondID = uuid();
+  const thirdID = uuid();
 
   beforeAll(async () => {
     await act(async () => {
@@ -144,10 +148,11 @@ describe('the whole app', () => {
   test('can go through the whole submission and list checking process', async () => {
     await fillOutForm(app, dummyTask);
     await mockFetchHelper(
-      { ...dummyTask, _id: 0 },
+      { ...dummyTask, _id: firstID },
       true,
       Promise.resolve({
-        json: () => Promise.resolve({ results: [{ ...dummyTask, _id: 0 }] }),
+        json: () =>
+          Promise.resolve({ results: [{ ...dummyTask, _id: firstID }] }),
       })
     );
 
@@ -161,7 +166,7 @@ describe('the whole app', () => {
     await verifyCardContents(firstCard, dummyTask);
     expect(document.title).toBe('ToDo: 0 tasks incomplete');
 
-    await mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
+    await mockFetchHelper({ ...dummyTask, _id: firstID, complete: false });
     const firstCheckbox = firstCard.find('input');
     await act(async () => {
       await firstCheckbox.simulate('change', falseClickEvent);
@@ -169,7 +174,7 @@ describe('the whole app', () => {
     });
     expect(document.title).toBe('ToDo: 1 task incomplete');
 
-    await mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
+    await mockFetchHelper({ ...dummyTask, _id: firstID, complete: true });
     await act(async () => {
       await firstCheckbox.simulate('change', trueClickEvent);
       await app.update();
@@ -183,14 +188,14 @@ describe('the whole app', () => {
     await act(async () => {
       await fillOutForm(app, secondDummy);
       await mockFetchHelper(
-        { ...secondDummy, _id: 1 },
+        { ...secondDummy, _id: secondID },
         true,
         Promise.resolve({
           json: () =>
             Promise.resolve({
               results: [
-                { ...dummyTask, _id: 0 },
-                { ...secondDummy, _id: 1 },
+                { ...dummyTask, _id: firstID },
+                { ...secondDummy, _id: secondID },
               ],
             }),
         })
@@ -207,18 +212,18 @@ describe('the whole app', () => {
       await verifyCardContents(secondCard, secondDummy);
       expect(document.title).toBe('ToDo: 1 task incomplete');
 
-      await mockFetchHelper({ ...dummyTask, _id: 0, complete: false });
+      await mockFetchHelper({ ...dummyTask, _id: firstID, complete: false });
       const firstCheckbox = firstCard.find('input').at(0);
       await firstCheckbox.simulate('change', falseClickEvent);
       await app.update();
       expect(document.title).toBe('ToDo: 2 tasks incomplete');
 
-      await mockFetchHelper({ ...secondDummy, _id: 1, complete: true });
+      await mockFetchHelper({ ...secondDummy, _id: secondID, complete: true });
       const secondCheckbox = secondCard.find('input').at(0);
       await secondCheckbox.simulate('change', trueClickEvent);
       await app.update();
 
-      await mockFetchHelper({ ...dummyTask, _id: 0, complete: true });
+      await mockFetchHelper({ ...dummyTask, _id: firstID, complete: true });
       await firstCheckbox.simulate('change', trueClickEvent);
       await app.update();
 
@@ -232,13 +237,13 @@ describe('the whole app', () => {
 
     const firstDeleteContainer = firstCard.find('.card-body').at(1);
 
-    await mockFetchHelper({ ...dummyTask, _id: 0 });
+    await mockFetchHelper({ ...dummyTask, _id: firstID });
     const firstDeleteButton = firstDeleteContainer.find('button');
     await firstDeleteButton.simulate('click');
     await act(async () => await app.update());
     expect(app.find('.card-body-group')).toHaveLength(1);
 
-    await mockFetchHelper({ ...secondDummy, _id: 1 });
+    await mockFetchHelper({ ...secondDummy, _id: secondID });
     const lastCard = app.find('.card-body-group').at(0);
     const lastDeleteContainer = lastCard.find('.card-body').at(1);
     const lastDeleteButton = lastDeleteContainer.find('button');
@@ -254,10 +259,11 @@ describe('the whole app', () => {
   test('can show pagination', async () => {
     await fillOutForm(app, dummyTask);
     await mockFetchHelper(
-      { ...dummyTask, _id: 0 },
+      { ...dummyTask, _id: firstID },
       true,
       Promise.resolve({
-        json: () => Promise.resolve({ results: [{ ...dummyTask, _id: 0 }] }),
+        json: () =>
+          Promise.resolve({ results: [{ ...dummyTask, _id: firstID }] }),
       })
     );
 
@@ -268,14 +274,14 @@ describe('the whole app', () => {
     });
 
     await mockFetchHelper(
-      { ...secondDummy, _id: 1 },
+      { ...secondDummy, _id: secondID },
       true,
       Promise.resolve({
         json: () =>
           Promise.resolve({
             results: [
-              { ...dummyTask, _id: 0 },
-              { ...secondDummy, _id: 1 },
+              { ...dummyTask, _id: firstID },
+              { ...secondDummy, _id: secondID },
             ],
           }),
       })
@@ -288,15 +294,15 @@ describe('the whole app', () => {
     });
 
     await mockFetchHelper(
-      { ...thirdDummy, _id: 2 },
+      { ...thirdDummy, _id: thirdID },
       true,
       Promise.resolve({
         json: () =>
           Promise.resolve({
             results: [
-              { ...dummyTask, _id: 0 },
-              { ...secondDummy, _id: 1 },
-              { ...thirdDummy, _id: 2 },
+              { ...dummyTask, _id: firstID },
+              { ...secondDummy, _id: secondID },
+              { ...thirdDummy, _id: thirdID },
             ],
           }),
       })

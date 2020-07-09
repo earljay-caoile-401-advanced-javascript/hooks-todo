@@ -153,9 +153,7 @@ function ToDo() {
     fetchHelper(baseUrl + `/${taskToDelete.id}`, requestBody);
 
     const filteredArr = tasks.filter((task, index) =>
-      task.id !== undefined
-        ? task.id !== taskToDelete.id
-        : index !== deleteIndex
+      task.id ? task.id !== taskToDelete.id : index !== deleteIndex
     );
 
     setIncompleteAndTasks(
