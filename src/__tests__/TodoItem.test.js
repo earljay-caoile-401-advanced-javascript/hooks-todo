@@ -11,7 +11,7 @@ describe('ToDoItem component', () => {
       complete: false,
     };
 
-    const component = render(<ToDoItem task={dummyTask} index={0} />);
+    const component = render(<ToDoItem data={dummyTask} index={0} />);
     expect(component).toBeDefined();
 
     const cardHeader = component.find('.card-header');

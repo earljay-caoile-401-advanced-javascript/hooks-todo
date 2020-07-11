@@ -5,24 +5,25 @@ import { useState, useEffect } from 'react';
  * @param {String} inputUrl -  url to perform the fetch with
  * @returns several variables and functions to be used elsewhere
  */
-function useFetch(baseUrl, baseReq) {
+function useFetch(baseUrl, baseReq, initTrigger) {
   const [url, setUrl] = useState(baseUrl || '');
   const [request, setRequest] = useState(baseReq);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [response, setResponse] = useState();
+  const [fetchTrigger, setFetchTrigger] = useState(initTrigger || false);
 
   /**
    * hook that triggers when a user enters a url or request
-   * designed to only do the fetch on a populated request
+   * designed to only do a fetch on a populated request
    */
   useEffect(() => {
     async function customFetch() {
-      setIsLoading(true);
-      setError(null);
-      setResponse(null);
+      await setIsLoading(true);
+      await setError(null);
+      await setResponse(null);
 
-      const res = await fetch(url, {
+      let res = await fetch(url, {
         method: request.method || 'GET',
         body:
           request.method === 'POST' ||
@@ -33,24 +34,50 @@ function useFetch(baseUrl, baseReq) {
         headers: { ...request.headers, 'Content-Type': 'application/json' },
       });
 
-      setIsLoading(false);
+      if (canRunGet(request, res) || res.runGet) {
+        res = res.runGet
+          ? await res.mockGet()
+          : await fetch(baseUrl || url, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' },
+            });
+      }
+
+      await setFetchTrigger(false);
 
       if (res.status >= 300) {
-        setError(res);
+        await setError(res);
+        await setIsLoading(false);
         return;
       }
 
-      setResponse(await res.json());
+      await setResponse(await res.json());
+      await setIsLoading(false);
     }
 
-    if (request) {
+    if (request && fetchTrigger) {
       customFetch();
     }
-  }, [request, url]);
+
+    return () => {
+      setUrl(null);
+      setRequest(null);
+    };
+  }, [request, baseUrl, url, fetchTrigger]);
+
+  /**
+   * helper function that determines whether a follow-up GET fetch can be run
+   * @param {Object} req - request object
+   * @param {Object} res - result from the previous fetch
+   */
+  function canRunGet(req, res) {
+    return req && req.runGet && res && res.status < 300;
+  }
 
   return {
     setUrl,
     setRequest,
+    setFetchTrigger,
     request,
     isLoading,
     error,

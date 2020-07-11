@@ -2,26 +2,29 @@ import React from 'react';
 import { render } from 'enzyme';
 import ToDoList from '../components/ToDoList';
 import { BrowserRouter } from 'react-router-dom';
+import { ListContext } from '../components/Contexts';
 
 describe('ToDoList component', () => {
   const dummyTask = {
     text: 'cook green eggs and ham',
     assignee: 'Sam I Am',
     difficulty: 3,
-    complete: false,
+    complete: true,
   };
 
-  const otherTask = {
-    text: 'take a shower',
+  const secondDummy = {
+    text: 'shouting expletives',
     assignee: 'Bob Saget',
     difficulty: 1,
-    complete: true,
+    complete: false,
   };
 
   it('displays the proper initial html and text on render', () => {
     const component = render(
       <BrowserRouter>
-        <ToDoList tasks={[]} />
+        <ListContext.Provider value={{ results: [] }}>
+          <ToDoList />
+        </ListContext.Provider>
       </BrowserRouter>
     );
     expect(component).toBeDefined();
@@ -40,7 +43,11 @@ describe('ToDoList component', () => {
   it('displays the proper html when populated with tasks', () => {
     const component = render(
       <BrowserRouter>
-        <ToDoList tasks={[dummyTask, otherTask]} />
+        <ListContext.Provider
+          value={{ results: [dummyTask, secondDummy], showCompleted: true }}
+        >
+          <ToDoList />
+        </ListContext.Provider>
       </BrowserRouter>
     );
     expect(component).toBeDefined();
@@ -59,8 +66,8 @@ describe('ToDoList component', () => {
       expect(compText.includes(dummyTask[key]));
     });
 
-    Object.keys(otherTask).forEach((key) => {
-      expect(compText.includes(otherTask[key]));
+    Object.keys(secondDummy).forEach((key) => {
+      expect(compText.includes(secondDummy[key]));
     });
   });
 });

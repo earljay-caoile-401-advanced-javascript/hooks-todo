@@ -19,7 +19,7 @@ code {
   flex-direction: column;
   min-height: 100vh;
   background-color: $lightGray;
-  min-width: 320px; // min-width for mobile devices
+  min-width: 350px; // min-width for mobile devices
 }
 
 .error {
@@ -100,6 +100,7 @@ code {
   @media (max-width: 768px) {
     margin: 0;
     margin-top: 10vh;
+    padding: $spacing * 2.5 $spacing;
   }
 
   @media (max-width: 314px) {
@@ -121,6 +122,29 @@ code {
     }
     to {
       opacity: 1;
+    }
+  }
+}
+
+.task-count-settings {
+  display: flex;
+  flex-direction: row;
+
+  h3 {
+    width: 25%;
+    color: $darkBlue;
+    align-self: center;
+
+    @media (max-width: 950px) {
+      display: none;
+    }
+  }
+
+  #settings {
+    width: 75%;
+
+    @media (max-width: 950px) {
+      width: 100%;
     }
   }
 }

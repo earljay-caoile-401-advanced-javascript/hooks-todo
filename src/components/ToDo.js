@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import '../styles/todo.scss';
 import useFetch from '../hooks/useFetch';
 import useForm from '../hooks/useForm';
+import { ListContext, CrudContext } from './Contexts';
 
 /**
  * component that renders the TodoForm or ToDoList components based on route
@@ -19,6 +20,11 @@ import useForm from '../hooks/useForm';
 function ToDo() {
   const [tasks, setTasks] = useState([]);
   const [numIncomplete, setNumIncomplete] = useState(0);
+  const [displayCount, setDisplayCount] = useState(3);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [onLastPage, setOnLastPage] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(true);
+
   const baseUrl = 'https://cf-js-401-api-server.herokuapp.com/api/v1/todo';
   const baseData = {
     text: '',
@@ -31,10 +37,15 @@ function ToDo() {
     method: 'GET',
   };
 
-  const { setUrl, setRequest, request, isLoading, error, response } = useFetch(
-    baseUrl,
-    baseReq
-  );
+  const {
+    setUrl,
+    setRequest,
+    setFetchTrigger,
+    request,
+    isLoading,
+    error,
+    response,
+  } = useFetch(baseUrl, baseReq, true);
 
   const { handleSubmit, handleChange, data, setData } = useForm(
     addTask,
@@ -42,27 +53,54 @@ function ToDo() {
   );
 
   /**
-   * helper function that adds a task to the ToDo list
+   * function that adds a task to the ToDo list
    * makes a POST API fetch
+   * currently, the setIncompleteAndTasks is necessary for testing but not
+   * in the actual app since runGet in the requestBody does a follow-up GET fetch
    */
   function addTask() {
     const requestBody = {
       method: 'POST',
       body: data,
+      runGet: true,
     };
 
-    setUrl(baseUrl);
-    setRequest(requestBody);
-    setNumIncomplete(data.complete ? numIncomplete : numIncomplete + 1);
-    setTasks([...tasks, data]);
+    fetchHelper(baseUrl, requestBody);
+    setIncompleteAndTasks(data.complete ? numIncomplete : numIncomplete + 1, [
+      ...tasks,
+      data,
+    ]);
     setData(baseData);
+    setPageIndex(0);
+    setShowCompleted(true);
+  }
+
+  /**
+   * helper function that sets up the useFetch hook with the appropriate parameters and enables
+   * a fetch by setting the fetch trigger to true
+   * @param {String} url - url to be used for the API fetch
+   * @param {Object} reqBody - request body to be used for the API fetch
+   */
+  function fetchHelper(url, reqBody) {
+    setUrl(url);
+    setRequest(reqBody);
+    setFetchTrigger(true);
+  }
+
+  /**
+   * simple function that performs a GET fetch to grab all ToDo tasks
+   * used in conjunction with the componentDidMount-like useEffect hook to re-render on a timer
+   */
+  function getTasks() {
+    fetchHelper(baseUrl, baseReq);
   }
 
   /**
    * helper function that edits an existing task
    * makes a PUT API fetch
    * currently only toggling checkbox complete status
-   * @param {Number} index - index of the task object in the tasks array to edit
+   * @param {Number} index - index of the task object in the tasks array to edit (only used
+   * when all tasks are displayed)
    * @param {Object} updatedTask - object with the updated task parameters
    */
   function editTask(index, updatedTask) {
@@ -78,48 +116,92 @@ function ToDo() {
       body: filteredTask,
     };
 
-    setUrl(baseUrl + `/${updatedTask.id}`);
-    setRequest(requestBody);
+    fetchHelper(baseUrl + `/${updatedTask.id}`, requestBody);
 
     const tasksCopy = [...tasks];
-    tasksCopy[index] = updatedTask;
 
-    setNumIncomplete(
-      updatedTask.complete ? numIncomplete - 1 : numIncomplete + 1
+    if (showCompleted) {
+      tasksCopy[index] = updatedTask;
+    } else {
+      for (let i = 0; i < tasksCopy.length; i++) {
+        const task = tasksCopy[i];
+        if (task.id === updatedTask.id) {
+          tasksCopy[i] = updatedTask;
+          break;
+        }
+      }
+    }
+
+    setIncompleteAndTasks(
+      updatedTask.complete ? numIncomplete - 1 : numIncomplete + 1,
+      tasksCopy
     );
-    setTasks(tasksCopy);
   }
 
   /**
-   * simple function that performs a GET fetch to grab all ToDo tasks
-   * used in conjunction with the componentDidMount-like useEffect hook to re-render on a timer
-   */
-  function getTasks() {
-    setUrl(baseUrl);
-    setRequest(baseReq);
-  }
-
-  /**
-   * helper function that deletes an existing task
+   * function that deletes an existing task
    * makes a DELETE API fetch
-   * @param {Number} deleteIndex - index of the task object to delete
+   * @param {Number} deleteIndex - index of the task object to delete (only used
+   * when all tasks are displayed or testing doesn't give an id)
+   * @param {Object} taskToDelete - object of the task to delete
    */
-  function deleteTask(deleteIndex) {
-    const taskToDelete = { ...tasks[deleteIndex] };
-
+  function deleteTask(deleteIndex, taskToDelete) {
     const requestBody = {
       method: 'DELETE',
     };
 
-    setUrl(baseUrl + `/${taskToDelete.id}`);
-    setRequest(requestBody);
+    fetchHelper(baseUrl + `/${taskToDelete.id}`, requestBody);
 
-    if (!taskToDelete.complete) {
-      setNumIncomplete(numIncomplete - 1);
+    const filteredArr = tasks.filter((task, index) =>
+      task.id ? task.id !== taskToDelete.id : index !== deleteIndex
+    );
+
+    setIncompleteAndTasks(
+      taskToDelete.complete ? numIncomplete : numIncomplete,
+      filteredArr
+    );
+  }
+
+  /**
+   * helper function that iterates through an array and updates the state for numIncomplete
+   * and tasks
+   * @param {Array} results - array of tasks to iterate through
+   */
+  function resultsCounter(results) {
+    let tasksCopy = [...tasks];
+    let incompCounter = numIncomplete;
+
+    if (results) {
+      tasksCopy = [];
+      incompCounter = 0;
+
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        tasksCopy.push({
+          id: result._id,
+          assignee: result.assignee,
+          complete: result.complete,
+          difficulty: result.difficulty,
+          text: result.text,
+        });
+
+        if (!result.complete) {
+          incompCounter++;
+        }
+      }
     }
 
-    const filteredArr = tasks.filter((task, index) => index !== deleteIndex);
-    setTasks(filteredArr);
+    setIncompleteAndTasks(incompCounter, tasksCopy);
+  }
+
+  /**
+   * helper function that sets the number of incomplete items and tasks
+   * @param {Number} newIncomp - new value for numIncomplete number
+   * @param {Array} newTasks - new value for tasks array
+   */
+  function setIncompleteAndTasks(newIncomp, newTasks) {
+    setNumIncomplete(newIncomp);
+    setTasks(newTasks);
   }
 
   /**
@@ -151,73 +233,51 @@ function ToDo() {
     document.title = `ToDo: ${numIncomplete} ${
       numIncomplete === 1 ? 'task' : 'tasks'
     } incomplete`;
+
+    return () => {
+      document.title = 'This component is dead, Jim!';
+    };
   }, [numIncomplete]);
 
   /**
-   * multi-purpose hook that triggers whenever a request or response triggers
-   * probably not the most elegant solution, but it works...
+   * hook that re-counts the number of incomplete tasks whenever a GET fetch occurs
+   * cut down from a previuosly overly bloated hook
    */
   useEffect(() => {
-    let tasksCopy = [...tasks];
-    let incompCounter = numIncomplete;
-
-    if (response && !isLoading) {
-      switch (request.method) {
-        case 'POST':
-          getTasks();
-          break;
-        case 'PUT':
-          console.log('triggered PUT');
-          break;
-        case 'PATCH':
-          console.log('triggered PATCH');
-          break;
-        case 'DELETE':
-          console.log('triggered DELETE');
-          break;
-        default:
-          if (response.results) {
-            tasksCopy = [];
-            incompCounter = 0;
-
-            for (let i = 0; i < response.results.length; i++) {
-              const result = response.results[i];
-              tasksCopy.push({
-                id: result._id,
-                assignee: result.assignee,
-                complete: result.complete,
-                difficulty: result.difficulty,
-                text: result.text,
-              });
-              if (!result.complete) {
-                incompCounter++;
-              }
-            }
-          }
-          break;
-      }
+    if (response && response.results && !isLoading) {
+      resultsCounter(response.results);
     }
-
-    setNumIncomplete(incompCounter);
-    setTasks(tasksCopy);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [response, request, isLoading]);
+  }, [response, isLoading]);
 
   return (
     <div id="main-content">
-      <Route path="/" exact>
-        <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
-      </Route>
-      <Route path="/tasks" exact>
-        <ToDoList
-          numIncomplete={numIncomplete}
-          isLoading={isLoading && request.method === 'GET'}
-          error={error}
-          tasks={tasks}
-          editTask={editTask}
-          deleteTask={deleteTask}
-        />
-      </Route>
+      <ListContext.Provider
+        value={{
+          results: tasks,
+          displayCount,
+          setDisplayCount,
+          pageIndex,
+          setPageIndex,
+          onLastPage,
+          setOnLastPage,
+          showCompleted,
+          setShowCompleted,
+        }}
+      >
+        <CrudContext.Provider value={{ editTask, deleteTask }}>
+          <Route path="/" exact>
+            <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
+          </Route>
+          <Route path="/tasks" exact>
+            <ToDoList
+              numIncomplete={numIncomplete}
+              isLoading={isLoading && request && request.method === 'GET'}
+              error={error}
+            />
+          </Route>
+        </CrudContext.Provider>
+      </ListContext.Provider>
     </div>
   );
 }

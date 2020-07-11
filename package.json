@@ -1,6 +1,6 @@
 {
   "name": "hooks-todo",
-  "version": "1.1.0",
+  "version": "2.1.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
@@ -42,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "uuid": "^8.2.0"
   }
 }

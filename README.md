@@ -1,8 +1,8 @@
-# Lab 27 — Custom Hooks
+# Lab 28 — Context API
 
-## ToDo application with custom hooks and remote API
+## ToDo application with remote API, custom hooks, and context
 
-Lab 27 for CF JS 401 Nights
+Labs 26, 27, and 28 for CF JS 401 Nights
 
 ### Author: Earl Jay Caoile
 
@@ -10,10 +10,10 @@ Lab 27 for CF JS 401 Nights
 
 #### Submission Reqs
 
-- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/2)
+- [submission PR](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/pull/4)
 - [GitHub actions](https://github.com/earljay-caoile-401-advanced-javascript/hooks-todo/actions)
-- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-27)
-- [Netlify Deployment](https://clever-heyrovsky-cb81ec.netlify.app/)
+- [code sandbox](https://codesandbox.io/s/github/earljay-caoile-401-advanced-javascript/hooks-todo/tree/lab-28)
+- [Netlify Deployment](https://elastic-hopper-626eb2.netlify.app/)
 
 #### Resources
 
@@ -50,9 +50,11 @@ Lab 27 for CF JS 401 Nights
 - click the submit button
 - click the checkbox on tasks page showing your new ToDo task repeatedly to toggle the title
 - repeat the above 3 steps to generate a second task
+- change the number of tasks per page in the top right textbox to create pagination (either clicking the - or + buttons or typing in a number and hitting enter)
+- with the tasks per page set to a number below the number of tasks, click the prev, next, or number buttons to explore the different "pages"
 - delete as many items as you'd like
 - smile
 
 ### UML
 
-![UML Image](lab-27-uml.png)
+![UML Image](lab-28-uml.png)

@@ -17,11 +17,19 @@ function ToDoForm(props) {
   const [submitted, setSubmitted] = useState(false);
   const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event) => {
-    setSubmitted(props.onSubmit(event));
+  /**
+   * simple helper function that handles form submission by calling several other functions
+   * @param {*} e - event object
+   */
+  function handleSubmit(e) {
+    setSubmitted(props.onSubmit(e));
     setValidated(true);
-  };
+  }
 
+  /**
+   * simple helper function that checks for enter key to do for submission
+   * @param {Object} e - event object
+   */
   function handleKeyPress(e) {
     if (e.key === 'Enter') {
       handleSubmit(e);
