@@ -6,6 +6,7 @@ import '../styles/todo.scss';
 import useFetch from '../hooks/useFetch';
 import useForm from '../hooks/useForm';
 import { ListContext, CrudContext } from './Contexts';
+import { FacebookShareButton, TwitterShareButton } from 'react-share';
 
 /**
  * component that renders the TodoForm or ToDoList components based on route
@@ -268,6 +269,31 @@ function ToDo() {
         <CrudContext.Provider value={{ editTask, deleteTask }}>
           <Route path="/" exact>
             <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
+            <div className="text-center mt-2 mb-3">
+              <FacebookShareButton
+                url={'https://elastic-hopper-626eb2.netlify.app/'}
+                quote={'Fix yo face on Facebook!'}
+                className="btn btn-outline-info"
+                resetButtonStyle={false}
+                aria-label="Share on Facebook"
+                style={{ padding: '.35rem 1.5rem' }}
+              >
+                Share on Facebook
+              </FacebookShareButton>
+            </div>
+            <div className="text-center mt-3 mb-2">
+              <TwitterShareButton
+                url={'https://elastic-hopper-626eb2.netlify.app/'}
+                title={'Twitter Twatter!'}
+                related={['HumanityForward', 'AndrewYang']}
+                className="btn btn-outline-info"
+                resetButtonStyle={false}
+                aria-label="Share on Twitter"
+                style={{ padding: '.35rem 1.5rem' }}
+              >
+                Share on Twitter
+              </TwitterShareButton>
+            </div>
           </Route>
           <Route path="/tasks" exact>
             <ToDoList
