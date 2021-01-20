@@ -250,6 +250,10 @@ function ToDo() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response, isLoading]);
+  const location = window.location.href;
+  const shareUrl = location.includes('localhost')
+    ? 'https://elastic-hopper-626eb2.netlify.app/'
+    : location;
 
   return (
     <div id="main-content">
