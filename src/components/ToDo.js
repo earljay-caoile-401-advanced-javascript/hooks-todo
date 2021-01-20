@@ -275,7 +275,7 @@ function ToDo() {
             <ToDoForm onChange={handleChange} onSubmit={handleSubmit} />
             <div className="text-center mt-2 mb-3">
               <FacebookShareButton
-                url={'https://elastic-hopper-626eb2.netlify.app/'}
+                url={shareUrl}
                 quote={'Fix yo face on Facebook!'}
                 className="btn btn-outline-info"
                 resetButtonStyle={false}
@@ -287,7 +287,7 @@ function ToDo() {
             </div>
             <div className="text-center mt-3 mb-2">
               <TwitterShareButton
-                url={'https://elastic-hopper-626eb2.netlify.app/'}
+                url={shareUrl}
                 title={'Twitter Twatter!'}
                 related={['HumanityForward', 'AndrewYang']}
                 className="btn btn-outline-info"
